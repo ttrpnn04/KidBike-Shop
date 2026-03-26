@@ -1,0 +1,230 @@
+@model List<CSI402_Project.Models.Db.User>
+@{
+    ViewData["Title"] = "จัดการผู้ใช้งาน - Super Admin";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <h1 class="mb-4">
+        <i class="bi bi-people me-2 text-primary"></i>จัดการผู้ใช้งาน
+        <small class="text-muted">(Super Admin)</small>
+    </h1>
+
+    <!-- Create Admin Button -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h5 class="mb-1">สร้างบัญชี Admin ใหม่</h5>
+                    <p class="text-muted mb-0">สร้างบัญชีผู้ดูแลระบบโดยไม่ต้องผ่านการสมัครสมาชิก</p>
+                </div>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createAdminModal">
+                    <i class="bi bi-person-plus me-2"></i>สร้าง Admin
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">รายชื่อผู้ใช้งานทั้งหมด</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>ชื่อผู้ใช้</th>
+                            <th>อีเมล</th>
+                            <th>เบอร์โทร</th>
+                            <th>บทบาท</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>@user.UserId</td>
+                                <td>
+                                    <strong>@user.Username</strong>
+                                </td>
+                                <td>@user.Email</td>
+                                <td>@user.Phone</td>
+                                <td>
+                                    <span class="badge @GetRoleBadgeClass(user.Role)">
+                                        @GetRoleText(user.Role)
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#roleModal" 
+                                                data-id="@user.UserId"
+                                                data-username="@user.Username"
+                                                data-role="@user.Role">
+                                            <i class="bi bi-person-gear"></i> เปลี่ยนบทบาท
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal" 
+                                                data-id="@user.UserId"
+                                                data-username="@user.Username"
+                                                @(user.UserId == Context.Session.GetInt32("UserId") ? "disabled" : "")>
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Admin Modal -->
+<div class="modal fade" id="createAdminModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">สร้างบัญชี Admin</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="CreateAdmin" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">ชื่อผู้ใช้</label>
+                        <input type="text" name="username" class="form-control" required maxlength="100" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">อีเมล</label>
+                        <input type="email" name="email" class="form-control" required maxlength="150" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">รหัสผ่าน</label>
+                        <input type="password" name="password" class="form-control" required minlength="6" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">เบอร์โทร</label>
+                        <input type="text" name="phone" class="form-control" maxlength="20" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">สร้างบัญชี</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Role Modal -->
+<div class="modal fade" id="roleModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">เปลี่ยนบทบาทผู้ใช้</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="AssignRole" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <input type="hidden" id="roleUserId" name="userId" />
+                    <p>กำลังเปลี่ยนบทบาทผู้ใช้: <strong id="roleUsername"></strong></p>
+                    <div class="mb-3">
+                        <label class="form-label">บทบาท</label>
+                        <select id="roleSelect" name="role" class="form-select" required>
+                            <option value="User">User (ผู้ใช้ทั่วไป)</option>
+                            <option value="Admin">Admin (ผู้ดูแลระบบ)</option>
+                            <option value="SuperAdmin">SuperAdmin (ผู้ดูแลระบบสูงสุด)</option>
+                        </select>
+                    </div>
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-2"></i>
+                        การเปลี่ยนบทบาทจะมีผลทันที
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ยืนยันการลบ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>คุณต้องการลบผู้ใช้ <strong id="deleteUsername"></strong> ใช่หรือไม่?</p>
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    การกระทำนี้ไม่สามารถย้อนกลับได้ ผู้ใช้ที่มีคำสั่งซื้อจะไม่สามารถลบได้
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <form asp-action="DeleteUser" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="deleteUserId" name="id" />
+                    <button type="submit" class="btn btn-danger">ลบผู้ใช้</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetRoleBadgeClass(string? role)
+    {
+        return role switch
+        {
+            "SuperAdmin" => "bg-danger",
+            "Admin" => "bg-primary",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetRoleText(string? role)
+    {
+        return role switch
+        {
+            "SuperAdmin" => "Super Admin",
+            "Admin" => "Admin",
+            _ => "User"
+        };
+    }
+}
+
+@section Scripts {
+    <script>
+        // Role Modal
+        const roleModal = document.getElementById('roleModal');
+        roleModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            document.getElementById('roleUserId').value = button.getAttribute('data-id');
+            document.getElementById('roleUsername').textContent = button.getAttribute('data-username');
+            document.getElementById('roleSelect').value = button.getAttribute('data-role');
+        });
+
+        // Delete Modal
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            document.getElementById('deleteUserId').value = button.getAttribute('data-id');
+            document.getElementById('deleteUsername').textContent = button.getAttribute('data-username');
+        });
+    </script>
+}

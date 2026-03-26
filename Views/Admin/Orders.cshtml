@@ -1,0 +1,151 @@
+@model List<CSI402_Project.Models.Db.Order>
+@{
+    ViewData["Title"] = "จัดการคำสั่งซื้อ";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <h1 class="mb-4">
+        <i class="bi bi-bag me-2 text-primary"></i>จัดการคำสั่งซื้อ
+    </h1>
+
+    <!-- Filter -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">ค้นหา</label>
+                    <input type="text" id="searchOrder" class="form-control" placeholder="ค้นหาเลขที่คำสั่งซื้อหรือชื่อลูกค้า..." />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">สถานะ</label>
+                    <select id="filterStatus" class="form-select">
+                        <option value="">ทั้งหมด</option>
+                        <option value="Pending">รอดำเนินการ</option>
+                        <option value="Paid">ชำระเงินแล้ว</option>
+                        <option value="Shipping">กำลังจัดส่ง</option>
+                        <option value="Completed">สำเร็จ</option>
+                        <option value="Cancelled">ยกเลิก</option>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">วันที่</label>
+                    <input type="date" id="filterDate" class="form-control" />
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-outline-secondary w-100" onclick="clearFilters()">
+                        <i class="bi bi-x-lg me-1"></i>ล้าง
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0" id="ordersTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>เลขที่</th>
+                            <th>ลูกค้า</th>
+                            <th>วันที่</th>
+                            <th>ยอดรวม</th>
+                            <th>สถานะ</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr data-status="@item.Status">
+                                <td>#@item.OrderId</td>
+                                <td>
+                                    <strong>@item.User?.Username</strong>
+                                </td>
+                                <td>@item.OrderDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                                <td>฿@item.TotalAmount?.ToString("N2")</td>
+                                <td>
+                                    <span class="badge @GetStatusBadgeClass(item.Status)">
+                                        @GetStatusText(item.Status)
+                                    </span>
+                                </td>
+                                <td>
+                                    <a asp-action="OrderDetails" asp-route-id="@item.OrderId" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye me-1"></i>ดูรายละเอียด
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetStatusBadgeClass(string? status)
+    {
+        return status switch
+        {
+            "Pending" => "bg-warning text-dark",
+            "Paid" => "bg-info",
+            "Shipping" => "bg-primary",
+            "Completed" => "bg-success",
+            "Cancelled" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+
+    string GetStatusText(string? status)
+    {
+        return status switch
+        {
+            "Pending" => "รอดำเนินการ",
+            "Paid" => "ชำระเงินแล้ว",
+            "Shipping" => "กำลังจัดส่ง",
+            "Completed" => "สำเร็จ",
+            "Cancelled" => "ยกเลิก",
+            _ => status ?? "ไม่ระบุ"
+        };
+    }
+}
+
+@section Scripts {
+    <script>
+        // Filter by status
+        document.getElementById('filterStatus').addEventListener('change', function() {
+            filterTable();
+        });
+
+        // Search
+        document.getElementById('searchOrder').addEventListener('input', function() {
+            filterTable();
+        });
+
+        function filterTable() {
+            const status = document.getElementById('filterStatus').value;
+            const search = document.getElementById('searchOrder').value.toLowerCase();
+            const rows = document.querySelectorAll('#ordersTable tbody tr');
+
+            rows.forEach(row => {
+                const rowStatus = row.getAttribute('data-status');
+                const text = row.textContent.toLowerCase();
+                
+                const statusMatch = !status || rowStatus === status;
+                const searchMatch = !search || text.includes(search);
+
+                row.style.display = statusMatch && searchMatch ? '' : 'none';
+            });
+        }
+
+        function clearFilters() {
+            document.getElementById('filterStatus').value = '';
+            document.getElementById('searchOrder').value = '';
+            document.getElementById('filterDate').value = '';
+            filterTable();
+        }
+    </script>
+}

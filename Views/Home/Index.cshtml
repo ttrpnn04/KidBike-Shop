@@ -1,8 +1,281 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "KidBike Shop - จักรยานเด็กคุณภาพ";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <h1 class="hero-title">
+                    จักรยานเด็กคุณภาพ<br>
+                    <span class="highlight">ปลอดภัย สนุกสนาน</span>
+                </h1>
+                <p class="hero-subtitle">
+                    เลือกจักรยานที่เหมาะสมกับลูกน้อยของคุณ จากแบรนด์ชั้นนำ พร้อมโปรโมชั่นพิเศษมากมาย
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-primary btn-lg">
+                        <i class="bi bi-bicycle me-2"></i>เลือกซื้อสินค้า
+                    </a>
+                    <a asp-controller="Promotion" asp-action="Index" class="btn btn-warning btn-lg">
+                        <i class="bi bi-tag-fill me-2"></i>ดูโปรโมชั่น
+                    </a>
+                </div>
+                
+                <div class="search-box mt-4">
+                    <input type="text" class="form-control shadow-sm" placeholder="ค้นหาจักรยานที่ต้องการ...">
+                    <button class="btn btn-primary">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="hero-image" style="font-size: 12rem; line-height: 1;">
+                    🚲
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">หมวดหมู่สินค้า</h2>
+            <p class="section-subtitle">เลือกตามประเภทและช่วงอายุที่เหมาะสม</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-6 col-md-3">
+                <div class="category-card shadow-sm">
+                    <div class="category-icon">🛺</div>
+                    <h5 class="mb-1">จักรยานสามล้อ</h5>
+                    <small class="text-muted">สำหรับอายุ 2-4 ปี</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="category-card shadow-sm">
+                    <div class="category-icon">🚲</div>
+                    <h5 class="mb-1">จักรยานสองล้อ</h5>
+                    <small class="text-muted">สำหรับอายุ 5-12 ปี</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="category-card shadow-sm">
+                    <div class="category-icon">⚖️</div>
+                    <h5 class="mb-1">จักรยานบาลานซ์</h5>
+                    <small class="text-muted">ฝึกทรงตัว</small>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="category-card shadow-sm">
+                    <div class="category-icon">🎽</div>
+                    <h5 class="mb-1">อุปกรณ์เสริม</h5>
+                    <small class="text-muted">หมวก สนับเข่า</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">สินค้ายอดนิยม</h2>
+            <p class="section-subtitle">จักรยานขายดีประจำเดือน</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card product-card h-100">
+                    <span class="product-badge badge-hot">ขายดี</span>
+                    <img src="~/images/bike-placeholder.jpg" class="card-img-top" alt="จักรยานเด็ก">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">จักรยานเด็ก 16 นิ้ว สีฟ้า</h5>
+                        <p class="text-muted small mb-2">เหมาะสำหรับอายุ 5-7 ปี</p>
+                        <div class="mt-auto">
+                            <div class="d-flex align-items-baseline mb-3">
+                                <span class="card-price">฿2,590</span>
+                                <span class="card-original-price">฿2,990</span>
+                            </div>
+                            <div class="d-grid gap-2 product-actions">
+                                <a href="#" class="btn btn-primary">
+                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card product-card h-100">
+                    <span class="product-badge badge-sale">ลด 15%</span>
+                    <img src="~/images/bike-placeholder.jpg" class="card-img-top" alt="จักรยานเด็ก">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">จักรยานสามล้อ สีชมพู</h5>
+                        <p class="text-muted small mb-2">เหมาะสำหรับอายุ 2-4 ปี</p>
+                        <div class="mt-auto">
+                            <div class="d-flex align-items-baseline mb-3">
+                                <span class="card-price">฿1,890</span>
+                                <span class="card-original-price">฿2,190</span>
+                            </div>
+                            <div class="d-grid gap-2 product-actions">
+                                <a href="#" class="btn btn-primary">
+                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card product-card h-100">
+                    <span class="product-badge badge-new">ใหม่</span>
+                    <img src="~/images/bike-placeholder.jpg" class="card-img-top" alt="จักรยานเด็ก">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">จักรยานบาลานซ์ สีเขียว</h5>
+                        <p class="text-muted small mb-2">ฝึกทรงตัว น้ำหนักเบา</p>
+                        <div class="mt-auto">
+                            <div class="d-flex align-items-baseline mb-3">
+                                <span class="card-price">฿1,590</span>
+                            </div>
+                            <div class="d-grid gap-2 product-actions">
+                                <a href="#" class="btn btn-primary">
+                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card product-card h-100">
+                    <img src="~/images/bike-placeholder.jpg" class="card-img-top" alt="จักรยานเด็ก">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">จักรยานเด็ก 20 นิ้ว สีแดง</h5>
+                        <p class="text-muted small mb-2">เหมาะสำหรับอายุ 8-12 ปี</p>
+                        <div class="mt-auto">
+                            <div class="d-flex align-items-baseline mb-3">
+                                <span class="card-price">฿3,290</span>
+                            </div>
+                            <div class="d-grid gap-2 product-actions">
+                                <a href="#" class="btn btn-primary">
+                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-4">
+            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-grid me-2"></i>ดูสินค้าทั้งหมด
+            </a>
+        </div>
+    </div>
+</section>
+<section class="py-5">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-truck"></i>
+                    </div>
+                    <h5>จัดส่งฟรี</h5>
+                    <p class="text-muted small mb-0">ส่งฟรีทั่วประเทศเมื่อซื้อครบ 1,500 บาท</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-shield-check"></i>
+                    </div>
+                    <h5>ปลอดภัยมาตรฐาน</h5>
+                    <p class="text-muted small mb-0">สินค้าผ่านมาตรฐานความปลอดภัย มอก.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-arrow-repeat"></i>
+                    </div>
+                    <h5>เปลี่ยนคืนได้</h5>
+                    <p class="text-muted small mb-0">เปลี่ยนหรือคืนสินค้าได้ภายใน 7 วัน</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="feature-box">
+                    <div class="feature-icon">
+                        <i class="bi bi-headset"></i>
+                    </div>
+                    <h5>บริการหลังการขาย</h5>
+                    <p class="text-muted small mb-0">มีทีมงานให้คำปรึกษาตลอดการใช้งาน</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">โปรโมชั่นพิเศษ</h2>
+            <p class="section-subtitle">เลือกใช้โปรโมชั่นที่ตรงกับความต้องการของคุณ</p>
+        </div>
+        
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F0 100%);">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3" style="font-size: 3rem;">🎁</div>
+                        <h5 class="card-title">สมาชิกใหม่รับส่วนลด</h5>
+                        <p class="text-muted">ลดทันที 100 บาท เมื่อสมัครสมาชิกและซื้อสินค้าครั้งแรก</p>
+                        <span class="badge bg-primary">ใช้โค้ด: WELCOME100</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #E5F9F7 0%, #F0FFFD 100%);">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3" style="font-size: 3rem;">🚚</div>
+                        <h5 class="card-title">ส่งฟรีทั่วไทย</h5>
+                        <p class="text-muted">จัดส่งฟรีเมื่อซื้อสินค้าครบ 1,500 บาทขึ้นไป</p>
+                        <span class="badge bg-secondary">ไม่ต้องใช้โค้ด</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #FFF9E5 0%, #FFFDF0 100%);">
+                    <div class="card-body text-center p-4">
+                        <div class="mb-3" style="font-size: 3rem;">🏷️</div>
+                        <h5 class="card-title">ส่วนลดเทศกาล</h5>
+                        <p class="text-muted">ลดสูงสุด 20% สำหรับสินค้าที่ร่วมรายการ</p>
+                        <span class="badge bg-warning text-dark">จำกัดเวลา</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="py-5">
+    <div class="container">
+        <div class="card border-0 shadow-sm overflow-hidden">
+            <div class="card-body p-0">
+                <div class="row g-0">
+                    <div class="col-lg-6 p-5 d-flex flex-column justify-content-center" style="background: linear-gradient(135deg, #E8F8F5 0%, #D5F5E3 100%);">
+                        <h3 class="mb-3">ไม่แน่ใจว่าควรเลือกไซส์ไหน?</h3>
+                        <p class="text-muted mb-4">ใช้ตารางแนะนำขนาดจักรยานตามอายุและส่วนสูงของลูกน้อย เพื่อความปลอดภัยและสนุกกับการขี่จักรยาน</p>
+                        <a href="#" class="btn btn-primary">
+                            <i class="bi bi-calculator me-2"></i>ดูคำแนะนำการเลือกไซส์
+                        </a>
+                    </div>
+                    <div class="col-lg-6 text-center p-5" style="background: linear-gradient(135deg, #FFF5F5 0%, #FFE5E5 100%);">
+                        <div style="font-size: 8rem;">📏</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

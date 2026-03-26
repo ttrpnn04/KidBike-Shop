@@ -1,0 +1,254 @@
+@model List<CSI402_Project.Models.Db.Promotion>
+@{
+    ViewData["Title"] = "จัดการโปรโมชั่น";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <h1 class="mb-4">
+        <i class="bi bi-tag me-2 text-primary"></i>จัดการโปรโมชั่น
+    </h1>
+
+    <div class="row g-4">
+        <!-- Create Promotion Form -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">เพิ่มโปรโมชั่นใหม่</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="CreatePromotion" method="post">
+                        @Html.AntiForgeryToken()
+                        <div class="mb-3">
+                            <label class="form-label">ชื่อโปรโมชั่น</label>
+                            <input type="text" name="Name" class="form-control" required maxlength="150" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">ประเภท</label>
+                            <select name="Type" class="form-select" required>
+                                <option value="NewMember">สมาชิกใหม่</option>
+                                <option value="MinAmount">ส่วนลดเมื่อซื้อครบ</option>
+                                <option value="FreeShipping">ส่งฟรี</option>
+                                <option value="Seasonal">ส่วนลดเทศกาล</option>
+                                <option value="FreeGift">ของแถม</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">มูลค่าส่วนลด</label>
+                            <input type="number" step="0.01" name="DiscountValue" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">ยอดขั้นต่ำ</label>
+                            <input type="number" step="0.01" name="ConditionAmount" class="form-control" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">วันเริ่มต้น</label>
+                            <input type="datetime-local" name="StartDate" class="form-control" required />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">วันสิ้นสุด</label>
+                            <input type="datetime-local" name="EndDate" class="form-control" required />
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-plus-lg me-2"></i>เพิ่มโปรโมชั่น
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Promotion List -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>ชื่อ</th>
+                                    <th>ประเภท</th>
+                                    <th>ส่วนลด</th>
+                                    <th>ยอดขั้นต่ำ</th>
+                                    <th>สถานะ</th>
+                                    <th>จัดการ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+                                    var isActive = item.StartDate <= DateTime.Now && item.EndDate >= DateTime.Now;
+                                    <tr>
+                                        <td>@item.PromotionId</td>
+                                        <td>
+                                            <strong>@item.Name</strong>
+                                        </td>
+                                        <td>@GetTypeText(item.Type)</td>
+                                        <td>฿@item.DiscountValue?.ToString("N2")</td>
+                                        <td>@(item.ConditionAmount > 0 ? $"฿{item.ConditionAmount:N2}" : "-")</td>
+                                        <td>
+                                            @if (isActive)
+                                            {
+                                                <span class="badge bg-success">กำลังใช้งาน</span>
+                                            }
+                                            else if (item.EndDate < DateTime.Now)
+                                            {
+                                                <span class="badge bg-secondary">หมดอายุ</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge bg-warning text-dark">เร็วๆ นี้</span>
+                                            }
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#editModal" 
+                                                        data-id="@item.PromotionId"
+                                                        data-name="@item.Name"
+                                                        data-type="@item.Type"
+                                                        data-discount="@item.DiscountValue"
+                                                        data-condition="@item.ConditionAmount"
+                                                        data-start="@item.StartDate?.ToString("yyyy-MM-ddTHH:mm")"
+                                                        data-end="@item.EndDate?.ToString("yyyy-MM-ddTHH:mm")">
+                                                    <i class="bi bi-pencil"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                        data-bs-toggle="modal" 
+                                                        data-bs-target="#deleteModal" 
+                                                        data-id="@item.PromotionId"
+                                                        data-name="@item.Name">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">แก้ไขโปรโมชั่น</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="EditPromotion" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <input type="hidden" id="editPromotionId" name="PromotionId" />
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">ชื่อโปรโมชั่น</label>
+                            <input type="text" id="editPromotionName" name="Name" class="form-control" required maxlength="150" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">ประเภท</label>
+                            <select id="editPromotionType" name="Type" class="form-select" required>
+                                <option value="NewMember">สมาชิกใหม่</option>
+                                <option value="MinAmount">ส่วนลดเมื่อซื้อครบ</option>
+                                <option value="FreeShipping">ส่งฟรี</option>
+                                <option value="Seasonal">ส่วนลดเทศกาล</option>
+                                <option value="FreeGift">ของแถม</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">มูลค่าส่วนลด</label>
+                            <input type="number" step="0.01" id="editPromotionDiscount" name="DiscountValue" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">ยอดขั้นต่ำ</label>
+                            <input type="number" step="0.01" id="editPromotionCondition" name="ConditionAmount" class="form-control" />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">วันเริ่มต้น</label>
+                            <input type="datetime-local" id="editPromotionStart" name="StartDate" class="form-control" required />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">วันสิ้นสุด</label>
+                            <input type="datetime-local" id="editPromotionEnd" name="EndDate" class="form-control" required />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                    <button type="submit" class="btn btn-primary">บันทึก</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ยืนยันการลบ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>คุณต้องการลบโปรโมชั่น <strong id="deletePromotionName"></strong> ใช่หรือไม่?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <form asp-action="DeletePromotion" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="deletePromotionId" name="id" />
+                    <button type="submit" class="btn btn-danger">ลบ</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    string GetTypeText(string? type)
+    {
+        return type switch
+        {
+            "NewMember" => "สมาชิกใหม่",
+            "MinAmount" => "ส่วนลดเมื่อซื้อครบ",
+            "FreeShipping" => "ส่งฟรี",
+            "Seasonal" => "เทศกาล",
+            "FreeGift" => "ของแถม",
+            _ => type ?? ""
+        };
+    }
+}
+
+@section Scripts {
+    <script>
+        // Edit Modal
+        const editModal = document.getElementById('editModal');
+        editModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            document.getElementById('editPromotionId').value = button.getAttribute('data-id');
+            document.getElementById('editPromotionName').value = button.getAttribute('data-name');
+            document.getElementById('editPromotionType').value = button.getAttribute('data-type');
+            document.getElementById('editPromotionDiscount').value = button.getAttribute('data-discount');
+            document.getElementById('editPromotionCondition').value = button.getAttribute('data-condition');
+            document.getElementById('editPromotionStart').value = button.getAttribute('data-start');
+            document.getElementById('editPromotionEnd').value = button.getAttribute('data-end');
+        });
+
+        // Delete Modal
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            document.getElementById('deletePromotionId').value = button.getAttribute('data-id');
+            document.getElementById('deletePromotionName').textContent = button.getAttribute('data-name');
+        });
+    </script>
+}

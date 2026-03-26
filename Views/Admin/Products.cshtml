@@ -1,0 +1,126 @@
+@model List<CSI402_Project.Models.Db.Product>
+@{
+    ViewData["Title"] = "จัดการสินค้า";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+            <i class="bi bi-bicycle me-2 text-primary"></i>จัดการสินค้า
+        </h1>
+        <a asp-action="CreateProduct" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-2"></i>เพิ่มสินค้าใหม่
+        </a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>รูป</th>
+                            <th>ชื่อสินค้า</th>
+                            <th>หมวดหมู่</th>
+                            <th>ราคา</th>
+                            <th>สต็อก</th>
+                            <th>สถานะ</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.ProductId</td>
+                                <td>
+                                    <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "/images/bike-placeholder.jpg" : item.ImageUrl)" 
+                                         class="rounded" style="width: 60px; height: 60px; object-fit: cover;" alt="@item.Name" />
+                                </td>
+                                <td>
+                                    <strong>@item.Name</strong>
+                                </td>
+                                <td>@item.Category?.Name</td>
+                                <td>฿@item.Price.ToString("N2")</td>
+                                <td>
+                                    @if (item.Stock < 10)
+                                    {
+                                        <span class="badge bg-danger">@item.Stock</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">@item.Stock</span>
+                                    }
+                                </td>
+                                <td>
+                                    @if (item.Stock > 0)
+                                    {
+                                        <span class="badge bg-success">มีสินค้า</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-danger">หมด</span>
+                                    }
+                                </td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a asp-action="EditProduct" asp-route-id="@item.ProductId" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal" 
+                                                data-id="@item.ProductId"
+                                                data-name="@item.Name">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">ยืนยันการลบ</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>คุณต้องการลบสินค้า <strong id="deleteProductName"></strong> ใช่หรือไม่?</p>
+                <p class="text-danger">การกระทำนี้ไม่สามารถย้อนกลับได้</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ยกเลิก</button>
+                <form asp-action="DeleteProduct" method="post" class="d-inline">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" id="deleteProductId" name="id" />
+                    <button type="submit" class="btn btn-danger">ลบสินค้า</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        const deleteModal = document.getElementById('deleteModal');
+        deleteModal.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const id = button.getAttribute('data-id');
+            const name = button.getAttribute('data-name');
+            
+            document.getElementById('deleteProductId').value = id;
+            document.getElementById('deleteProductName').textContent = name;
+        });
+    </script>
+}

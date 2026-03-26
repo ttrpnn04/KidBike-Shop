@@ -21,7 +21,6 @@ C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\rjsmcsht
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\scopedcss\Views\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\scopedcss\bundle\CSI402-Project.styles.css
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\scopedcss\projectbundle\CSI402-Project.bundle.scp.css
-C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\ut6z3cdn7c-{0}-b9sayid5wm-b9sayid5wm.gz
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\abn9ibe7gh-{0}-61n19gt1b8-61n19gt1b8.gz
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\e2ibdoc3cc-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\bvra1lqjyu-{0}-bqjiyaj88i-bqjiyaj88i.gz
@@ -222,3 +221,5 @@ C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\bin\Debug\net10.0\runtimes
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\bin\Debug\net10.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\CSI402-Project.csproj.AssemblyReference.cache
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\CSI402-P.011DC68B.Up2Date
+C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\CSI402-Project.sourcelink.json
+C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\ut6z3cdn7c-{0}-0m6zf0daqy-0m6zf0daqy.gz

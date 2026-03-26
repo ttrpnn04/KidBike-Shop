@@ -1,0 +1,87 @@
+@model CSI402_Project.Models.Db.Product
+@{
+    ViewData["Title"] = "แก้ไขสินค้า";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid py-4">
+    <div class="d-flex align-items-center mb-4">
+        <a asp-action="Products" class="btn btn-outline-secondary me-3">
+            <i class="bi bi-arrow-left"></i>
+        </a>
+        <h1 class="mb-0">
+            <i class="bi bi-pencil me-2 text-primary"></i>แก้ไขสินค้า
+        </h1>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+                    <form asp-action="EditProduct" method="post">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" asp-for="ProductId" />
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+                        <div class="row g-3">
+                            <div class="col-md-12">
+                                <label asp-for="Name" class="form-label">ชื่อสินค้า</label>
+                                <input asp-for="Name" class="form-control" required />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="CategoryId" class="form-label">หมวดหมู่</label>
+                                <select asp-for="CategoryId" class="form-select" required>
+                                    <option value="">-- เลือกหมวดหมู่ --</option>
+                                    @foreach (var cat in ViewBag.Categories)
+                                    {
+                                        <option value="@cat.CategoryId" selected="@(Model.CategoryId == cat.CategoryId ? "selected" : null)">@cat.Name</option>
+                                    }
+                                </select>
+                                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Price" class="form-label">ราคา (บาท)</label>
+                                <input asp-for="Price" type="number" step="0.01" class="form-control" required />
+                                <span asp-validation-for="Price" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="Stock" class="form-label">จำนวนสต็อก</label>
+                                <input asp-for="Stock" type="number" class="form-control" required />
+                                <span asp-validation-for="Stock" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label asp-for="ImageUrl" class="form-label">URL รูปภาพ</label>
+                                <input asp-for="ImageUrl" class="form-control" />
+                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label asp-for="Description" class="form-label">รายละเอียด</label>
+                                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <a asp-action="Products" class="btn btn-outline-secondary">ยกเลิก</a>
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="bi bi-check-lg me-2"></i>บันทึกการเปลี่ยนแปลง
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

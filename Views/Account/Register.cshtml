@@ -1,0 +1,168 @@
+@model CSI402_Project.ViewModels.RegisterViewModel
+@{
+    ViewData["Title"] = "สมัครสมาชิก - KidBike Shop";
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">สมัครสมาชิก</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Register Section -->
+<section class="py-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="card shadow border-0">
+                    <div class="card-body p-4 p-md-5">
+                        <!-- Header -->
+                        <div class="text-center mb-4">
+                            <div class="mb-3" style="font-size: 3rem;">🚲</div>
+                            <h2 class="fw-bold">สมัครสมาชิก</h2>
+                            <p class="text-muted">สร้างบัญชีเพื่อเริ่มต้นช้อปปิ้งกับเรา</p>
+                        </div>
+
+                        <!-- Success Message -->
+                        @if (TempData["SuccessMessage"] != null)
+                        {
+                            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                @TempData["SuccessMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+
+                        <!-- Register Form -->
+                        <form asp-controller="Account" asp-action="Register" method="post">
+                            @Html.AntiForgeryToken()
+                            
+                            <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                            <!-- Username -->
+                            <div class="mb-3">
+                                <label asp-for="Username" class="form-label fw-semibold">
+                                    <i class="bi bi-person me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Username)
+                                </label>
+                                <input asp-for="Username" class="form-control form-control-lg" placeholder="กรอกชื่อผู้ใช้" />
+                                <span asp-validation-for="Username" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label fw-semibold">
+                                    <i class="bi bi-envelope me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Email)
+                                </label>
+                                <input asp-for="Email" class="form-control form-control-lg" placeholder="example@email.com" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Phone -->
+                            <div class="mb-3">
+                                <label asp-for="Phone" class="form-label fw-semibold">
+                                    <i class="bi bi-telephone me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Phone)
+                                </label>
+                                <input asp-for="Phone" class="form-control form-control-lg" placeholder="08xxxxxxxx" />
+                                <span asp-validation-for="Phone" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Address -->
+                            <div class="mb-3">
+                                <label asp-for="Address" class="form-label fw-semibold">
+                                    <i class="bi bi-geo-alt me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Address)
+                                </label>
+                                <textarea asp-for="Address" class="form-control form-control-lg" rows="3" placeholder="กรอกที่อยู่จัดส่งสินค้า"></textarea>
+                                <span asp-validation-for="Address" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="mb-3">
+                                <label asp-for="Password" class="form-label fw-semibold">
+                                    <i class="bi bi-lock me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Password)
+                                </label>
+                                <div class="input-group">
+                                    <input asp-for="Password" class="form-control form-control-lg" id="password" placeholder="กรอกรหัสผ่าน" />
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('password', this)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                <span asp-validation-for="Password" class="text-danger small"></span>
+                                <div class="form-text">รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร</div>
+                            </div>
+
+                            <!-- Confirm Password -->
+                            <div class="mb-4">
+                                <label asp-for="ConfirmPassword" class="form-label fw-semibold">
+                                    <i class="bi bi-lock-fill me-2 text-primary"></i>@Html.DisplayNameFor(m => m.ConfirmPassword)
+                                </label>
+                                <div class="input-group">
+                                    <input asp-for="ConfirmPassword" class="form-control form-control-lg" id="confirmPassword" placeholder="ยืนยันรหัสผ่าน" />
+                                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword('confirmPassword', this)">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                                <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-person-plus me-2"></i>สมัครสมาชิก
+                                </button>
+                            </div>
+
+                            <!-- Login Link -->
+                            <div class="text-center">
+                                <p class="text-muted mb-0">
+                                    มีบัญชีอยู่แล้ว? 
+                                    <a asp-controller="Account" asp-action="Login" class="text-primary fw-semibold text-decoration-none">เข้าสู่ระบบ</a>
+                                </p>
+                            </div>
+                        </form>
+
+                        <!-- Benefits -->
+                        <hr class="my-4">
+                        <div class="row g-2 text-center">
+                            <div class="col-4">
+                                <i class="bi bi-truck text-primary fs-4"></i>
+                                <p class="small text-muted mb-0">ส่งฟรี</p>
+                            </div>
+                            <div class="col-4">
+                                <i class="bi bi-gift text-primary fs-4"></i>
+                                <p class="small text-muted mb-0">โปรโมชั่น</p>
+                            </div>
+                            <div class="col-4">
+                                <i class="bi bi-clock-history text-primary fs-4"></i>
+                                <p class="small text-muted mb-0">ติดตามคำสั่งซื้อ</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function togglePassword(inputId, button) {
+            const input = document.getElementById(inputId);
+            const icon = button.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye');
+                icon.classList.add('bi-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash');
+                icon.classList.add('bi-eye');
+            }
+        }
+    </script>
+}
