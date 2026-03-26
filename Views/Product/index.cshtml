@@ -1,0 +1,12 @@
+@model List<CSI402_Project.Models.Db.Product>
+
+<h2>Product List</h2>
+
+@foreach (var item in Model)
+{
+    <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+        <h3>@item.Name</h3>
+        <p>Price: @item.Price</p>
+        <p>Stock: @item.Stock</p>
+    </div>
+}
