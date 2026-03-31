@@ -37,7 +37,16 @@
         .admin-content {
             background-color: #f8f9fa;
             min-height: 100vh;
-            padding-top: 1rem;
+            padding: 0;
+        }
+        body {
+            padding-top: 0 !important;
+        }
+        .admin-content > *:first-child {
+            margin-top: 0 !important;
+        }
+        .admin-content h1, .admin-content h2, .admin-content h3 {
+            margin-top: 0;
         }
         .admin-navbar {
             background: #fff;
@@ -98,7 +107,7 @@
             <!-- Main Content -->
             <div class="col-md-9 col-lg-10 px-0">
                 <!-- Top Navbar -->
-                <nav class="navbar admin-navbar px-4 py-3">
+                <nav class="navbar admin-navbar px-4 py-3 mb-0">
                     <div class="d-flex justify-content-between align-items-center w-100">
                         <span class="text-muted">ยินดีต้อนรับ, <strong>@username</strong> (@userRole)</span>
                         <div class="d-flex align-items-center gap-3">

@@ -1,0 +1,188 @@
+@model List<CSI402_Project.Models.Db.Cart>
+@{
+    ViewData["Title"] = "ตะกร้าสินค้า";
+    
+    // คำนวณยอดรวม
+    var totalAmount = Model.Sum(c => (c.Product?.Price ?? 0) * (c.Quantity ?? 0));
+    var itemCount = Model.Sum(c => c.Quantity ?? 0);
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ตะกร้าสินค้า</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<div class="container mb-4">
+    <div class="section-header">
+        <h1 class="section-title">
+            <i class="bi bi-cart3 text-primary me-2"></i>ตะกร้าสินค้า
+        </h1>
+        <p class="section-subtitle">ตรวจสอบสินค้าและดำเนินการสั่งซื้อ</p>
+    </div>
+</div>
+
+<div class="container">
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info text-center py-5">
+            <i class="bi bi-cart-x fs-1 d-block mb-3"></i>
+            <h5>ตะกร้าสินค้าว่างเปล่า</h5>
+            <p class="mb-3">คุณยังไม่มีสินค้าในตะกร้า ไปเลือกซื้อสินค้ากันเลย!</p>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-primary">
+                <i class="bi bi-bag me-2"></i>เลือกซื้อสินค้า
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0">
+                                <i class="bi bi-box me-2 text-primary"></i>สินค้าในตะกร้า (@Model.Count รายการ)
+                            </h5>
+                            <form asp-action="Clear" method="post" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('ต้องการล้างตะกร้าสินค้าทั้งหมดใช่หรือไม่?')">
+                                    <i class="bi bi-trash me-1"></i>ล้างตะกร้า
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover mb-0 align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>สินค้า</th>
+                                        <th class="text-center">ราคา</th>
+                                        <th class="text-center" style="width: 150px;">จำนวน</th>
+                                        <th class="text-end">รวม</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        var subtotal = (item.Product?.Price ?? 0) * (item.Quantity ?? 0);
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="@(string.IsNullOrEmpty(item.Product?.ImageUrl) ? "/images/bike-placeholder.jpg" : item.Product.ImageUrl)" 
+                                                         class="rounded me-3" style="width: 80px; height: 80px; object-fit: cover;"
+                                                         alt="@item.Product?.Name">
+                                                    <div>
+                                                        <h6 class="mb-1">
+                                                            <a asp-controller="Product" asp-action="Details" asp-route-id="@item.ProductId" class="text-decoration-none text-dark">
+                                                                @item.Product?.Name
+                                                            </a>
+                                                        </h6>
+                                                        @if (item.Product?.Category != null)
+                                                        {
+                                                            <small class="text-muted">@item.Product.Category.Name</small>
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">
+                                                ฿@item.Product?.Price.ToString("N0")
+                                            </td>
+                                            <td>
+                                                <form asp-action="Update" method="post" class="d-flex align-items-center justify-content-center">
+                                                    <input type="hidden" name="cartId" value="@item.CartId" />
+                                                    <div class="input-group input-group-sm" style="width: 120px;">
+                                                        <button type="button" class="btn btn-outline-secondary" onclick="this.parentNode.querySelector('input').stepDown(); this.form.submit();">
+                                                            <i class="bi bi-dash"></i>
+                                                        </button>
+                                                        <input type="number" name="quantity" value="@item.Quantity" min="1" 
+                                                               class="form-control text-center" onchange="this.form.submit()">
+                                                        <button type="button" class="btn btn-outline-secondary" onclick="this.parentNode.querySelector('input').stepUp(); this.form.submit();">
+                                                            <i class="bi bi-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </form>
+                                            </td>
+                                            <td class="text-end fw-bold text-primary">
+                                                ฿@subtotal.ToString("N0")
+                                            </td>
+                                            <td class="text-center">
+                                                <form asp-action="Remove" method="post" class="d-inline">
+                                                    <input type="hidden" name="cartId" value="@item.CartId" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('ต้องการลบสินค้านี้ออกจากตะกร้าใช่หรือไม่?')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Continue Shopping -->
+                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-left me-2"></i>เลือกซื้อสินค้าต่อ
+                </a>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 sticky-top" style="top: 100px;">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-receipt me-2"></i>สรุปคำสั่งซื้อ
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>จำนวนสินค้า</span>
+                            <span>@itemCount ชิ้น</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>ค่าจัดส่ง</span>
+                            <span class="text-success">ฟรี</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="h5 mb-0">ยอดรวมทั้งหมด</span>
+                            <span class="h5 mb-0 text-primary">฿@totalAmount.ToString("N0")</span>
+                        </div>
+                        
+                        <a asp-controller="Order" asp-action="Checkout" class="btn btn-primary w-100 btn-lg">
+                            <i class="bi bi-credit-card me-2"></i>ดำเนินการสั่งซื้อ
+                        </a>
+                        
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                <i class="bi bi-shield-check me-1"></i>ข้อมูลการชำระเงินปลอดภัย
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Promotion Code -->
+                <div class="card shadow-sm border-0 mt-3">
+                    <div class="card-body">
+                        <label class="form-label fw-semibold">
+                            <i class="bi bi-ticket-perforated me-1"></i>รหัสส่วนลด
+                        </label>
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="กรอกรหัสส่วนลด">
+                            <button class="btn btn-outline-secondary" type="button">ใช้</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

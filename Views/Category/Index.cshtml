@@ -1,0 +1,117 @@
+@model List<CSI402_Project.Models.Db.Category>
+@{
+    ViewData["Title"] = "หมวดหมู่สินค้า";
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">หมวดหมู่สินค้า</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<div class="container mb-4">
+    <div class="section-header text-center">
+        <h1 class="section-title">หมวดหมู่สินค้า</h1>
+        <p class="section-subtitle">เลือกหมวดหมู่จักรยานเด็กที่ต้องการ</p>
+    </div>
+</div>
+
+<div class="container">
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info text-center">
+            <i class="bi bi-info-circle me-2"></i>
+            ยังไม่มีหมวดหมู่สินค้า
+        </div>
+    }
+    else
+    {
+        <div class="row g-4">
+            @foreach (var category in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+                    <a asp-controller="Category" asp-action="Products" asp-route-id="@category.CategoryId" class="text-decoration-none">
+                        <div class="card category-card h-100 shadow-sm hover-shadow">
+                            <div class="card-body text-center p-4">
+                                <div class="category-icon mb-3">
+                                    <i class="bi bi-bicycle fs-1 text-primary"></i>
+                                </div>
+                                <h4 class="card-title text-dark mb-2">@category.Name</h4>
+                                @if (!string.IsNullOrEmpty(category.AgeRange))
+                                {
+                                    <span class="badge bg-info mb-2">อายุ @category.AgeRange</span>
+                                }
+                                <p class="text-muted mb-0">
+                                    <i class="bi bi-box-seam me-1"></i>
+                                    @(category.Products?.Count ?? 0) สินค้า
+                                </p>
+                            </div>
+                            <div class="card-footer bg-transparent border-0 text-center pb-3">
+                                <span class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-arrow-right me-1"></i>ดูสินค้า
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+<!-- Quick Stats -->
+<div class="container mt-5">
+    <div class="row g-3">
+        <div class="col-md-4">
+            <div class="text-center p-3 bg-light rounded">
+                <h3 class="text-primary mb-1">@Model.Count</h3>
+                <p class="text-muted mb-0">หมวดหมู่ทั้งหมด</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center p-3 bg-light rounded">
+                <h3 class="text-primary mb-1">@Model.Sum(c => c.Products?.Count ?? 0)</h3>
+                <p class="text-muted mb-0">สินค้าทั้งหมด</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-center p-3 bg-light rounded">
+                <h3 class="text-primary mb-1">100%</h3>
+                <p class="text-muted mb-0">คุณภาพรับประกัน</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .category-card {
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+    }
+    
+    .category-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+        border-color: #0d6efd;
+    }
+    
+    .category-icon {
+        width: 80px;
+        height: 80px;
+        background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+    }
+    
+    .hover-shadow:hover {
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+</style>

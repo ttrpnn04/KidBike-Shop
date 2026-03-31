@@ -1,0 +1,193 @@
+@model List<CSI402_Project.Models.Db.Product>
+@{
+    ViewData["Title"] = $"สินค้าในหมวดหมู่ {ViewBag.CategoryName}";
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Category" asp-action="Index">หมวดหมู่สินค้า</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@ViewBag.CategoryName</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<div class="container mb-4">
+    <div class="section-header">
+        <h1 class="section-title">@ViewBag.CategoryName</h1>
+        @if (!string.IsNullOrEmpty(ViewBag.AgeRange))
+        {
+            <p class="section-subtitle">เหมาะสำหรับอายุ @ViewBag.AgeRange</p>
+        }
+        else
+        {
+            <p class="section-subtitle">สินค้าคุณภาพสำหรับเด็ก</p>
+        }
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Sidebar Filters -->
+        <div class="col-lg-3 mb-4">
+            <div class="filter-section">
+                <div class="filter-title">
+                    <i class="bi bi-funnel"></i>
+                    กรองสินค้า
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">หมวดหมู่</label>
+                    <div class="d-flex flex-wrap">
+                        <a asp-controller="Product" asp-action="Index" class="filter-option">ทั้งหมด</a>
+                        <span class="filter-option active">@ViewBag.CategoryName</span>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">ราคา</label>
+                    <div class="d-flex flex-wrap">
+                        <span class="filter-option">ต่ำกว่า 2,000</span>
+                        <span class="filter-option">2,000 - 3,000</span>
+                        <span class="filter-option">3,000 - 5,000</span>
+                        <span class="filter-option">มากกว่า 5,000</span>
+                    </div>
+                </div>
+                
+                <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary w-100">
+                    <i class="bi bi-grid me-2"></i>ดูสินค้าทั้งหมด
+                </a>
+            </div>
+        </div>
+        
+        <!-- Product Grid -->
+        <div class="col-lg-9">
+            <!-- Search & Sort Bar -->
+            <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                <div class="search-box flex-grow-1" style="max-width: 400px;">
+                    <input type="text" class="form-control" placeholder="ค้นหาสินค้า...">
+                    <button class="btn btn-primary">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+                
+                <div class="d-flex align-items-center gap-2">
+                    <span class="text-muted">เรียงตาม:</span>
+                    <select class="form-select" style="width: auto;">
+                        <option>ยอดนิยม</option>
+                        <option>ราคาต่ำ-สูง</option>
+                        <option>ราคาสูง-ต่ำ</option>
+                        <option>สินค้าใหม่</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Results Count -->
+            <p class="text-muted mb-3">แสดง @Model.Count สินค้าในหมวดหมู่ "@ViewBag.CategoryName"</p>
+            
+            @if (Model.Count == 0)
+            {
+                <div class="alert alert-info text-center py-5">
+                    <i class="bi bi-inbox fs-1 d-block mb-3"></i>
+                    <h5>ไม่พบสินค้าในหมวดหมู่นี้</h5>
+                    <p class="mb-3">กรุณาเลือกหมวดหมู่อื่น หรือดูสินค้าทั้งหมด</p>
+                    <a asp-controller="Category" asp-action="Index" class="btn btn-outline-primary me-2">
+                        <i class="bi bi-arrow-left me-2"></i>เลือกหมวดหมู่อื่น
+                    </a>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-primary">
+                        <i class="bi bi-grid me-2"></i>ดูสินค้าทั้งหมด
+                    </a>
+                </div>
+            }
+            else
+            {
+                <!-- Products -->
+                <div class="row g-4">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-6 col-lg-4">
+                            <div class="card product-card h-100">
+                                @if (item.Stock < 10)
+                                {
+                                    <span class="product-badge badge-hot">เหลือน้อย</span>
+                                }
+                                @if (item.Stock == 0)
+                                {
+                                    <span class="product-badge bg-secondary">สินค้าหมด</span>
+                                }
+                                <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "~/images/bike-placeholder.jpg" : item.ImageUrl)" 
+                                     class="card-img-top" alt="@item.Name"
+                                     onerror="this.src='/images/bike-placeholder.jpg'">
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title">@item.Name</h5>
+                                    <p class="text-muted small mb-2">
+                                        @if (item.Stock > 0)
+                                        {
+                                            <i class="bi bi-check-circle-fill text-success me-1"></i>
+                                            <span>มีสินค้า @item.Stock ชิ้น</span>
+                                        }
+                                        else
+                                        {
+                                            <i class="bi bi-x-circle-fill text-danger me-1"></i>
+                                            <span>สินค้าหมด</span>
+                                        }
+                                    </p>
+                                    <div class="mt-auto">
+                                        <div class="d-flex align-items-baseline mb-3">
+                                            <span class="card-price">฿@item.Price.ToString("N0")</span>
+                                        </div>
+                                        <div class="d-grid gap-2 product-actions">
+                                            @if (item.Stock > 0)
+                                            {
+                                                <a href="#" class="btn btn-primary">
+                                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-secondary" disabled>
+                                                    <i class="bi bi-cart-x me-2"></i>สินค้าหมด
+                                                </button>
+                                            }
+                                            <a href="#" class="btn btn-outline-secondary">
+                                                <i class="bi bi-eye me-2"></i>ดูรายละเอียด
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <!-- Pagination -->
+                @if (Model.Count > 9)
+                {
+                    <nav class="mt-5">
+                        <ul class="pagination justify-content-center">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#"><i class="bi bi-chevron-left"></i></a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#"><i class="bi bi-chevron-right"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Back to Categories -->
+<div class="container mt-4 mb-5">
+    <a asp-controller="Category" asp-action="Index" class="btn btn-outline-primary">
+        <i class="bi bi-arrow-left me-2"></i>กลับไปหน้าหมวดหมู่
+    </a>
+</div>

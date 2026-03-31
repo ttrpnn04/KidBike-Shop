@@ -8,7 +8,7 @@
     var currentPage = ViewBag.CurrentPage as int? ?? 1;
     var totalPages = ViewBag.TotalPages as int? ?? 1;
     var totalItems = ViewBag.TotalItems as int? ?? 0;
-    var categories = ViewBag.Categories as List<CSI402_Project.Models.Db.Category> ?? new List<CSI402_Project.Models.Db.Category>();
+    var categories = ViewBag.Categories as List<Category> ?? new List<Category>();
 }
 
 <!-- Breadcrumb -->
@@ -140,46 +140,11 @@
                     }
                     <span class="text-muted">เรียงตาม:</span>
                     <select name="sortBy" class="form-select" style="width: auto;" onchange="this.form.submit()">
-                        @if (sortBy == "default")
-                        {
-                            <option value="default" selected>ยอดนิยม</option>
-                        }
-                        else
-                        {
-                            <option value="default">ยอดนิยม</option>
-                        }
-                        @if (sortBy == "price-asc")
-                        {
-                            <option value="price-asc" selected>ราคาต่ำ-สูง</option>
-                        }
-                        else
-                        {
-                            <option value="price-asc">ราคาต่ำ-สูง</option>
-                        }
-                        @if (sortBy == "price-desc")
-                        {
-                            <option value="price-desc" selected>ราคาสูง-ต่ำ</option>
-                        }
-                        else
-                        {
-                            <option value="price-desc">ราคาสูง-ต่ำ</option>
-                        }
-                        @if (sortBy == "name")
-                        {
-                            <option value="name" selected>ชื่อ A-Z</option>
-                        }
-                        else
-                        {
-                            <option value="name">ชื่อ A-Z</option>
-                        }
-                        @if (sortBy == "newest")
-                        {
-                            <option value="newest" selected>สินค้าใหม่</option>
-                        }
-                        else
-                        {
-                            <option value="newest">สินค้าใหม่</option>
-                        }
+                        <option value="default" selected="@(sortBy == "default")">ยอดนิยม</option>
+                        <option value="price-asc" selected="@(sortBy == "price-asc")">ราคาต่ำ-สูง</option>
+                        <option value="price-desc" selected="@(sortBy == "price-desc")">ราคาสูง-ต่ำ</option>
+                        <option value="name" selected="@(sortBy == "name")">ชื่อ A-Z</option>
+                        <option value="newest" selected="@(sortBy == "newest")">สินค้าใหม่</option>
                     </select>
                 </form>
             </div>
@@ -283,13 +248,9 @@
                                         <div class="d-grid gap-2 product-actions">
                                             @if (item.Stock > 0)
                                             {
-                                                <form asp-controller="Cart" asp-action="Add" method="post" class="d-grid">
-                                                    <input type="hidden" name="productId" value="@item.ProductId" />
-                                                    <input type="hidden" name="quantity" value="1" />
-                                                    <button type="submit" class="btn btn-primary">
-                                                        <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
-                                                    </button>
-                                                </form>
+                                                <a href="#" class="btn btn-primary" onclick="addToCart(@item.ProductId); return false;">
+                                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                                </a>
                                             }
                                             else
                                             {
@@ -345,3 +306,10 @@
         <div class="promo-code">WELCOME100</div>
     </div>
 </div>
+
+<script>
+    function addToCart(productId) {
+        // TODO: Implement add to cart functionality
+        alert('เพิ่มสินค้า ID ' + productId + ' ลงตะกร้า');
+    }
+</script>

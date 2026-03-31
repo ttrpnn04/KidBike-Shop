@@ -1,9 +1,20 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+@inject CSI402_Project.Models.Db.BikeShopDbContext DbContext
 @{
     var username = HttpContextAccessor.HttpContext?.Session.GetString("Username");
     var userRole = HttpContextAccessor.HttpContext?.Session.GetString("UserRole");
     var isLoggedIn = !string.IsNullOrEmpty(username);
     var isAdmin = userRole == "Admin" || userRole == "SuperAdmin";
+    
+    // ดึงจำนวนสินค้าในตะกร้า
+    var userId = HttpContextAccessor.HttpContext?.Session.GetInt32("UserId");
+    var cartCount = 0;
+    if (userId.HasValue)
+    {
+        cartCount = DbContext.Carts
+            .Where(c => c.UserId == userId)
+            .Sum(c => c.Quantity ?? 0);
+    }
 }
 <!DOCTYPE html>
 <html lang="th">
@@ -45,13 +56,11 @@
                                 <i class="bi bi-bicycle me-1"></i>หมวดหมู่
                             </a>
                             <ul class="dropdown-menu dropdown-menu-animated" aria-labelledby="categoryDropdown">
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-circle-fill text-primary me-2" style="font-size:8px;"></i>จักรยานสามล้อ</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-circle-fill text-success me-2" style="font-size:8px;"></i>จักรยานสองล้อ</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-circle-fill text-warning me-2" style="font-size:8px;"></i>จักรยานบาลานซ์</a></li>
+                                <li><a class="dropdown-item" asp-controller="Category" asp-action="Index"><i class="bi bi-grid me-2"></i>ดูทั้งหมด</a></li>
                                 <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-circle-fill text-info me-2" style="font-size:8px;"></i>อายุ 2-4 ปี</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-circle-fill text-danger me-2" style="font-size:8px;"></i>อายุ 5-7 ปี</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-circle-fill text-secondary me-2" style="font-size:8px;"></i>อายุ 8-12 ปี</a></li>
+                                <li><a class="dropdown-item" asp-controller="Category" asp-action="Products" asp-route-id="1"><i class="bi bi-circle-fill text-primary me-2" style="font-size:8px;"></i>จักรยานสามล้อ</a></li>
+                                <li><a class="dropdown-item" asp-controller="Category" asp-action="Products" asp-route-id="2"><i class="bi bi-circle-fill text-success me-2" style="font-size:8px;"></i>จักรยานสองล้อ</a></li>
+                                <li><a class="dropdown-item" asp-controller="Category" asp-action="Products" asp-route-id="3"><i class="bi bi-circle-fill text-warning me-2" style="font-size:8px;"></i>จักรยานบาลานซ์</a></li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -72,9 +81,12 @@
                         <li class="nav-item me-3">
                             <a class="nav-link position-relative" asp-area="" asp-controller="Cart" asp-action="Index">
                                 <i class="bi bi-cart3 fs-5"></i>
-                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
-                                    0
-                                </span>
+                                @if (cartCount > 0)
+                                {
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
+                                        @cartCount
+                                    </span>
+                                }
                             </a>
                         </li>
                         @if (isLoggedIn)
@@ -151,7 +163,7 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="footer-subtitle">บริการ</h6>
                     <ul class="footer-links">
-                        <li><a href="#">โปรโมชั่น</a></li>
+                        <li><a asp-controller="Promotion" asp-action="Index">โปรโมชั่น</a></li>
                         <li><a href="#">ติดตามคำสั่งซื้อ</a></li>
                         <li><a href="#">การจัดส่ง</a></li>
                         <li><a href="#">คืนสินค้า</a></li>

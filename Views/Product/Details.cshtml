@@ -1,0 +1,156 @@
+@model CSI402_Project.Models.Db.Product
+@{
+    ViewData["Title"] = Model.Name;
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Product" asp-action="Index">สินค้าทั้งหมด</a></li>
+            @if (Model.Category != null)
+            {
+                <li class="breadcrumb-item"><a asp-controller="Category" asp-action="Products" asp-route-id="@Model.CategoryId">@Model.Category.Name</a></li>
+            }
+            <li class="breadcrumb-item active" aria-current="page">@Model.Name</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="container mb-5">
+    <div class="row g-4">
+        <!-- Product Image -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm">
+                <div class="position-relative">
+                    @if (Model.Stock == 0)
+                    {
+                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center" style="z-index: 1;">
+                            <span class="badge bg-secondary fs-4">สินค้าหมด</span>
+                        </div>
+                    }
+                    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/bike-placeholder.jpg" : Model.ImageUrl)" 
+                         class="card-img-top" alt="@Model.Name"
+                         onerror="this.src='/images/bike-placeholder.jpg'"
+                         style="object-fit: cover; height: 400px;">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Product Info -->
+        <div class="col-lg-6">
+            <div class="card shadow-sm h-100">
+                <div class="card-body p-4">
+                    @if (Model.Category != null)
+                    {
+                        <span class="badge bg-primary mb-2">@Model.Category.Name</span>
+                    }
+                    
+                    <h1 class="h2 mb-3">@Model.Name</h1>
+                    
+                    <div class="mb-3">
+                        <span class="h3 text-primary fw-bold">฿@Model.Price.ToString("N0")</span>
+                    </div>
+                    
+                    <div class="mb-4">
+                        @if (Model.Stock > 10)
+                        {
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle-fill me-1"></i>มีสินค้า @Model.Stock ชิ้น
+                            </span>
+                        }
+                        else if (Model.Stock > 0)
+                        {
+                            <span class="badge bg-warning text-dark">
+                                <i class="bi bi-exclamation-circle-fill me-1"></i>เหลือเพียง @Model.Stock ชิ้น
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                <i class="bi bi-x-circle-fill me-1"></i>สินค้าหมด
+                            </span>
+                        }
+                    </div>
+                    
+                    <hr>
+                    
+                    <div class="mb-4">
+                        <h5>รายละเอียดสินค้า</h5>
+                        <p class="text-muted">@(string.IsNullOrEmpty(Model.Description) ? "ไม่มีรายละเอียดเพิ่มเติม" : Model.Description)</p>
+                    </div>
+                    
+                    <!-- Quantity & Add to Cart -->
+                    @if (Model.Stock > 0)
+                    {
+                        <div class="mb-4">
+                            <label class="form-label">จำนวน</label>
+                            <div class="d-flex align-items-center gap-3" style="max-width: 200px;">
+                                <button class="btn btn-outline-secondary" type="button" onclick="decreaseQty()">-</button>
+                                <input type="number" id="quantity" class="form-control text-center" value="1" min="1" max="@Model.Stock" readonly>
+                                <button class="btn btn-outline-secondary" type="button" onclick="increaseQty(@Model.Stock)">+</button>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary btn-lg" onclick="addToCart(@Model.ProductId)">
+                                <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                            </button>
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>กลับไปหน้าสินค้า
+                            </a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-secondary btn-lg" disabled>
+                                <i class="bi bi-cart-x me-2"></i>สินค้าหมด
+                            </button>
+                            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>กลับไปหน้าสินค้า
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Products Section -->
+<div class="container mb-5">
+    <h3 class="mb-4">สินค้าอื่นที่น่าสนใจ</h3>
+    <div class="row g-4">
+        <div class="col-12 text-center">
+            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary">
+                <i class="bi bi-grid me-2"></i>ดูสินค้าทั้งหมด
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+    function decreaseQty() {
+        var input = document.getElementById('quantity');
+        var val = parseInt(input.value);
+        if (val > 1) {
+            input.value = val - 1;
+        }
+    }
+
+    function increaseQty(max) {
+        var input = document.getElementById('quantity');
+        var val = parseInt(input.value);
+        if (val < max) {
+            input.value = val + 1;
+        }
+    }
+
+    function addToCart(productId) {
+        var qty = document.getElementById('quantity').value;
+        // TODO: Implement add to cart with quantity
+        alert('เพิ่มสินค้า ID ' + productId + ' จำนวน ' + qty + ' ชิ้น ลงตะกร้า');
+    }
+</script>
