@@ -141,9 +141,20 @@
                         </div>
                         
                         <div class="d-grid gap-2">
-                            <button class="btn btn-primary btn-lg" onclick="addToCart(@Model.ProductId)">
-                                <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
-                            </button>
+                            @if (Context.Session.GetInt32("UserId") != null)
+                            {
+                                // Logged in user - normal add to cart
+                                <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.ProductId" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                </a>
+                            }
+                            else
+                            {
+                                // Guest - redirect to login
+                                <a asp-controller="Account" asp-action="Login" class="btn btn-primary btn-lg">
+                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                </a>
+                            }
                             <a asp-controller="Product" asp-action="Index" class="btn btn-outline-secondary">
                                 <i class="bi bi-arrow-left me-2"></i>กลับไปหน้าสินค้า
                             </a>
