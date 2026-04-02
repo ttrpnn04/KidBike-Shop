@@ -133,9 +133,9 @@
                     {
                         <div class="mb-4">
                             <label class="form-label">จำนวน</label>
-                            <div class="d-flex align-items-center gap-3" style="max-width: 200px;">
+                            <div class="d-flex align-items-center" style="max-width: 150px;">
                                 <button class="btn btn-outline-secondary" type="button" onclick="decreaseQty()">-</button>
-                                <input type="number" id="quantity" class="form-control text-center" value="1" min="1" max="@Model.Stock" readonly>
+                                <input type="number" id="quantity" class="form-control text-center mx-2" value="1" min="1" max="@Model.Stock" style="width: 80px;" onkeydown="return false;">
                                 <button class="btn btn-outline-secondary" type="button" onclick="increaseQty(@Model.Stock)">+</button>
                             </div>
                         </div>
