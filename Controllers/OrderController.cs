@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using CSI402_Project.Models.Db;
 using Microsoft.EntityFrameworkCore;
+using CSI402_Project.ViewModels;
 
 namespace CSI402_Project.Controllers;
 
@@ -80,9 +81,14 @@ public class OrderController : Controller
         }
 
         var user = await _context.Users.FindAsync(userId);
-        ViewBag.User = user;
 
-        return View(cartItems);
+        var viewModel = new CheckoutViewModel
+        {
+            CartItems = cartItems,
+            User = user ?? new User()
+        };
+
+        return View(viewModel);
     }
 
     // POST: /Order/Checkout - ยืนยันการสั่งซื้อ

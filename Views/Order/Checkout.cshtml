@@ -1,10 +1,9 @@
-@model List<CSI402_Project.Models.Db.Cart>
+@model CSI402_Project.ViewModels.CheckoutViewModel
 @{
     ViewData["Title"] = "ดำเนินการสั่งซื้อ";
     
-    var user = ViewBag.User as CSI402_Project.Models.Db.User;
-    var totalAmount = Model.Sum(c => (c.Product?.Price ?? 0) * (c.Quantity ?? 0));
-    var itemCount = Model.Sum(c => c.Quantity ?? 0);
+    var totalAmount = Model.CartItems.Sum(c => (c.Product?.Price ?? 0) * (c.Quantity ?? 0));
+    var itemCount = Model.CartItems.Sum(c => c.Quantity ?? 0);
 }
 
 <!-- Breadcrumb -->
@@ -47,7 +46,7 @@
                             </label>
                             <textarea name="shippingAddress" id="shippingAddress" class="form-control" rows="3" 
                                       placeholder="กรอกที่อยู่จัดส่ง (บ้านเลขที่, ถนน, ซอย, แขวง/ตำบล, เขต/อำเภอ, จังหวัด, รหัสไปรษณีย์)"
-                                      required>@user?.Address</textarea>
+                                      required>@Model.User.Address</textarea>
                             <div class="form-text">กรุณากรอกที่อยู่ให้ครบถ้วนเพื่อให้พนักงานจัดส่งสามารถส่งสินค้าได้ถูกต้อง</div>
                         </div>
                         <div class="mb-3">
@@ -55,7 +54,7 @@
                                 <i class="bi bi-telephone me-1"></i>เบอร์โทรศัพท์
                             </label>
                             <input type="tel" name="phone" id="phone" class="form-control" 
-                                   placeholder="0xxxxxxxxx" value="@user?.Phone" required>
+                                   placeholder="0xxxxxxxxx" value="@Model.User.Phone" required>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <a asp-controller="Address" asp-action="Index" class="btn btn-outline-secondary btn-sm">
@@ -75,7 +74,7 @@
                 <div class="card shadow-sm border-0 mb-4">
                     <div class="card-header bg-white py-3">
                         <h5 class="mb-0">
-                            <i class="bi bi-box me-2 text-primary"></i>สินค้าในตะกร้า (@Model.Count รายการ)
+                            <i class="bi bi-box me-2 text-primary"></i>สินค้าในตะกร้า (@Model.CartItems.Count รายการ)
                         </h5>
                     </div>
                     <div class="card-body p-0">
@@ -90,7 +89,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model)
+                                    @foreach (var item in Model.CartItems)
                                     {
                                         var subtotal = (item.Product?.Price ?? 0) * (item.Quantity ?? 0);
                                         <tr>

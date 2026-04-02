@@ -1,4 +1,4 @@
-@model CSI402_Project.Models.Db.Product
+@model CSI402_Project.ViewModels.ProductFormViewModel
 @{
     ViewData["Title"] = "แก้ไขสินค้า";
     Layout = "_AdminLayout";
@@ -20,38 +20,38 @@
                 <div class="card-body p-4">
                     <form asp-action="EditProduct" method="post">
                         @Html.AntiForgeryToken()
-                        <input type="hidden" asp-for="ProductId" />
+                        <input type="hidden" asp-for="Product.ProductId" />
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
 
                         <div class="row g-3">
                             <div class="col-md-12">
-                                <label asp-for="Name" class="form-label">ชื่อสินค้า</label>
-                                <input asp-for="Name" class="form-control" required />
-                                <span asp-validation-for="Name" class="text-danger"></span>
+                                <label asp-for="Product.Name" class="form-label">ชื่อสินค้า</label>
+                                <input asp-for="Product.Name" class="form-control" required />
+                                <span asp-validation-for="Product.Name" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="CategoryId" class="form-label">หมวดหมู่</label>
-                                <select asp-for="CategoryId" class="form-select" required>
+                                <label asp-for="Product.CategoryId" class="form-label">หมวดหมู่</label>
+                                <select asp-for="Product.CategoryId" class="form-select" required>
                                     <option value="">-- เลือกหมวดหมู่ --</option>
-                                    @foreach (var cat in ViewBag.Categories)
+                                    @foreach (var cat in Model.Categories)
                                     {
-                                        <option value="@cat.CategoryId" selected="@(Model.CategoryId == cat.CategoryId ? "selected" : null)">@cat.Name</option>
+                                        <option value="@cat.CategoryId" selected="@(Model.Product.CategoryId == cat.CategoryId ? "selected" : null)">@cat.Name</option>
                                     }
                                 </select>
-                                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                                <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="Price" class="form-label">ราคา (บาท)</label>
-                                <input asp-for="Price" type="number" step="0.01" class="form-control" required />
-                                <span asp-validation-for="Price" class="text-danger"></span>
+                                <label asp-for="Product.Price" class="form-label">ราคา (บาท)</label>
+                                <input asp-for="Product.Price" type="number" step="0.01" class="form-control" required />
+                                <span asp-validation-for="Product.Price" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-6">
-                                <label asp-for="Stock" class="form-label">จำนวนสต็อก</label>
-                                <input asp-for="Stock" type="number" class="form-control" required />
-                                <span asp-validation-for="Stock" class="text-danger"></span>
+                                <label asp-for="Product.Stock" class="form-label">จำนวนสต็อก</label>
+                                <input asp-for="Product.Stock" type="number" class="form-control" required />
+                                <span asp-validation-for="Product.Stock" class="text-danger"></span>
                             </div>
 
                             <div class="col-md-12">
@@ -61,8 +61,8 @@
                                         <small class="text-muted">รูปภาพหลัก (แสดงในหน้ารายการสินค้า)</small>
                                     </div>
                                     <div class="card-body">
-                                        <input asp-for="ImageUrl" class="form-control" />
-                                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                                        <input asp-for="Product.ImageUrl" class="form-control" />
+                                        <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
@@ -70,9 +70,9 @@
                             <div class="col-md-12">
                                 <label class="form-label">รูปภาพเพิ่มเติม (แสดงในหน้ารายละเอียด)</label>
                                 <div id="additionalImages">
-                                    @if (Model.ProductImages != null && Model.ProductImages.Any())
+                                    @if (Model.Product.ProductImages != null && Model.Product.ProductImages.Any())
                                     {
-                                        @foreach (var image in Model.ProductImages.OrderBy(pi => pi.DisplayOrder))
+                                        @foreach (var image in Model.Product.ProductImages.OrderBy(pi => pi.DisplayOrder))
                                         {
                                             <div class="input-group mb-2 image-input">
                                                 <input type="hidden" name="ExistingImageIds" value="@image.ProductImageId" />
@@ -96,9 +96,9 @@
                             </div>
 
                             <div class="col-md-12">
-                                <label asp-for="Description" class="form-label">รายละเอียด</label>
-                                <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-                                <span asp-validation-for="Description" class="text-danger"></span>
+                                <label asp-for="Product.Description" class="form-label">รายละเอียด</label>
+                                <textarea asp-for="Product.Description" class="form-control" rows="4"></textarea>
+                                <span asp-validation-for="Product.Description" class="text-danger"></span>
                             </div>
 
                             <div class="col-12">

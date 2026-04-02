@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using CSI402_Project.Models.Db;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using CSI402_Project.ViewModels;
 
 namespace CSI402_Project.Controllers;
 
@@ -22,11 +23,13 @@ public class ProductController : Controller
             .Include(p => p.Category)
             .AsQueryable();
 
-        // ค้นหาตามชื่อ
+        string? categoryName = null;
+
+        // ค้นหาตามชื่อและรายละเอียด
         if (!string.IsNullOrWhiteSpace(search))
         {
-            query = query.Where(p => p.Name.Contains(search));
-            ViewBag.Search = search;
+            query = query.Where(p => p.Name.Contains(search) || 
+                                    (p.Description != null && p.Description.Contains(search)));
         }
 
         // กรองตามหมวดหมู่
@@ -34,14 +37,12 @@ public class ProductController : Controller
         {
             query = query.Where(p => p.CategoryId == categoryId.Value);
             var category = await _context.Categories.FindAsync(categoryId.Value);
-            ViewBag.CategoryName = category?.Name;
-            ViewBag.CategoryId = categoryId.Value;
+            categoryName = category?.Name;
         }
 
         // กรองตามช่วงราคา
         if (!string.IsNullOrEmpty(priceRange))
         {
-            ViewBag.PriceRange = priceRange;
             switch (priceRange)
             {
                 case "under2000":
@@ -61,7 +62,6 @@ public class ProductController : Controller
 
         // เรียงลำดับ
         sortBy = sortBy ?? "default";
-        ViewBag.SortBy = sortBy;
         query = sortBy switch
         {
             "price-asc" => query.OrderBy(p => p.Price),
@@ -73,7 +73,6 @@ public class ProductController : Controller
 
         // นับจำนวนทั้งหมด
         var totalItems = await query.CountAsync();
-        ViewBag.TotalItems = totalItems;
 
         // Pagination
         var items = await query
@@ -81,13 +80,22 @@ public class ProductController : Controller
             .Take(pageSize)
             .ToListAsync();
 
-        ViewBag.CurrentPage = page;
-        ViewBag.TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+        // สร้าง ViewModel
+        var viewModel = new ProductIndexViewModel
+        {
+            Products = items,
+            Search = search,
+            CategoryId = categoryId,
+            PriceRange = priceRange,
+            SortBy = sortBy,
+            CurrentPage = page,
+            TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize),
+            TotalItems = totalItems,
+            Categories = await _context.Categories.ToListAsync(),
+            CategoryName = categoryName
+        };
 
-        // ส่งรายการหมวดหมู่ไป View
-        ViewBag.Categories = await _context.Categories.ToListAsync();
-
-        return View(items);
+        return View(viewModel);
     }
 
     public async Task<IActionResult> Details(int? id)

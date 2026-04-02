@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using CSI402_Project.Models.Db;
 using CSI402_Project.Filters;
 using Microsoft.EntityFrameworkCore;
+using CSI402_Project.ViewModels;
 
 namespace CSI402_Project.Controllers
 {
@@ -56,8 +57,11 @@ namespace CSI402_Project.Controllers
         // GET: /Admin/CreateProduct
         public IActionResult CreateProduct()
         {
-            ViewBag.Categories = _context.Categories.ToList();
-            return View();
+            var viewModel = new ProductFormViewModel
+            {
+                Categories = _context.Categories.ToList()
+            };
+            return View(viewModel);
         }
 
         // POST: /Admin/CreateProduct
@@ -116,8 +120,12 @@ namespace CSI402_Project.Controllers
                 TempData["SuccessMessage"] = "เพิ่มสินค้าสำเร็จ";
                 return RedirectToAction(nameof(Products));
             }
-            ViewBag.Categories = _context.Categories.ToList();
-            return View(product);
+            var viewModel = new ProductFormViewModel
+            {
+                Product = product,
+                Categories = _context.Categories.ToList()
+            };
+            return View(viewModel);
         }
 
         private async Task<string> SaveImageFile(IFormFile file)
@@ -149,8 +157,12 @@ namespace CSI402_Project.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Categories = _context.Categories.ToList();
-            return View(product);
+            var viewModel = new ProductFormViewModel
+            {
+                Product = product,
+                Categories = _context.Categories.ToList()
+            };
+            return View(viewModel);
         }
 
         // POST: /Admin/EditProduct/5
@@ -229,8 +241,12 @@ namespace CSI402_Project.Controllers
                 }
                 return RedirectToAction(nameof(Products));
             }
-            ViewBag.Categories = _context.Categories.ToList();
-            return View(product);
+            var viewModel = new ProductFormViewModel
+            {
+                Product = product,
+                Categories = _context.Categories.ToList()
+            };
+            return View(viewModel);
         }
 
         // POST: /Admin/DeleteProduct/5

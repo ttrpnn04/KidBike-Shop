@@ -1,14 +1,6 @@
-@model List<CSI402_Project.Models.Db.Product>
+@model CSI402_Project.ViewModels.ProductIndexViewModel
 @{
-    ViewData["Title"] = string.IsNullOrEmpty(ViewBag.CategoryName) ? "สินค้าทั้งหมด" : ViewBag.CategoryName;
-    var search = ViewBag.Search as string;
-    var categoryId = ViewBag.CategoryId as int?;
-    var priceRange = ViewBag.PriceRange as string;
-    var sortBy = ViewBag.SortBy as string ?? "default";
-    var currentPage = ViewBag.CurrentPage as int? ?? 1;
-    var totalPages = ViewBag.TotalPages as int? ?? 1;
-    var totalItems = ViewBag.TotalItems as int? ?? 0;
-    var categories = ViewBag.Categories as List<CSI402_Project.Models.Db.Category> ?? new List<CSI402_Project.Models.Db.Category>();
+    ViewData["Title"] = string.IsNullOrEmpty(Model.CategoryName) ? "สินค้าทั้งหมด" : Model.CategoryName;
 }
 
 <!-- Breadcrumb -->
@@ -16,10 +8,10 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
             <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
-            @if (!string.IsNullOrEmpty(ViewBag.CategoryName))
+            @if (!string.IsNullOrEmpty(Model.CategoryName))
             {
                 <li class="breadcrumb-item"><a asp-controller="Category" asp-action="Index">หมวดหมู่</a></li>
-                <li class="breadcrumb-item active" aria-current="page">@ViewBag.CategoryName</li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.CategoryName</li>
             }
             else
             {
@@ -33,7 +25,7 @@
 <div class="container mb-4">
     <div class="section-header">
         <h1 class="section-title">
-            @(string.IsNullOrEmpty(ViewBag.CategoryName) ? "สินค้าทั้งหมด" : ViewBag.CategoryName)
+            @(string.IsNullOrEmpty(Model.CategoryName) ? "สินค้าทั้งหมด" : Model.CategoryName)
         </h1>
         <p class="section-subtitle">เลือกจักรยานเด็กที่เหมาะสมกับลูกน้อยของคุณ</p>
     </div>
@@ -53,12 +45,12 @@
                 <div class="mb-3">
                     <label class="form-label fw-semibold">หมวดหมู่</label>
                     <div class="d-flex flex-wrap">
-                        <a asp-action="Index" asp-route-priceRange="@priceRange" asp-route-sortBy="@sortBy" 
-                           class="filter-option @(categoryId == null ? "active" : "")">ทั้งหมด</a>
-                        @foreach (var cat in categories)
+                        <a asp-action="Index" asp-route-priceRange="@Model.PriceRange" asp-route-sortBy="@Model.SortBy" 
+                           class="filter-option @(Model.CategoryId == null ? "active" : "")">ทั้งหมด</a>
+                        @foreach (var cat in Model.Categories)
                         {
-                            <a asp-action="Index" asp-route-categoryId="@cat.CategoryId" asp-route-priceRange="@priceRange" asp-route-sortBy="@sortBy"
-                               class="filter-option @(categoryId == cat.CategoryId ? "active" : "")">@cat.Name</a>
+                            <a asp-action="Index" asp-route-categoryId="@cat.CategoryId" asp-route-priceRange="@Model.PriceRange" asp-route-sortBy="@Model.SortBy"
+                               class="filter-option @(Model.CategoryId == cat.CategoryId ? "active" : "")">@cat.Name</a>
                         }
                     </div>
                 </div>
@@ -67,21 +59,21 @@
                 <div class="mb-3">
                     <label class="form-label fw-semibold">ราคา</label>
                     <div class="d-flex flex-wrap">
-                        <a asp-action="Index" asp-route-categoryId="@categoryId" asp-route-sortBy="@sortBy"
-                           class="filter-option @(string.IsNullOrEmpty(priceRange) ? "active" : "")">ทั้งหมด</a>
-                        <a asp-action="Index" asp-route-categoryId="@categoryId" asp-route-priceRange="under2000" asp-route-sortBy="@sortBy"
-                           class="filter-option @(priceRange == "under2000" ? "active" : "")">ต่ำกว่า 2,000</a>
-                        <a asp-action="Index" asp-route-categoryId="@categoryId" asp-route-priceRange="2000-3000" asp-route-sortBy="@sortBy"
-                           class="filter-option @(priceRange == "2000-3000" ? "active" : "")">2,000 - 3,000</a>
-                        <a asp-action="Index" asp-route-categoryId="@categoryId" asp-route-priceRange="3000-5000" asp-route-sortBy="@sortBy"
-                           class="filter-option @(priceRange == "3000-5000" ? "active" : "")">3,000 - 5,000</a>
-                        <a asp-action="Index" asp-route-categoryId="@categoryId" asp-route-priceRange="over5000" asp-route-sortBy="@sortBy"
-                           class="filter-option @(priceRange == "over5000" ? "active" : "")">มากกว่า 5,000</a>
+                        <a asp-action="Index" asp-route-categoryId="@Model.CategoryId" asp-route-sortBy="@Model.SortBy"
+                           class="filter-option @(string.IsNullOrEmpty(Model.PriceRange) ? "active" : "")">ทั้งหมด</a>
+                        <a asp-action="Index" asp-route-categoryId="@Model.CategoryId" asp-route-priceRange="under2000" asp-route-sortBy="@Model.SortBy"
+                           class="filter-option @(Model.PriceRange == "under2000" ? "active" : "")">ต่ำกว่า 2,000</a>
+                        <a asp-action="Index" asp-route-categoryId="@Model.CategoryId" asp-route-priceRange="2000-3000" asp-route-sortBy="@Model.SortBy"
+                           class="filter-option @(Model.PriceRange == "2000-3000" ? "active" : "")">2,000 - 3,000</a>
+                        <a asp-action="Index" asp-route-categoryId="@Model.CategoryId" asp-route-priceRange="3000-5000" asp-route-sortBy="@Model.SortBy"
+                           class="filter-option @(Model.PriceRange == "3000-5000" ? "active" : "")">3,000 - 5,000</a>
+                        <a asp-action="Index" asp-route-categoryId="@Model.CategoryId" asp-route-priceRange="over5000" asp-route-sortBy="@Model.SortBy"
+                           class="filter-option @(Model.PriceRange == "over5000" ? "active" : "")">มากกว่า 5,000</a>
                     </div>
                 </div>
                 
                 <!-- Clear Filters -->
-                @if (categoryId.HasValue || !string.IsNullOrEmpty(priceRange))
+                @if (Model.CategoryId.HasValue || !string.IsNullOrEmpty(Model.PriceRange))
                 {
                     <a asp-action="Index" class="btn btn-outline-secondary w-100">
                         <i class="bi bi-x-circle me-2"></i>ล้างตัวกรอง
@@ -92,20 +84,45 @@
         
         <!-- Product Grid -->
         <div class="col-lg-9">
-            <!-- Sort Bar -->
+            <!-- Search & Sort Bar -->
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+                <div class="flex-grow-1" style="max-width: 450px;">
+                    <form method="get" asp-action="Index" class="position-relative">
+                        <div class="input-group shadow-sm rounded-pill overflow-hidden" style="border: 2px solid #e9ecef;">
+                            <span class="input-group-text bg-white border-0 ps-3">
+                                <i class="bi bi-search text-primary fs-5"></i>
+                            </span>
+                            <input type="text" name="search" class="form-control border-0 ps-2" 
+                                   placeholder="ค้นหาจากชื่อหรือรายละเอียดสินค้า..." 
+                                   value="@Model.Search"
+                                   style="box-shadow: none;">
+                            @if (Model.CategoryId.HasValue)
+                            {
+                                <input type="hidden" name="categoryId" value="@Model.CategoryId" />
+                            }
+                            @if (!string.IsNullOrEmpty(Model.PriceRange))
+                            {
+                                <input type="hidden" name="priceRange" value="@Model.PriceRange" />
+                            }
+                            <button type="submit" class="btn btn-primary px-4 fw-semibold" style="border-radius: 0;">
+                                ค้นหา
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
                 <form method="get" asp-action="Index" class="d-flex align-items-center gap-2">
-                    @if (categoryId.HasValue)
+                    @if (Model.CategoryId.HasValue)
                     {
-                        <input type="hidden" name="categoryId" value="@categoryId" />
+                        <input type="hidden" name="categoryId" value="@Model.CategoryId" />
                     }
-                    @if (!string.IsNullOrEmpty(priceRange))
+                    @if (!string.IsNullOrEmpty(Model.PriceRange))
                     {
-                        <input type="hidden" name="priceRange" value="@priceRange" />
+                        <input type="hidden" name="priceRange" value="@Model.PriceRange" />
                     }
                     <span class="text-muted">เรียงตาม:</span>
                     <select name="sortBy" class="form-select" style="width: auto;" onchange="this.form.submit()">
-                        @if (sortBy == "default")
+                        @if (Model.SortBy == "default")
                         {
                             <option value="default" selected>ยอดนิยม</option>
                         }
@@ -113,7 +130,7 @@
                         {
                             <option value="default">ยอดนิยม</option>
                         }
-                        @if (sortBy == "price-asc")
+                        @if (Model.SortBy == "price-asc")
                         {
                             <option value="price-asc" selected>ราคาต่ำ-สูง</option>
                         }
@@ -121,7 +138,7 @@
                         {
                             <option value="price-asc">ราคาต่ำ-สูง</option>
                         }
-                        @if (sortBy == "price-desc")
+                        @if (Model.SortBy == "price-desc")
                         {
                             <option value="price-desc" selected>ราคาสูง-ต่ำ</option>
                         }
@@ -129,7 +146,7 @@
                         {
                             <option value="price-desc">ราคาสูง-ต่ำ</option>
                         }
-                        @if (sortBy == "name")
+                        @if (Model.SortBy == "name")
                         {
                             <option value="name" selected>ชื่อ A-Z</option>
                         }
@@ -137,7 +154,7 @@
                         {
                             <option value="name">ชื่อ A-Z</option>
                         }
-                        @if (sortBy == "newest")
+                        @if (Model.SortBy == "newest")
                         {
                             <option value="newest" selected>สินค้าใหม่</option>
                         }
@@ -150,39 +167,46 @@
             </div>
             
             <!-- Active Filters -->
-            @if (categoryId.HasValue || !string.IsNullOrEmpty(priceRange))
+            @if (!string.IsNullOrEmpty(Model.Search) || Model.CategoryId.HasValue || !string.IsNullOrEmpty(Model.PriceRange))
             {
                 <div class="mb-3">
                     <span class="text-muted">ตัวกรองที่ใช้:</span>
-                    @if (categoryId.HasValue)
+                    @if (!string.IsNullOrEmpty(Model.Search))
                     {
-                        <span class="badge bg-info me-1">
-                            @ViewBag.CategoryName
-                            <a asp-action="Index" asp-route-priceRange="@priceRange" asp-route-sortBy="@sortBy" class="text-white text-decoration-none ms-1">×</a>
+                        <span class="badge bg-primary me-1">
+                            ค้นหา: @Model.Search
+                            <a asp-action="Index" asp-route-categoryId="@Model.CategoryId" asp-route-priceRange="@Model.PriceRange" asp-route-sortBy="@Model.SortBy" class="text-white text-decoration-none ms-1">×</a>
                         </span>
                     }
-                    @if (!string.IsNullOrEmpty(priceRange))
+                    @if (Model.CategoryId.HasValue)
                     {
-                        var priceLabel = priceRange switch
+                        <span class="badge bg-info me-1">
+                            @Model.CategoryName
+                            <a asp-action="Index" asp-route-search="@Model.Search" asp-route-priceRange="@Model.PriceRange" asp-route-sortBy="@Model.SortBy" class="text-white text-decoration-none ms-1">×</a>
+                        </span>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.PriceRange))
+                    {
+                        var priceLabel = Model.PriceRange switch
                         {
                             "under2000" => "ต่ำกว่า 2,000",
                             "2000-3000" => "2,000 - 3,000",
                             "3000-5000" => "3,000 - 5,000",
                             "over5000" => "มากกว่า 5,000",
-                            _ => priceRange
+                            _ => Model.PriceRange
                         };
                         <span class="badge bg-warning text-dark me-1">
                             ราคา: @priceLabel
-                            <a asp-action="Index" asp-route-categoryId="@categoryId" asp-route-sortBy="@sortBy" class="text-dark text-decoration-none ms-1">×</a>
+                            <a asp-action="Index" asp-route-search="@Model.Search" asp-route-categoryId="@Model.CategoryId" asp-route-sortBy="@Model.SortBy" class="text-dark text-decoration-none ms-1">×</a>
                         </span>
                     }
                 </div>
             }
             
             <!-- Results Count -->
-            <p class="text-muted mb-3">แสดง @Model.Count จาก @totalItems สินค้า</p>
+            <p class="text-muted mb-3">แสดง @Model.Products.Count จาก @Model.TotalItems สินค้า</p>
             
-            @if (Model.Count == 0)
+            @if (Model.Products.Count == 0)
             {
                 <div class="alert alert-info text-center py-5">
                     <i class="bi bi-inbox fs-1 d-block mb-3"></i>
@@ -197,7 +221,7 @@
             {
                 <!-- Products -->
                 <div class="row g-4">
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Products)
                     {
                         <div class="col-md-6 col-lg-4">
                             <div class="card product-card h-100">
@@ -264,23 +288,23 @@
                 </div>
                 
                 <!-- Pagination -->
-                @if (totalPages > 1)
+                @if (Model.TotalPages > 1)
                 {
                     <nav class="mt-5">
                         <ul class="pagination justify-content-center">
-                            <li class="page-item @(currentPage == 1 ? "disabled" : "")">
-                                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-categoryId="@categoryId" asp-route-search="@search" asp-route-priceRange="@priceRange" asp-route-sortBy="@sortBy">
+                            <li class="page-item @(Model.CurrentPage == 1 ? "disabled" : "")">
+                                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage - 1)" asp-route-categoryId="@Model.CategoryId" asp-route-search="@Model.Search" asp-route-priceRange="@Model.PriceRange" asp-route-sortBy="@Model.SortBy">
                                     <i class="bi bi-chevron-left"></i>
                                 </a>
                             </li>
-                            @for (int i = 1; i <= totalPages; i++)
+                            @for (int i = 1; i <= Model.TotalPages; i++)
                             {
-                                <li class="page-item @(i == currentPage ? "active" : "")">
-                                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-categoryId="@categoryId" asp-route-search="@search" asp-route-priceRange="@priceRange" asp-route-sortBy="@sortBy">@i</a>
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link" asp-action="Index" asp-route-page="@i" asp-route-categoryId="@Model.CategoryId" asp-route-search="@Model.Search" asp-route-priceRange="@Model.PriceRange" asp-route-sortBy="@Model.SortBy">@i</a>
                                 </li>
                             }
-                            <li class="page-item @(currentPage == totalPages ? "disabled" : "")">
-                                <a class="page-link" asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-categoryId="@categoryId" asp-route-search="@search" asp-route-priceRange="@priceRange" asp-route-sortBy="@sortBy">
+                            <li class="page-item @(Model.CurrentPage == Model.TotalPages ? "disabled" : "")">
+                                <a class="page-link" asp-action="Index" asp-route-page="@(Model.CurrentPage + 1)" asp-route-categoryId="@Model.CategoryId" asp-route-search="@Model.Search" asp-route-priceRange="@Model.PriceRange" asp-route-sortBy="@Model.SortBy">
                                     <i class="bi bi-chevron-right"></i>
                                 </a>
                             </li>
