@@ -99,6 +99,7 @@ public class ProductController : Controller
 
         var product = await _context.Products
             .Include(p => p.Category)
+            .Include(p => p.ProductImages.OrderBy(pi => pi.DisplayOrder))
             .FirstOrDefaultAsync(p => p.ProductId == id);
 
         if (product == null)

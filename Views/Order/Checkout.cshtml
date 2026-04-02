@@ -1,0 +1,238 @@
+@model List<CSI402_Project.Models.Db.Cart>
+@{
+    ViewData["Title"] = "ดำเนินการสั่งซื้อ";
+    
+    var user = ViewBag.User as CSI402_Project.Models.Db.User;
+    var totalAmount = Model.Sum(c => (c.Product?.Price ?? 0) * (c.Quantity ?? 0));
+    var itemCount = Model.Sum(c => c.Quantity ?? 0);
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item"><a asp-controller="Cart" asp-action="Index">ตะกร้าสินค้า</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ดำเนินการสั่งซื้อ</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<div class="container mb-4">
+    <div class="section-header">
+        <h1 class="section-title">
+            <i class="bi bi-credit-card text-primary me-2"></i>ดำเนินการสั่งซื้อ
+        </h1>
+        <p class="section-subtitle">ยืนยันข้อมูลและชำระเงิน</p>
+    </div>
+</div>
+
+<div class="container">
+    <form asp-action="Checkout" method="post">
+        <div class="row">
+            <!-- Left Column - Order Info -->
+            <div class="col-lg-8">
+                <!-- Shipping Address -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-geo-alt me-2 text-primary"></i>ที่อยู่จัดส่ง
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="shippingAddress" class="form-label fw-semibold">
+                                <i class="bi bi-house-door me-1"></i>ที่อยู่
+                            </label>
+                            <textarea name="shippingAddress" id="shippingAddress" class="form-control" rows="3" 
+                                      placeholder="กรอกที่อยู่จัดส่ง (บ้านเลขที่, ถนน, ซอย, แขวง/ตำบล, เขต/อำเภอ, จังหวัด, รหัสไปรษณีย์)"
+                                      required>@user?.Address</textarea>
+                            <div class="form-text">กรุณากรอกที่อยู่ให้ครบถ้วนเพื่อให้พนักงานจัดส่งสามารถส่งสินค้าได้ถูกต้อง</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="phone" class="form-label fw-semibold">
+                                <i class="bi bi-telephone me-1"></i>เบอร์โทรศัพท์
+                            </label>
+                            <input type="tel" name="phone" id="phone" class="form-control" 
+                                   placeholder="0xxxxxxxxx" value="@user?.Phone" required>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-3">
+                            <a asp-controller="Address" asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-pencil me-1"></i>จัดการที่อยู่
+                            </a>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="saveAddress" checked>
+                                <label class="form-check-label" for="saveAddress">
+                                    บันทึกที่อยู่ไว้ใช้ครั้งต่อไป
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Items -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-box me-2 text-primary"></i>สินค้าในตะกร้า (@Model.Count รายการ)
+                        </h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table mb-0 align-middle">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>สินค้า</th>
+                                        <th class="text-center">ราคา</th>
+                                        <th class="text-center">จำนวน</th>
+                                        <th class="text-end">รวม</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        var subtotal = (item.Product?.Price ?? 0) * (item.Quantity ?? 0);
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="@(string.IsNullOrEmpty(item.Product?.ImageUrl) ? "/images/bike-placeholder.jpg" : item.Product.ImageUrl)" 
+                                                         class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;"
+                                                         alt="@item.Product?.Name">
+                                                    <div>
+                                                        <h6 class="mb-1">@item.Product?.Name</h6>
+                                                        <small class="text-muted">@item.Product?.Category?.Name</small>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-center">฿@item.Product?.Price.ToString("N0")</td>
+                                            <td class="text-center">@item.Quantity</td>
+                                            <td class="text-end fw-bold text-primary">฿@subtotal.ToString("N0")</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Method -->
+                <div class="card shadow-sm border-0 mb-4">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-wallet me-2 text-primary"></i>วิธีการชำระเงิน
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-check mb-3 p-3 border rounded">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="cod" value="cod" checked>
+                            <label class="form-check-label w-100" for="cod">
+                                <div class="d-flex align-items-center">
+                                    <div class="payment-icon bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-cash-stack"></i>
+                                    </div>
+                                    <div>
+                                        <strong>ชำระเงินปลายทาง (COD)</strong>
+                                        <p class="text-muted small mb-0">ชำระเงินเมื่อได้รับสินค้า</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="form-check mb-3 p-3 border rounded">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="bank" value="bank">
+                            <label class="form-check-label w-100" for="bank">
+                                <div class="d-flex align-items-center">
+                                    <div class="payment-icon bg-info text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-bank"></i>
+                                    </div>
+                                    <div>
+                                        <strong>โอนเงินผ่านธนาคาร</strong>
+                                        <p class="text-muted small mb-0">โอนเงินและแจ้งสลิปยืนยันการชำระเงิน</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                        <div class="form-check p-3 border rounded">
+                            <input class="form-check-input" type="radio" name="paymentMethod" id="promptpay" value="promptpay">
+                            <label class="form-check-label w-100" for="promptpay">
+                                <div class="d-flex align-items-center">
+                                    <div class="payment-icon bg-warning text-dark rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                                        <i class="bi bi-qr-code"></i>
+                                    </div>
+                                    <div>
+                                        <strong>PromptPay</strong>
+                                        <p class="text-muted small mb-0">สแกน QR Code เพื่อชำระเงิน</p>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Order Summary -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm border-0 sticky-top" style="top: 100px;">
+                    <div class="card-header bg-primary text-white py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-receipt me-2"></i>สรุปคำสั่งซื้อ
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>ราคาสินค้า</span>
+                            <span>฿@totalAmount.ToString("N0")</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>จำนวน</span>
+                            <span>@itemCount ชิ้น</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span>ค่าจัดส่ง</span>
+                            <span class="text-success">ฟรี</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="h5 mb-0">ยอดรวมทั้งหมด</span>
+                            <span class="h5 mb-0 text-primary">฿@totalAmount.ToString("N0")</span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100 btn-lg">
+                            <i class="bi bi-check-circle me-2"></i>ยืนยันคำสั่งซื้อ
+                        </button>
+
+                        <div class="text-center mt-3">
+                            <small class="text-muted">
+                                <i class="bi bi-shield-check me-1"></i>ข้อมูลการชำระเงินปลอดภัย
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm border-0 mt-3">
+                    <div class="card-body">
+                        <h6 class="mb-3"><i class="bi bi-truck me-2 text-primary"></i>การจัดส่ง</h6>
+                        <ul class="list-unstyled text-muted small mb-0">
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>ส่งฟรีทั่วประเทศ</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>3-5 วันทำการ (กรุงเทพ)</li>
+                            <li class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>5-7 วันทำการ (ต่างจังหวัด)</li>
+                            <li><i class="bi bi-check-circle text-success me-2"></i>ติดตามสถานะได้ทุกขั้นตอน</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    .payment-icon {
+        flex-shrink: 0;
+    }
+    .form-check {
+        cursor: pointer;
+    }
+    .form-check-input:checked + .form-check-label .payment-icon {
+        box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25);
+    }
+</style>

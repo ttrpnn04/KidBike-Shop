@@ -1,4 +1,5 @@
 @model CSI402_Project.Models.Db.Product
+@using CSI402_Project.Models.Db
 @{
     ViewData["Title"] = Model.Name;
 }
@@ -20,26 +21,72 @@
 
 <div class="container mb-5">
     <div class="row g-4">
-        <!-- Product Image -->
-        <div class="col-lg-6">
-            <div class="card shadow-sm">
-                <div class="position-relative">
+        <!-- Product Images Carousel -->
+        <div class="col-lg-7">
+            <div class="card shadow-sm h-100">
+                <div class="position-relative h-100">
                     @if (Model.Stock == 0)
                     {
-                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center" style="z-index: 1;">
+                        <div class="position-absolute top-0 start-0 w-100 h-100 bg-dark bg-opacity-50 d-flex align-items-center justify-content-center" style="z-index: 10;">
                             <span class="badge bg-secondary fs-4">สินค้าหมด</span>
                         </div>
                     }
-                    <img src="@(string.IsNullOrEmpty(Model.ImageUrl) ? "/images/bike-placeholder.jpg" : Model.ImageUrl)" 
-                         class="card-img-top" alt="@Model.Name"
-                         onerror="this.src='/images/bike-placeholder.jpg'"
-                         style="object-fit: cover; height: 400px;">
+                    
+                    @{
+                        var images = Model.ProductImages?.OrderBy(pi => pi.DisplayOrder).ToList() ?? new List<ProductImage>();
+                        var mainImage = !string.IsNullOrEmpty(Model.ImageUrl) 
+                            ? Model.ImageUrl 
+                            : "/images/bike-placeholder.jpg";
+                    }
+                    
+                    @if (images.Any())
+                    {
+                        <!-- Bootstrap Carousel -->
+                        <div id="productImageCarousel" class="carousel slide h-100" data-bs-ride="carousel">
+                            <div class="carousel-indicators">
+                                @for (int i = 0; i < images.Count; i++)
+                                {
+                                    <button type="button" data-bs-target="#productImageCarousel" data-bs-slide-to="@i" class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" aria-label="Slide @(i + 1)"></button>
+                                }
+                            </div>
+                            <div class="carousel-inner h-100">
+                                @for (int i = 0; i < images.Count; i++)
+                                {
+                                    <div class="carousel-item h-100 @(i == 0 ? "active" : "")">
+                                        <img src="@images[i].ImageUrl" 
+                                             class="d-block w-100 h-100" alt="@Model.Name - รูป @(i + 1)"
+                                             onerror="this.src='/images/bike-placeholder.jpg'"
+                                             style="object-fit: cover;">
+                                    </div>
+                                }
+                            </div>
+                            @if (images.Count > 1)
+                            {
+                                <button class="carousel-control-prev" type="button" data-bs-target="#productImageCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">ก่อนหน้า</span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#productImageCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                    <span class="visually-hidden">ถัดไป</span>
+                                </button>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- Single Image (no additional images) -->
+                        <img src="@mainImage" 
+                             class="card-img-top h-100" alt="@Model.Name"
+                             onerror="this.src='/images/bike-placeholder.jpg'"
+                             style="object-fit: cover; min-height: 500px;">
+                    }
                 </div>
             </div>
         </div>
         
         <!-- Product Info -->
-        <div class="col-lg-6">
+        <div class="col-lg-5">
             <div class="card shadow-sm h-100">
                 <div class="card-body p-4">
                     @if (Model.Category != null)

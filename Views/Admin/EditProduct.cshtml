@@ -54,10 +54,45 @@
                                 <span asp-validation-for="Stock" class="text-danger"></span>
                             </div>
 
-                            <div class="col-md-6">
-                                <label asp-for="ImageUrl" class="form-label">URL รูปภาพ</label>
-                                <input asp-for="ImageUrl" class="form-control" />
-                                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                            <div class="col-md-12">
+                                <label class="form-label">รูปภาพสินค้า</label>
+                                <div class="card">
+                                    <div class="card-header bg-light">
+                                        <small class="text-muted">รูปภาพหลัก (แสดงในหน้ารายการสินค้า)</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <input asp-for="ImageUrl" class="form-control" />
+                                        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label">รูปภาพเพิ่มเติม (แสดงในหน้ารายละเอียด)</label>
+                                <div id="additionalImages">
+                                    @if (Model.ProductImages != null && Model.ProductImages.Any())
+                                    {
+                                        @foreach (var image in Model.ProductImages.OrderBy(pi => pi.DisplayOrder))
+                                        {
+                                            <div class="input-group mb-2 image-input">
+                                                <input type="hidden" name="ExistingImageIds" value="@image.ProductImageId" />
+                                                <input type="text" name="ExistingImageUrls" class="form-control" value="@image.ImageUrl" placeholder="URL รูปภาพเพิ่มเติม..." />
+                                                <button type="button" class="btn btn-outline-secondary" onclick="removeImageInput(this)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </div>
+                                        }
+                                    }
+                                    <div class="input-group mb-2 image-input">
+                                        <input type="text" name="AdditionalImageUrls" class="form-control" placeholder="URL รูปภาพเพิ่มเติมใหม่..." />
+                                        <button type="button" class="btn btn-outline-secondary" onclick="removeImageInput(this)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="addImageInput()">
+                                    <i class="bi bi-plus-lg me-1"></i>เพิ่มรูปภาพ
+                                </button>
                             </div>
 
                             <div class="col-md-12">
@@ -84,4 +119,33 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function addImageInput() {
+            var container = document.getElementById('additionalImages');
+            var div = document.createElement('div');
+            div.className = 'input-group mb-2 image-input';
+            div.innerHTML = `
+                <input type="text" name="AdditionalImageUrls" class="form-control" placeholder="URL รูปภาพเพิ่มเติมใหม่..." />
+                <button type="button" class="btn btn-outline-secondary" onclick="removeImageInput(this)">
+                    <i class="bi bi-trash"></i>
+                </button>
+            `;
+            container.appendChild(div);
+        }
+
+        function removeImageInput(button) {
+            var container = document.getElementById('additionalImages');
+            var imageInput = button.closest('.image-input');
+            
+            // Check if this is an existing image (has hidden input with ExistingImageIds)
+            var hasExistingId = imageInput.querySelector('input[name="ExistingImageIds"]') !== null;
+            
+            if (hasExistingId || container.children.length > 1) {
+                imageInput.remove();
+            } else {
+                // Clear the input instead of removing the last new one
+                button.closest('.image-input').querySelector('input[name="AdditionalImageUrls"]').value = '';
+            }
+        }
+    </script>
 }

@@ -1,4 +1,5 @@
-﻿@{
+﻿@model CSI402_Project.ViewModels.HomeViewModel
+@{
     ViewData["Title"] = "KidBike Shop - จักรยานเด็กคุณภาพ";
 }
 
@@ -22,12 +23,12 @@
                     </a>
                 </div>
                 
-                <div class="search-box mt-4">
-                    <input type="text" class="form-control shadow-sm" placeholder="ค้นหาจักรยานที่ต้องการ...">
-                    <button class="btn btn-primary">
+                <form asp-controller="Product" asp-action="Index" method="get" class="search-box mt-4">
+                    <input type="text" name="search" class="form-control shadow-sm" placeholder="ค้นหาจักรยานที่ต้องการ...">
+                    <button type="submit" class="btn btn-primary">
                         <i class="bi bi-search"></i>
                     </button>
-                </div>
+                </form>
             </div>
             <div class="col-lg-6 text-center">
                 <div class="hero-image" style="font-size: 12rem; line-height: 1;">
@@ -45,35 +46,26 @@
             <p class="section-subtitle">เลือกตามประเภทและช่วงอายุที่เหมาะสม</p>
         </div>
         
-        <div class="row g-4">
-            <div class="col-6 col-md-3">
-                <div class="category-card shadow-sm">
-                    <div class="category-icon">🛺</div>
-                    <h5 class="mb-1">จักรยานสามล้อ</h5>
-                    <small class="text-muted">สำหรับอายุ 2-4 ปี</small>
+        <div class="row g-4 justify-content-center">
+            @foreach (var category in Model.Categories)
+            {
+                var categoryIcon = category.Name?.ToLower() switch
+                {
+                    var n when n != null && n.Contains("สามล้อ") => "🛺",
+                    var n when n != null && n.Contains("สองล้อ") => "🚲",
+                    var n when n != null && n.Contains("บาลานซ์") => "⚖️",
+                    _ => "🎽"
+                };
+                <div class="col-6 col-md-4 col-lg-3 col-xl-auto d-flex" style="max-width: 250px;">
+                    <a asp-controller="Category" asp-action="Products" asp-route-id="@category.CategoryId" class="text-decoration-none w-100">
+                        <div class="category-card shadow-sm h-100 d-flex flex-column justify-content-center text-center">
+                            <div class="category-icon flex-shrink-0">@categoryIcon</div>
+                            <h5 class="mb-1 text-dark flex-shrink-0">@category.Name</h5>
+                            <small class="text-muted flex-shrink-0">@(category.AgeRange ?? "ทุกช่วงอายุ")</small>
+                        </div>
+                    </a>
                 </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="category-card shadow-sm">
-                    <div class="category-icon">🚲</div>
-                    <h5 class="mb-1">จักรยานสองล้อ</h5>
-                    <small class="text-muted">สำหรับอายุ 5-12 ปี</small>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="category-card shadow-sm">
-                    <div class="category-icon">⚖️</div>
-                    <h5 class="mb-1">จักรยานบาลานซ์</h5>
-                    <small class="text-muted">ฝึกทรงตัว</small>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="category-card shadow-sm">
-                    <div class="category-icon">🎽</div>
-                    <h5 class="mb-1">อุปกรณ์เสริม</h5>
-                    <small class="text-muted">หมวก สนับเข่า</small>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </section>
@@ -85,88 +77,34 @@
             <p class="section-subtitle">จักรยานขายดีประจำเดือน</p>
         </div>
         
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="card product-card h-100">
-                    <span class="product-badge badge-hot">ขายดี</span>
-                    <img src="~/images/bike-placeholder.jpg" class="card-img-top" alt="จักรยานเด็ก">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">จักรยานเด็ก 16 นิ้ว สีฟ้า</h5>
-                        <p class="text-muted small mb-2">เหมาะสำหรับอายุ 5-7 ปี</p>
-                        <div class="mt-auto">
-                            <div class="d-flex align-items-baseline mb-3">
-                                <span class="card-price">฿2,590</span>
-                                <span class="card-original-price">฿2,990</span>
-                            </div>
-                            <div class="d-grid gap-2 product-actions">
-                                <a href="#" class="btn btn-primary">
-                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card product-card h-100">
-                    <span class="product-badge badge-sale">ลด 15%</span>
-                    <img src="~/images/bike-placeholder.jpg" class="card-img-top" alt="จักรยานเด็ก">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">จักรยานสามล้อ สีชมพู</h5>
-                        <p class="text-muted small mb-2">เหมาะสำหรับอายุ 2-4 ปี</p>
-                        <div class="mt-auto">
-                            <div class="d-flex align-items-baseline mb-3">
-                                <span class="card-price">฿1,890</span>
-                                <span class="card-original-price">฿2,190</span>
-                            </div>
-                            <div class="d-grid gap-2 product-actions">
-                                <a href="#" class="btn btn-primary">
-                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
-                                </a>
+        <div class="row g-4 justify-content-center">
+            @foreach (var product in Model.PopularProducts)
+            {
+                <div class="col-12 col-sm-6 col-lg-4 col-xl-3" style="max-width: 300px;">
+                    <div class="card product-card h-100">
+                        <span class="product-badge badge-hot">ขายดี</span>
+                        <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "~/images/bike-placeholder.jpg" : product.ImageUrl)" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">@product.Name</h5>
+                            <p class="text-muted small mb-2">@product.Category?.Name</p>
+                            <div class="mt-auto">
+                                <div class="d-flex align-items-baseline mb-3">
+                                    <span class="card-price">฿@product.Price.ToString("N0")</span>
+                                </div>
+                                <div class="d-grid gap-2 product-actions">
+                                    <form asp-controller="Cart" asp-action="Add" method="post" class="d-grid">
+                                        <input type="hidden" name="productId" value="@product.ProductId" />
+                                        <input type="hidden" name="quantity" value="1" />
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card product-card h-100">
-                    <span class="product-badge badge-new">ใหม่</span>
-                    <img src="~/images/bike-placeholder.jpg" class="card-img-top" alt="จักรยานเด็ก">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">จักรยานบาลานซ์ สีเขียว</h5>
-                        <p class="text-muted small mb-2">ฝึกทรงตัว น้ำหนักเบา</p>
-                        <div class="mt-auto">
-                            <div class="d-flex align-items-baseline mb-3">
-                                <span class="card-price">฿1,590</span>
-                            </div>
-                            <div class="d-grid gap-2 product-actions">
-                                <a href="#" class="btn btn-primary">
-                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card product-card h-100">
-                    <img src="~/images/bike-placeholder.jpg" class="card-img-top" alt="จักรยานเด็ก">
-                    <div class="card-body d-flex flex-column">
-                        <h5 class="card-title">จักรยานเด็ก 20 นิ้ว สีแดง</h5>
-                        <p class="text-muted small mb-2">เหมาะสำหรับอายุ 8-12 ปี</p>
-                        <div class="mt-auto">
-                            <div class="d-flex align-items-baseline mb-3">
-                                <span class="card-price">฿3,290</span>
-                            </div>
-                            <div class="d-grid gap-2 product-actions">
-                                <a href="#" class="btn btn-primary">
-                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
         
         <div class="text-center mt-4">

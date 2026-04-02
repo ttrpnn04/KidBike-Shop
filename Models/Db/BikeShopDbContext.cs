@@ -25,6 +25,8 @@ public partial class BikeShopDbContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductImage> ProductImages { get; set; }
+
     public virtual DbSet<Promotion> Promotions { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -103,6 +105,20 @@ public partial class BikeShopDbContext : DbContext
             entity.HasOne(d => d.Category).WithMany(p => p.Products)
                 .HasForeignKey(d => d.CategoryId)
                 .HasConstraintName("FK__Products__Catego__3D5E1FD2");
+        });
+
+        modelBuilder.Entity<ProductImage>(entity =>
+        {
+            entity.HasKey(e => e.ProductImageId);
+
+            entity.ToTable("ProductImage");
+
+            entity.Property(e => e.ImageUrl).HasMaxLength(255).IsRequired();
+            entity.Property(e => e.DisplayOrder).HasDefaultValue(0);
+
+            entity.HasOne(d => d.Product).WithMany(p => p.ProductImages)
+                .HasForeignKey(d => d.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Promotion>(entity =>

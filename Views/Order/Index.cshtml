@@ -1,0 +1,144 @@
+@model List<CSI402_Project.Models.Db.Order>
+@{
+    ViewData["Title"] = "คำสั่งซื้อของฉัน";
+    
+    // Helper function สำหรับ badge สถานะ
+    string GetStatusBadgeClass(string? status)
+    {
+        return status?.ToLower() switch
+        {
+            "รอดำเนินการ" => "bg-warning text-dark",
+            "กำลังจัดส่ง" => "bg-info text-dark",
+            "จัดส่งสำเร็จ" => "bg-success",
+            "ยกเลิก" => "bg-danger",
+            _ => "bg-secondary"
+        };
+    }
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">คำสั่งซื้อของฉัน</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<div class="container mb-4">
+    <div class="section-header">
+        <h1 class="section-title">
+            <i class="bi bi-bag text-primary me-2"></i>คำสั่งซื้อของฉัน
+        </h1>
+        <p class="section-subtitle">ตรวจสอบสถานะและประวัติการสั่งซื้อของคุณ</p>
+    </div>
+</div>
+
+<div class="container">
+    @if (Model.Count == 0)
+    {
+        <div class="alert alert-info text-center py-5">
+            <i class="bi bi-bag-x fs-1 d-block mb-3"></i>
+            <h5>ยังไม่มีคำสั่งซื้อ</h5>
+            <p class="mb-3">คุณยังไม่มีคำสั่งซื้อในระบบ ไปเลือกซื้อสินค้ากันเลย!</p>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-primary">
+                <i class="bi bi-bag me-2"></i>เลือกซื้อสินค้า
+            </a>
+        </div>
+    }
+    else
+    {
+        <!-- Filter/Sort Options -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="text-muted">พบ <strong>@Model.Count</strong> คำสั่งซื้อ</span>
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-funnel me-1"></i>เรียงตาม
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li><a class="dropdown-item" href="#">ล่าสุด</a></li>
+                    <li><a class="dropdown-item" href="#">เก่าสุด</a></li>
+                    <li><a class="dropdown-item" href="#">ราคาสูง-ต่ำ</a></li>
+                    <li><a class="dropdown-item" href="#">ราคาต่ำ-สูง</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Orders List -->
+        <div class="row">
+            @foreach (var order in Model)
+            {
+                var itemCount = order.OrderDetails?.Sum(od => od.Quantity ?? 0) ?? 0;
+                var firstProduct = order.OrderDetails?.FirstOrDefault()?.Product;
+                
+                <div class="col-12 mb-3">
+                    <div class="card shadow-sm border-0 order-card">
+                        <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="text-muted small">หมายเลขคำสั่งซื้อ</span>
+                                <h6 class="mb-0 fw-bold">#@order.OrderId.ToString("D5")</h6>
+                            </div>
+                            <span class="badge @GetStatusBadgeClass(order.Status) px-3 py-2">
+                                <i class="bi bi-circle-fill me-1" style="font-size: 6px;"></i>@order.Status
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-2 col-4 mb-2 mb-md-0">
+                                    @if (firstProduct != null && !string.IsNullOrEmpty(firstProduct.ImageUrl))
+                                    {
+                                        <img src="@firstProduct.ImageUrl" class="img-fluid rounded" style="width: 80px; height: 80px; object-fit: cover;" alt="@firstProduct.Name">
+                                    }
+                                    else
+                                    {
+                                        <img src="/images/bike-placeholder.jpg" class="img-fluid rounded" style="width: 80px; height: 80px; object-fit: cover;" alt="สินค้า">
+                                    }
+                                </div>
+                                <div class="col-md-6 col-8 mb-2 mb-md-0">
+                                    <h6 class="mb-1">สินค้า @(order.OrderDetails?.Count ?? 0) รายการ</h6>
+                                    <p class="text-muted small mb-1">
+                                        <i class="bi bi-calendar me-1"></i>
+                                        @order.OrderDate?.ToString("dd MMM yyyy HH:mm", new System.Globalization.CultureInfo("th-TH"))
+                                    </p>
+                                    @if (itemCount > 1)
+                                    {
+                                        <small class="text-muted">และสินค้าอีก @(itemCount - 1) ชิ้น</small>
+                                    }
+                                </div>
+                                <div class="col-md-4 col-12 text-md-end">
+                                    <div class="mb-2">
+                                        <small class="text-muted d-block">ยอดรวม</small>
+                                        <span class="h5 mb-0 text-primary fw-bold">฿@order.TotalAmount?.ToString("N0")</span>
+                                    </div>
+                                    <a asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-outline-primary btn-sm">
+                                        <i class="bi bi-eye me-1"></i>ดูรายละเอียด
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Continue Shopping -->
+        <div class="text-center mt-4">
+            <a asp-controller="Product" asp-action="Index" class="btn btn-outline-primary">
+                <i class="bi bi-arrow-left me-2"></i>เลือกซื้อสินค้าต่อ
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+    .order-card {
+        transition: all 0.3s ease;
+        border: 1px solid #e9ecef;
+    }
+    .order-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    }
+</style>

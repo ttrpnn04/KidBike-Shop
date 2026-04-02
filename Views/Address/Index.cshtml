@@ -1,0 +1,172 @@
+@model CSI402_Project.Models.Db.User
+@{
+    ViewData["Title"] = "ที่อยู่จัดส่ง";
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ที่อยู่จัดส่ง</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<div class="container mb-4">
+    <div class="section-header">
+        <h1 class="section-title">
+            <i class="bi bi-geo-alt text-primary me-2"></i>ที่อยู่จัดส่ง
+        </h1>
+        <p class="section-subtitle">จัดการที่อยู่สำหรับการจัดส่งสินค้าของคุณ</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Address Card -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0">
+                        <i class="bi bi-house-door me-2 text-primary"></i>ที่อยู่ปัจจุบัน
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    @if (string.IsNullOrEmpty(Model.Address))
+                    {
+                        <div class="alert alert-warning">
+                            <i class="bi bi-exclamation-triangle me-2"></i>
+                            คุณยังไม่ได้ระบุที่อยู่จัดส่ง กรุณาเพิ่มที่อยู่เพื่อให้สามารถสั่งซื้อสินค้าได้
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="address-display bg-light p-4 rounded mb-4">
+                            <div class="d-flex align-items-start mb-3">
+                                <div class="address-icon bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                    <i class="bi bi-house-door fs-5"></i>
+                                </div>
+                                <div>
+                                    <h6 class="mb-1 fw-bold">@Model.Username</h6>
+                                    <p class="mb-0 text-muted">@Model.Address</p>
+                                </div>
+                            </div>
+                            <div class="row text-muted small">
+                                <div class="col-md-6 mb-2">
+                                    <i class="bi bi-telephone me-2 text-primary"></i>@Model.Phone
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <i class="bi bi-envelope me-2 text-primary"></i>@Model.Email
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    <hr class="my-4">
+
+                    <!-- Edit Form -->
+                    <h6 class="mb-3 fw-bold">
+                        <i class="bi bi-pencil-square me-2 text-primary"></i>แก้ไขที่อยู่
+                    </h6>
+                    
+                    <form asp-action="Update" method="post">
+                        <div class="mb-3">
+                            <label for="address" class="form-label fw-semibold">
+                                <i class="bi bi-geo-alt me-1"></i>ที่อยู่จัดส่ง
+                            </label>
+                            <textarea name="address" id="address" class="form-control" rows="3" 
+                                      placeholder="กรอกที่อยู่จัดส่ง (บ้านเลขที่, ถนน, ซอย, แขวง/ตำบล, เขต/อำเภอ, จังหวัด, รหัสไปรษณีย์)">@Model.Address</textarea>
+                            <div class="form-text">กรุณากรอกที่อยู่ให้ครบถ้วนเพื่อให้พนักงานจัดส่งสามารถส่งสินค้าได้ถูกต้อง</div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label fw-semibold">
+                                    <i class="bi bi-telephone me-1"></i>เบอร์โทรศัพท์
+                                </label>
+                                <input type="tel" name="phone" id="phone" class="form-control" 
+                                       placeholder="0xxxxxxxxx" value="@Model.Phone">
+                                <div class="form-text">ใช้สำหรับติดต่อกรณีมีปัญหาการจัดส่ง</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label fw-semibold">
+                                    <i class="bi bi-envelope me-1"></i>อีเมล
+                                </label>
+                                <input type="email" name="email" id="email" class="form-control" 
+                                       placeholder="email@example.com" value="@Model.Email">
+                                <div class="form-text">ใช้สำหรับส่งการแจ้งเตือนสถานะคำสั่งซื้อ</div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-check-lg me-2"></i>บันทึกที่อยู่
+                            </button>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left me-2"></i>กลับหน้าหลัก
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Info -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-light py-3">
+                    <h6 class="mb-0">
+                        <i class="bi bi-info-circle me-2 text-primary"></i>ข้อมูลเพิ่มเติม
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-3 d-flex">
+                            <i class="bi bi-truck text-primary me-3 fs-5"></i>
+                            <div>
+                                <strong>การจัดส่ง</strong>
+                                <p class="text-muted small mb-0">ส่งฟรีทั่วประเทศไทย สำหรับคำสั่งซื้อทุกยอด</p>
+                            </div>
+                        </li>
+                        <li class="mb-3 d-flex">
+                            <i class="bi bi-clock text-primary me-3 fs-5"></i>
+                            <div>
+                                <strong>ระยะเวลาจัดส่ง</strong>
+                                <p class="text-muted small mb-0">3-5 วันทำการ (กรุงเทพและปริมณฑล) / 5-7 วันทำการ (ต่างจังหวัด)</p>
+                            </div>
+                        </li>
+                        <li class="mb-3 d-flex">
+                            <i class="bi bi-shield-check text-primary me-3 fs-5"></i>
+                            <div>
+                                <strong>ความปลอดภัย</strong>
+                                <p class="text-muted small mb-0">ข้อมูลที่อยู่ของคุณจะถูกเก็บเป็นความลับและใช้เฉพาะการจัดส่งสินค้าเท่านั้น</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body text-center">
+                    <i class="bi bi-question-circle text-primary fs-1 mb-2"></i>
+                    <h6>ต้องการความช่วยเหลือ?</h6>
+                    <p class="text-muted small">หากมีปัญหาเกี่ยวกับที่อยู่จัดส่ง ติดต่อเราได้ที่</p>
+                    <a href="tel:02-123-4567" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-telephone me-2"></i>02-123-4567
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .address-icon {
+        flex-shrink: 0;
+    }
+    .address-display {
+        border-left: 4px solid #0d6efd;
+    }
+</style>
