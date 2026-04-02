@@ -49,20 +49,6 @@
                     กรองสินค้า
                 </div>
                 
-                <!-- Search Form -->
-                <form method="get" asp-action="Index" class="mb-3">
-                    <div class="input-group">
-                        <input type="text" name="search" class="form-control" placeholder="ค้นหาสินค้า..." value="@search">
-                        @if (categoryId.HasValue)
-                        {
-                            <input type="hidden" name="categoryId" value="@categoryId" />
-                        }
-                        <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </div>
-                </form>
-                
                 <!-- Categories -->
                 <div class="mb-3">
                     <label class="form-label fw-semibold">หมวดหมู่</label>
