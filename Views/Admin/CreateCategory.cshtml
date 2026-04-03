@@ -1,0 +1,111 @@
+@model CSI402_Project.Models.Db.Category
+@{
+    ViewData["Title"] = "เพิ่มหมวดหมู่ใหม่";
+    Layout = "_AdminLayout";
+}
+
+<style>
+    .form-section {
+        background: #fff;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        border: 1px solid #f0f0f0;
+    }
+    .form-section-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2d3436;
+        margin-bottom: 1.25rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 2px solid #e9ecef;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    .form-section-title i {
+        color: #FF6B6B;
+        font-size: 1.25rem;
+    }
+    .page-header {
+        background: linear-gradient(135deg, #fff 0%, #fff5f5 100%);
+        border-radius: 16px;
+        padding: 1.5rem 2rem;
+        margin-bottom: 2rem;
+        border: 1px solid #f0f0f0;
+    }
+    .form-label {
+        font-weight: 500;
+        color: #495057;
+        margin-bottom: 0.5rem;
+    }
+    .btn-action {
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        border-radius: 10px;
+    }
+</style>
+
+<div class="container-fluid py-4">
+    <div class="page-header d-flex align-items-center">
+        <a asp-action="Categories" class="btn btn-outline-secondary rounded-circle me-4" style="width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center;">
+            <i class="bi bi-arrow-left fs-5"></i>
+        </a>
+        <div>
+            <h1 class="h3 mb-1 fw-bold">
+                <i class="bi bi-plus-circle-fill me-2 text-primary"></i>เพิ่มหมวดหมู่ใหม่
+            </h1>
+            <p class="text-muted mb-0">กรอกข้อมูลหมวดหมู่ให้ครบถ้วนเพื่อเพิ่มลงในระบบ</p>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <form asp-action="CreateCategory" method="post">
+                @Html.AntiForgeryToken()
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3"></div>
+
+                <div class="form-section">
+                    <div class="form-section-title">
+                        <i class="bi bi-info-circle-fill"></i>
+                        ข้อมูลหมวดหมู่
+                    </div>
+                    <div class="row g-4">
+                        <div class="col-md-12">
+                            <label asp-for="Name" class="form-label">
+                                <i class="bi bi-tag me-1 text-primary"></i>ชื่อหมวดหมู่ <span class="text-danger">*</span>
+                            </label>
+                            <input asp-for="Name" class="form-control form-control-lg" placeholder="เช่น จักรยานเด็ก 3 ล้อ" required maxlength="100" />
+                            <span asp-validation-for="Name" class="text-danger small"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="AgeRange" class="form-label">
+                                <i class="bi bi-calendar me-1 text-primary"></i>ช่วงอายุ
+                            </label>
+                            <input asp-for="AgeRange" class="form-control" placeholder="เช่น 2-4 ปี" maxlength="50" />
+                            <div class="form-text text-muted">
+                                <i class="bi bi-info-circle me-1"></i>ระบุช่วงอายุที่เหมาะสมสำหรับสินค้าในหมวดหมู่นี้
+                            </div>
+                            <span asp-validation-for="AgeRange" class="text-danger small"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex gap-3">
+                    <button type="submit" class="btn btn-primary btn-action">
+                        <i class="bi bi-check-circle me-2"></i>บันทึกหมวดหมู่
+                    </button>
+                    <a asp-action="Categories" class="btn btn-outline-secondary btn-action">
+                        <i class="bi bi-x-circle me-2"></i>ยกเลิก
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

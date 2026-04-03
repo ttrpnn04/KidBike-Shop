@@ -4,90 +4,78 @@
     Layout = "_AdminLayout";
 }
 
+<style>
+    .card .table {
+        width: 100%;
+    }
+    .card .table th,
+    .card .table td {
+        vertical-align: middle;
+    }
+    .card .table th:nth-child(1),
+    .card .table td:nth-child(1) { width: 60px; }
+    .card .table th:nth-child(5),
+    .card .table td:nth-child(5) { 
+        text-align: center;
+        width: 100px;
+    }
+</style>
+
 <div class="container-fluid py-4">
-    <h1 class="mb-4">
-        <i class="bi bi-grid me-2 text-primary"></i>จัดการหมวดหมู่
-    </h1>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>
+            <i class="bi bi-grid me-2 text-primary"></i>จัดการหมวดหมู่
+        </h1>
+        <a asp-action="CreateCategory" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-2"></i>เพิ่มหมวดหมู่ใหม่
+        </a>
+    </div>
 
-    <div class="row g-4">
-        <!-- Create Category Form -->
-        <div class="col-lg-4">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-white">
-                    <h5 class="mb-0">เพิ่มหมวดหมู่ใหม่</h5>
-                </div>
-                <div class="card-body">
-                    <form asp-action="CreateCategory" method="post">
-                        @Html.AntiForgeryToken()
-                        <div class="mb-3">
-                            <label class="form-label">ชื่อหมวดหมู่</label>
-                            <input type="text" name="Name" class="form-control" required maxlength="100" />
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">ช่วงอายุ</label>
-                            <input type="text" name="AgeRange" class="form-control" maxlength="50" placeholder="เช่น 2-4 ปี" />
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="bi bi-plus-lg me-2"></i>เพิ่มหมวดหมู่
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Category List -->
-        <div class="col-lg-8">
-            <div class="card shadow-sm border-0">
-                <div class="card-body p-0">
-                    <div class="table-responsive">
-                        <table class="table table-hover mb-0">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>ID</th>
-                                    <th>ชื่อหมวดหมู่</th>
-                                    <th>ช่วงอายุ</th>
-                                    <th>จำนวนสินค้า</th>
-                                    <th>จัดการ</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model)
-                                {
-                                    <tr>
-                                        <td>@item.CategoryId</td>
-                                        <td>
-                                            <strong>@item.Name</strong>
-                                        </td>
-                                        <td>@item.AgeRange</td>
-                                        <td>@(item.Products?.Count ?? 0) รายการ</td>
-                                        <td>
-                                            <div class="btn-group">
-                                                <button type="button" class="btn btn-sm btn-outline-primary" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#editModal" 
-                                                        data-id="@item.CategoryId"
-                                                        data-name="@item.Name"
-                                                        data-agerange="@item.AgeRange">
-                                                    <i class="bi bi-pencil"></i>
-                                                </button>
-                                                <button type="button" class="btn btn-sm btn-outline-danger" 
-                                                        data-bs-toggle="modal" 
-                                                        data-bs-target="#deleteModal" 
-                                                        data-id="@item.CategoryId"
-                                                        data-name="@item.Name">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover mb-0 w-100">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>ชื่อหมวดหมู่</th>
+                            <th>ช่วงอายุ</th>
+                            <th>จำนวนสินค้า</th>
+                            <th>จัดการ</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@item.CategoryId</td>
+                                <td>
+                                    <strong>@item.Name</strong>
+                                </td>
+                                <td>@item.AgeRange</td>
+                                <td>@(item.Products?.Count ?? 0) รายการ</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-sm btn-outline-primary" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#editModal" 
+                                                data-id="@item.CategoryId"
+                                                data-name="@item.Name"
+                                                data-agerange="@item.AgeRange">
+                                            <i class="bi bi-pencil"></i>
+                                        </button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger" 
+                                                data-bs-toggle="modal" 
+                                                data-bs-target="#deleteModal" 
+                                                data-id="@item.CategoryId"
+                                                data-name="@item.Name">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
         </div>
     </div>
 </div>

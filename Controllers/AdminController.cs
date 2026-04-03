@@ -275,6 +275,12 @@ namespace CSI402_Project.Controllers
             return View(categories);
         }
 
+        // GET: /Admin/CreateCategory
+        public IActionResult CreateCategory()
+        {
+            return View();
+        }
+
         // POST: /Admin/CreateCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -336,6 +342,12 @@ namespace CSI402_Project.Controllers
         {
             var promotions = _context.Promotions.ToList();
             return View(promotions);
+        }
+
+        // GET: /Admin/CreatePromotion
+        public IActionResult CreatePromotion()
+        {
+            return View();
         }
 
         // POST: /Admin/CreatePromotion
