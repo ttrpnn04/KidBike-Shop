@@ -1,0 +1,212 @@
+@{
+    ViewData["Title"] = "คำแนะนำการเลือกไซส์ - KidBike Shop";
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">คำแนะนำการเลือกไซส์</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<section class="py-4">
+    <div class="container">
+        <div class="section-header text-center">
+            <h1 class="section-title">
+                <i class="bi bi-rulers text-primary me-2"></i>คำแนะนำการเลือกไซส์จักรยาน
+            </h1>
+            <p class="section-subtitle">เลือกขนาดจักรยานให้เหมาะกับลูกน้อยของคุณ</p>
+        </div>
+    </div>
+</section>
+
+<!-- Size Guide Intro -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="alert alert-info d-flex align-items-start">
+                    <i class="bi bi-info-circle-fill me-3 fs-4 flex-shrink-0"></i>
+                    <div>
+                        <h6 class="fw-bold mb-2">ทำไมต้องเลือกไซส์ที่เหมาะสม?</h6>
+                        <p class="mb-0">
+                            จักรยานที่พอดีจะช่วยให้ลูกน้อยควบคุมได้ง่าย ปลอดภัย และสนุกกับการขี่ 
+                            จักรยานที่ใหญ่หรือเล็กเกินไปอาจทำให้เกิดอุบัติเหตุและทำให้ลูกรู้สึกไม่มั่นใจ
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Size Chart -->
+<section class="py-4 bg-white">
+    <div class="container">
+        <h3 class="text-center mb-5">ตารางแนะนำขนาดจักรยาน</h3>
+        
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="py-3">อายุ</th>
+                                <th class="py-3">ส่วนสูง</th>
+                                <th class="py-3">ขนาดล้อ</th>
+                                <th class="py-3">ประเภทที่แนะนำ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="py-3">1-3 ปี</td>
+                                <td class="py-3">75-90 ซม.</td>
+                                <td class="py-3"><span class="badge bg-primary">10 นิ้ว</span></td>
+                                <td class="py-3">จักรยานสามล้อ / จักรยานบาลานซ์</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3">2-4 ปี</td>
+                                <td class="py-3">85-100 ซม.</td>
+                                <td class="py-3"><span class="badge bg-primary">12 นิ้ว</span></td>
+                                <td class="py-3">จักรยานบาลานซ์ / จักรยานสองล้อ (มีล้อข้าง)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3">3-5 ปี</td>
+                                <td class="py-3">95-110 ซม.</td>
+                                <td class="py-3"><span class="badge bg-success">14 นิ้ว</span></td>
+                                <td class="py-3">จักรยานสองล้อ (มี/ไม่มีล้อข้าง)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3">4-6 ปี</td>
+                                <td class="py-3">105-120 ซม.</td>
+                                <td class="py-3"><span class="badge bg-success">16 นิ้ว</span></td>
+                                <td class="py-3">จักรยานสองล้อ</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3">5-8 ปี</td>
+                                <td class="py-3">115-135 ซม.</td>
+                                <td class="py-3"><span class="badge bg-warning">20 นิ้ว</span></td>
+                                <td class="py-3">จักรยานสองล้อ (มีเกียร์/ไม่มีเกียร์)</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3">7-11 ปี</td>
+                                <td class="py-3">130-150 ซม.</td>
+                                <td class="py-3"><span class="badge bg-warning">24 นิ้ว</span></td>
+                                <td class="py-3">จักรยานสองล้อ (มีเกียร์)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How to Measure -->
+<section class="py-5">
+    <div class="container">
+        <h3 class="text-center mb-5">วิธีวัดขนาดที่ถูกต้อง</h3>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        1
+                    </div>
+                    <h6 class="fw-bold">วัดส่วนสูง</h6>
+                    <p class="text-muted small mb-0">
+                        ให้ลูกยืนตรง ไม่สวมรองเท้า วัดจากพื้นถึงกระหม่อก
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        2
+                    </div>
+                    <h6 class="fw-bold">วัดขาลูก</h6>
+                    <p class="text-muted small mb-0">
+                        วัดจากเป้ายีนส์ถึงพื้น เพื่อเช็คระยะห่างจากอานถึงพื้น
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        3
+                    </div>
+                    <h6 class="fw-bold">ทดสอบการขี่</h6>
+                    <p class="text-muted small mb-0">
+                        ปลายเท้าควรแตะพื้นได้สบายๆ เมื่อนั่งบนอาน
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tips Section -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h3 class="text-center mb-4">เคล็ดลับการเลือกจักรยาน</h3>
+                <div class="accordion" id="tipsAccordion">
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tip1">
+                                <i class="bi bi-check-circle-fill text-success me-2"></i>ควรเลือกไซส์เล็กหรือใหญ่กว่าแนะนำ?
+                            </button>
+                        </h2>
+                        <div id="tip1" class="accordion-collapse collapse show" data-bs-parent="#tipsAccordion">
+                            <div class="accordion-body text-muted">
+                                แนะนำให้เลือกขนาดตามตาราง อย่าเลือกใหญ่กว่าเพราะคิดว่าเด็กจะได้ใช้ได้นาน 
+                                จักรยานที่ใหญ่เกินไปจะทำให้เด็กควบคุมยากและอาจเกิดอุบัติเหตุได้
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tip2">
+                                <i class="bi bi-question-circle-fill text-primary me-2"></i>เริ่มต้นด้วยจักรยานบาลานซ์ดีไหม?
+                            </button>
+                        </h2>
+                        <div id="tip2" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                            <div class="accordion-body text-muted">
+                                จักรยานบาลานซ์เป็นตัวเลือกที่ดีมากสำหรับเด็ก 2-5 ปี 
+                                ช่วยพัฒนาทักษะการทรงตัวและความมั่นใจ ก่อนขึ้นจักรยานสองล้อได้
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item border-0 mb-3 shadow-sm">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tip3">
+                                <i class="bi bi-lightbulb-fill text-warning me-2"></i>จักรยานสามล้อเหมาะกับอายุเท่าไร?
+                            </button>
+                        </h2>
+                        <div id="tip3" class="accordion-collapse collapse" data-bs-parent="#tipsAccordion">
+                            <div class="accordion-body text-muted">
+                                เหมาะสำหรับเด็ก 1-3 ปี เป็นจักรยานคันแรกที่ช่วยให้เด็กคุ้นเคยกับการขี่ 
+                                แต่ควรใช้ในพื้นที่ปลอดภัยและมีผู้ใหญ่ดูแล
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5" style="background: linear-gradient(135deg, #E8F8F5 0%, #D5F5E3 100%);">
+    <div class="container text-center">
+        <h4 class="mb-3">ยังไม่แน่ใจว่าควรเลือกไซส์ไหน?</h4>
+        <p class="text-muted mb-4">ทีมงานของเรายินดีให้คำปรึกษาเฉพาะบุคคล</p>
+        <a asp-controller="Home" asp-action="Contact" class="btn btn-primary btn-lg">
+            <i class="bi bi-chat-dots me-2"></i>ติดต่อขอคำแนะนำ
+        </a>
+    </div>
+</section>

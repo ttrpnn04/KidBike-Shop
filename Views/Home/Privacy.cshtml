@@ -1,6 +1,111 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "นโยบายความเป็นส่วนตัว - KidBike Shop";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>Use this page to detail your site's privacy policy.</p>
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">นโยบายความเป็นส่วนตัว</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<section class="py-4">
+    <div class="container">
+        <div class="section-header text-center">
+            <h1 class="section-title">
+                <i class="bi bi-shield-check text-primary me-2"></i>นโยบายความเป็นส่วนตัว
+            </h1>
+            <p class="section-subtitle">เราให้ความสำคัญกับข้อมูลส่วนบุคคลของคุณ</p>
+        </div>
+    </div>
+</section>
+
+<!-- Privacy Content -->
+<section class="py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4 p-md-5">
+                        <p class="text-muted mb-4">
+                            <strong>KidBike Shop</strong> ให้ความสำคัญกับความเป็นส่วนตัวของลูกค้าเป็นอย่างมาก 
+                            นโยบายนี้อธิบายว่าเรารวบรวม ใช้ และปกป้องข้อมูลส่วนบุคคลของคุณอย่างไร
+                        </p>
+
+                        <h5 class="fw-bold mb-3">1. ข้อมูลที่เรารวบรวม</h5>
+                        <p class="text-muted mb-4">
+                            เราอาจรวบรวมข้อมูลต่อไปนี้จากคุณ:
+                        </p>
+                        <ul class="text-muted mb-4">
+                            <li>ชื่อ-นามสกุล</li>
+                            <li>ที่อยู่จัดส่งสินค้า</li>
+                            <li>เบอร์โทรศัพท์</li>
+                            <li>อีเมล</li>
+                            <li>ประวัติการสั่งซื้อ</li>
+                        </ul>
+
+                        <h5 class="fw-bold mb-3">2. วัตถุประสงค์การใช้ข้อมูล</h5>
+                        <p class="text-muted mb-4">
+                            เราใช้ข้อมูลของคุณเพื่อ:
+                        </p>
+                        <ul class="text-muted mb-4">
+                            <li>ดำเนินการสั่งซื้อและจัดส่งสินค้า</li>
+                            <li>ติดต่อประสานงานเกี่ยวกับคำสั่งซื้อ</li>
+                            <li>ให้บริการหลังการขาย</li>
+                            <li>ส่งข้อมูลข่าวสารและโปรโมชั่น (หากคุณยินยอม)</li>
+                        </ul>
+
+                        <h5 class="fw-bold mb-3">3. การปกป้องข้อมูล</h5>
+                        <p class="text-muted mb-4">
+                            เราใช้มาตรการรักษาความปลอดภัยที่เหมาะสมเพื่อปกป้องข้อมูลส่วนบุคคลของคุณจากการเข้าถึง 
+                            การเปิดเผย การแก้ไข หรือการทำลายโดยไม่ได้รับอนุญาต
+                        </p>
+
+                        <h5 class="fw-bold mb-3">4. การเปิดเผยข้อมูลแก่บุคคลภายนอก</h5>
+                        <p class="text-muted mb-4">
+                            เราจะไม่ขาย แลกเปลี่ยน หรือโอนข้อมูลส่วนบุคคลของคุณให้แก่บุคคลภายนอก 
+                            ยกเว้นเพื่อวัตถุประสงค์ในการจัดส่งสินค้า (เช่น ให้บริษัทขนส่งทราบชื่อและที่อยู่)
+                        </p>
+
+                        <h5 class="fw-bold mb-3">5. สิทธิของคุณ</h5>
+                        <p class="text-muted mb-4">
+                            คุณมีสิทธิ์ในการ:
+                        </p>
+                        <ul class="text-muted mb-4">
+                            <li>ขอเข้าถึงข้อมูลส่วนบุคคลของคุณ</li>
+                            <li>ขอแก้ไขข้อมูลที่ไม่ถูกต้อง</li>
+                            <li>ขอลบข้อมูลของคุณ</li>
+                            <li>ถอนความยินยอมในการรับข้อมูลข่าวสาร</li>
+                        </ul>
+
+                        <h5 class="fw-bold mb-3">6. การใช้คุกกี้</h5>
+                        <p class="text-muted mb-4">
+                            เว็บไซต์ของเราอาจใช้คุกกี้เพื่อพัฒนาประสบการณ์การใช้งานของคุณ 
+                            คุณสามารถตั้งค่าเบราว์เซอร์ของคุณเพื่อปฏิเสธคุกกี้ได้
+                        </p>
+
+                        <h5 class="fw-bold mb-3">7. การเปลี่ยนแปลงนโยบาย</h5>
+                        <p class="text-muted mb-4">
+                            เราอาจปรับปรุงนโยบายความเป็นส่วนตัวนี้เป็นครั้งคราว 
+                            การเปลี่ยนแปลงจะมีผลทันทีที่เผยแพร่บนเว็บไซต์
+                        </p>
+
+                        <h5 class="fw-bold mb-3">8. ติดต่อเรา</h5>
+                        <p class="text-muted mb-0">
+                            หากมีคำถามเกี่ยวกับนโยบายความเป็นส่วนตัว กรุณาติดต่อเราที่ 
+                            <a href="mailto:contact@kidbike.com">contact@kidbike.com</a>
+                        </p>
+
+                        <div class="mt-4 pt-4 border-top">
+                            <p class="text-muted small mb-0">อัปเดตล่าสุด: 18 เมษายน 2026</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

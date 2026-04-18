@@ -112,6 +112,38 @@ namespace CSI402_Project.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // GET: /Account/ForgotPassword
+        [HttpGet]
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        // POST: /Account/ForgotPassword
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+                if (user == null)
+                {
+                    // ไม่แสดงว่าไม่พบอีเมล เพื่อความปลอดภัย
+                    TempData["SuccessMessage"] = "หากอีเมลนี้มีในระบบ เราจะส่งลิงก์รีเซ็ตรหัสผ่านไปให้";
+                    return RedirectToAction("Login");
+                }
+
+                // TODO: ส่งอีเมลรีเซ็ตรหัสผ่านจริง
+                // ในระบบจริงควรส่งอีเมลพร้อม token สำหรับรีเซ็ตรหัสผ่าน
+
+                TempData["SuccessMessage"] = "หากอีเมลนี้มีในระบบ เราจะส่งลิงก์รีเซ็ตรหัสผ่านไปให้ กรุณาตรวจสอบอีเมลของคุณ (รวมถึงกล่องจดหมายขยะ)";
+                return RedirectToAction("Login");
+            }
+
+            return View(model);
+        }
+
         // Helper method to hash password
         private string HashPassword(string password)
         {

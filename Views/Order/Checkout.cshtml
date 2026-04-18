@@ -1,8 +1,10 @@
 @model CSI402_Project.ViewModels.CheckoutViewModel
 @{
     ViewData["Title"] = "ดำเนินการสั่งซื้อ";
-    
-    var totalAmount = Model.CartItems.Sum(c => (c.Product?.Price ?? 0) * (c.Quantity ?? 0));
+
+    var subtotal = Model.Subtotal;
+    var discount = Model.DiscountAmount;
+    var totalAmount = Model.TotalAmount;
     var itemCount = Model.CartItems.Sum(c => c.Quantity ?? 0);
 }
 
@@ -28,6 +30,65 @@
 </div>
 
 <div class="container">
+    <!-- Promo Code Section (Outside main form) -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-white py-3">
+                    <h5 class="mb-0">
+                        <i class="bi bi-ticket-perforated me-2 text-primary"></i>โค้ดส่วนลด
+                    </h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.AppliedPromotion != null)
+                    {
+                        <div class="alert alert-success mb-0">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="bi bi-check-circle-fill me-2"></i>
+                                    <strong>ใช้โค้ด '@Model.AppliedPromotion.Name' แล้ว</strong>
+                                    <div class="mt-1">
+                                        @if (Model.AppliedPromotion.Type == "Percentage")
+                                        {
+                                            <span class="badge bg-primary">ลด @Model.AppliedPromotion.DiscountValue%</span>
+                                        }
+                                        else if (Model.AppliedPromotion.Type == "FixedAmount")
+                                        {
+                                            <span class="badge bg-primary">ลด ฿@Model.AppliedPromotion.DiscountValue?.ToString("N0")</span>
+                                        }
+                                        <span class="text-success ms-2">ประหยัด ฿@discount.ToString("N0")</span>
+                                    </div>
+                                </div>
+                                <form asp-action="RemovePromo" method="post" class="ms-3">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-x-lg me-1"></i>ยกเลิก
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <form asp-action="ApplyPromo" method="post">
+                            @Html.AntiForgeryToken()
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="bi bi-ticket-perforated"></i></span>
+                                <input type="text" name="promoCode" class="form-control" placeholder="กรอกโค้ดส่วนลด (เช่น WELCOME100)" required>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bi bi-check2 me-1"></i>ใช้โค้ด
+                                </button>
+                            </div>
+                            <div class="form-text mt-2">
+                                <i class="bi bi-info-circle me-1"></i>โค้ดส่วนลดต้องอยู่ในช่วงเวลาที่กำหนดและตรงตามเงื่อนไข
+                            </div>
+                        </form>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
     <form asp-action="Checkout" method="post">
         <div class="row">
             <!-- Left Column - Order Info -->
@@ -53,9 +114,14 @@
                             <label for="phone" class="form-label fw-semibold">
                                 <i class="bi bi-telephone me-1"></i>เบอร์โทรศัพท์
                             </label>
-                            <input type="tel" name="phone" id="phone" class="form-control" 
+                            <input type="tel" name="phone" id="phone" class="form-control"
                                    placeholder="0xxxxxxxxx" value="@Model.User.Phone" required>
                         </div>
+
+                        @if (Model.AppliedPromotionId.HasValue)
+                        {
+                            <input type="hidden" name="promotionId" value="@Model.AppliedPromotionId.Value" />
+                        }
                         <div class="d-flex justify-content-between align-items-center mt-3">
                             <a asp-controller="Address" asp-action="Index" class="btn btn-outline-secondary btn-sm">
                                 <i class="bi bi-pencil me-1"></i>จัดการที่อยู่
@@ -180,16 +246,23 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <span>ราคาสินค้า</span>
-                            <span>฿@totalAmount.ToString("N0")</span>
+                            <span>฿@subtotal.ToString("N0")</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>จำนวน</span>
                             <span>@itemCount ชิ้น</span>
                         </div>
-                        <div class="d-flex justify-content-between mb-3">
+                        <div class="d-flex justify-content-between mb-2">
                             <span>ค่าจัดส่ง</span>
                             <span class="text-success">ฟรี</span>
                         </div>
+                        @if (discount > 0)
+                        {
+                            <div class="d-flex justify-content-between mb-2 text-success">
+                                <span><i class="bi bi-tag-fill me-1"></i>ส่วนลด</span>
+                                <span>-฿@discount.ToString("N0")</span>
+                            </div>
+                        }
                         <hr>
                         <div class="d-flex justify-content-between mb-4">
                             <span class="h5 mb-0">ยอดรวมทั้งหมด</span>

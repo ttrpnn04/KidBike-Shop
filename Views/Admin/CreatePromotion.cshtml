@@ -81,18 +81,25 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label asp-for="Type" class="form-label">
-                                <i class="bi bi-list me-1 text-primary"></i>ประเภท <span class="text-danger">*</span>
-                            </label>
-                            <select asp-for="Type" class="form-select" required>
-                                <option value="">-- เลือกประเภท --</option>
-                                <option value="NewMember">สมาชิกใหม่</option>
-                                <option value="MinAmount">ส่วนลดเมื่อซื้อครบ</option>
-                                <option value="FreeShipping">ส่งฟรี</option>
-                                <option value="Seasonal">ส่วนลดเทศกาล</option>
-                                <option value="FreeGift">ของแถม</option>
-                            </select>
-                            <span asp-validation-for="Type" class="text-danger small"></span>
+                            <div class="mb-3">
+                                <label asp-for="Type" class="form-label">ประเภท</label>
+                                <select asp-for="Type" class="form-select" required>
+                                    <option value="">-- เลือกประเภท --</option>
+                                    <option value="Percentage">เปอร์เซ็นต์ (%)</option>
+                                    <option value="FixedAmount">จำนวนเงิน (บาท)</option>
+                                    <option value="FreeShipping">ส่งฟรี</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="ConditionType" class="form-label">เงื่อนไขการใช้งาน</label>
+                                <select asp-for="ConditionType" class="form-select">
+                                    <option value="">-- ไม่มีเงื่อนไขพิเศษ --</option>
+                                    <option value="FirstPurchase">สมาชิกใหม่ (ยังไม่เคยสั่งซื้อ)</option>
+                                    <option value="MinAmount">ยอดซื้อขั้นต่ำ</option>
+                                </select>
+                                <div class="form-text">เลือกเงื่อนไขพิเศษสำหรับการใช้โปรโมชั่น</div>
+                            </div>
                         </div>
 
                         <div class="col-md-6">

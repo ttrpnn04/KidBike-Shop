@@ -1,0 +1,153 @@
+@{
+    ViewData["Title"] = "เกี่ยวกับเรา - KidBike Shop";
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">เกี่ยวกับเรา</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Hero Section -->
+<section class="py-5" style="background: linear-gradient(135deg, #E8F8F5 0%, #D5F5E3 100%);">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">KidBike Shop</h1>
+                <p class="lead text-muted mb-4">
+                    ร้านจำหน่ายจักรยานเด็กคุณภาพดีที่เชื่อว่า <strong class="text-primary">การขี่จักรยานคือความสุขของเด็กๆ</strong>
+                </p>
+                <p class="text-muted">
+                    เราคัดสรรสินค้าที่ปลอดภัย ทนทาน และเหมาะสมกับแต่ละช่วงวัย 
+                    เพื่อให้ลูกน้อยของคุณได้สนุกกับการออกกำลังกายและพัฒนาทักษะการทรงตัวอย่างถูกต้อง
+                </p>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div style="font-size: 10rem;">🚲</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Our Story -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h2 class="section-title text-center mb-5">เรื่องราวของเรา</h2>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-5">
+                        <p class="mb-4">
+                            <strong>KidBike Shop</strong> ก่อตั้งขึ้นในปี 2020 ด้วยความตั้งใจที่จะเป็นร้านจักรยานเด็กที่คุณพ่อคุณแม่ไว้ใจได้ 
+                            เราเริ่มต้นจากร้านเล็กๆ ที่กรุงเทพฯ และเติบโตขึ้นสู่ร้านค้าออนไลน์ที่มีลูกค้าทั่วประเทศ
+                        </p>
+                        <p class="mb-4">
+                            ทีมงานของเราประกอบด้วยผู้เชี่ยวชาญด้านจักรยานและพ่อแม่ที่เข้าใจความต้องการของครอบครัวเป็นอย่างดี 
+                            เราทดสอบสินค้าทุกชิ้นด้วยตนเองก่อนจำหน่าย เพื่อให้มั่นใจว่าปลอดภัยและมีคุณภาพจริง
+                        </p>
+                        <p class="mb-0">
+                            วันนี้เราภูมิใจที่ได้เป็นส่วนหนึ่งของความสุขของครอบครัวไทยหลายพันครอบครัว 
+                            และมุ่งมั่นที่จะส่งมอบประสบการณ์ที่ดีที่สุดให้กับลูกค้าทุกท่าน
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Core Values -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">ค่านิยมของเรา</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="mb-3" style="font-size: 3rem;">🛡️</div>
+                    <h5 class="card-title">ความปลอดภัยสูงสุด</h5>
+                    <p class="card-text text-muted">
+                        สินค้าทุกชิ้นผ่านมาตรฐาน มอก. และการทดสอบความปลอดภัยอย่างเข้มงวด
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="mb-3" style="font-size: 3rem;">💚</div>
+                    <h5 class="card-title">คุณภาพที่คุ้มค่า</h5>
+                    <p class="card-text text-muted">
+                        คัดสรรแบรนด์ชั้นนำในราคาที่เข้าถึงได้ พร้อมการรับประกันสินค้า
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="mb-3" style="font-size: 3rem;">🤝</div>
+                    <h5 class="card-title">บริการหัวใจ</h5>
+                    <p class="card-text text-muted">
+                        ให้คำปรึกษาด้วยความจริงใจ เหมือนกับเป็นครอบครัวเดียวกัน
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">ทีมงานของเรา</h2>
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4 col-lg-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                            👨‍💼
+                        </div>
+                        <h6 class="fw-bold mb-1">คุณสมชาย</h6>
+                        <small class="text-muted">ผู้ก่อตั้ง</small>
+                        <p class="small text-muted mt-2 mb-0">"เริ่มจากความตั้งใจให้ลูกได้ขี่จักรยานที่ดีที่สุด"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                            👩‍🔧
+                        </div>
+                        <h6 class="fw-bold mb-1">คุณสุภา</h6>
+                        <small class="text-muted">ผู้เชี่ยวชาญด้านจักรยาน</small>
+                        <p class="small text-muted mt-2 mb-0">"เลือกจักรยานให้เหมาะกับวัย ปลอดภัยแน่นอน"</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-lg-3">
+                <div class="card border-0 shadow-sm text-center">
+                    <div class="card-body p-4">
+                        <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 80px; height: 80px; font-size: 2rem;">
+                            👩‍💻
+                        </div>
+                        <h6 class="fw-bold mb-1">คุณนภา</h6>
+                        <small class="text-muted">ฝ่ายบริการลูกค้า</small>
+                        <p class="small text-muted mt-2 mb-0">"ยินดีช่วยเหลือทุกคำถามของคุณ"</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-5 bg-primary text-white">
+    <div class="container text-center">
+        <h3 class="mb-3">พร้อมให้ลูกน้อยของคุณเริ่มต้นการขี่จักรยาน?</h3>
+        <p class="mb-4">เรายินดีให้คำปรึกษาฟรี เพื่อช่วยเลือกจักรยานที่เหมาะสมที่สุด</p>
+        <a asp-controller="Home" asp-action="Contact" class="btn btn-light btn-lg">
+            <i class="bi bi-chat-dots me-2"></i>ติดต่อเรา
+        </a>
+    </div>
+</section>

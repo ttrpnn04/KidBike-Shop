@@ -1,0 +1,261 @@
+@{
+    ViewData["Title"] = "นโยบายการคืนสินค้า - KidBike Shop";
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">นโยบายการคืนสินค้า</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<section class="py-4">
+    <div class="container">
+        <div class="section-header text-center">
+            <h1 class="section-title">
+                <i class="bi bi-arrow-repeat text-primary me-2"></i>นโยบายการคืนสินค้า
+            </h1>
+            <p class="section-subtitle">เปลี่ยนหรือคืนสินค้าได้อย่างง่ายดาย</p>
+        </div>
+    </div>
+</section>
+
+<!-- Policy Highlights -->
+<section class="py-4">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center p-4">
+                    <div class="mb-3" style="font-size: 3rem;">7️⃣</div>
+                    <h5 class="card-title">7 วัน</h5>
+                    <p class="text-muted mb-0">
+                        เปลี่ยนหรือคืนสินค้าได้ภายใน 7 วันนับจากวันที่ได้รับ
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center p-4">
+                    <div class="mb-3" style="font-size: 3rem;">🆓</div>
+                    <h5 class="card-title">ค่าส่งฟรี</h5>
+                    <p class="text-muted mb-0">
+                        ไม่เสียค่าใช้จ่ายในการคืนสินค้า เรารับผิดชอบค่าขนส่งกลับ
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm h-100 text-center p-4">
+                    <div class="mb-3" style="font-size: 3rem;">💰</div>
+                    <h5 class="card-title">คืนเงินเต็ม</h5>
+                    <p class="text-muted mb-0">
+                        คืนเงินเต็มจำนวนภายใน 7-14 วันหลังตรวจสอบสินค้า
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Return Conditions -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <h3 class="text-center mb-5">เงื่อนไขการคืนสินค้า</h3>
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-success text-white">
+                        <h6 class="mb-0"><i class="bi bi-check-circle me-2"></i>สามารถคืนได้</h6>
+                    </div>
+                    <div class="card-body p-4">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2 d-flex">
+                                <i class="bi bi-check-lg text-success me-2 flex-shrink-0"></i>
+                                <span class="text-muted">สินค้าไม่ตรงกับคำสั่งซื้อ (สี/รุ่น/ขนาดผิด)</span>
+                            </li>
+                            <li class="mb-2 d-flex">
+                                <i class="bi bi-check-lg text-success me-2 flex-shrink-0"></i>
+                                <span class="text-muted">สินค้ามีตำหนิจากโรงงาน</span>
+                            </li>
+                            <li class="mb-2 d-flex">
+                                <i class="bi bi-check-lg text-success me-2 flex-shrink-0"></i>
+                                <span class="text-muted">สินค้าเสียหายจากการขนส่ง</span>
+                            </li>
+                            <li class="mb-2 d-flex">
+                                <i class="bi bi-check-lg text-success me-2 flex-shrink-0"></i>
+                                <span class="text-muted">สินค้าไม่พอใจ (เปลี่ยนใจ)</span>
+                            </li>
+                            <li class="mb-0 d-flex">
+                                <i class="bi bi-check-lg text-success me-2 flex-shrink-0"></i>
+                                <span class="text-muted">ขนาดไม่พอดี (แลกเปลี่ยนไซส์)</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-danger text-white">
+                        <h6 class="mb-0"><i class="bi bi-x-circle me-2"></i>ไม่สามารถคืนได้</h6>
+                    </div>
+                    <div class="card-body p-4">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2 d-flex">
+                                <i class="bi bi-x-lg text-danger me-2 flex-shrink-0"></i>
+                                <span class="text-muted">สินค้าเกิดความเสียหายจากการใช้งาน</span>
+                            </li>
+                            <li class="mb-2 d-flex">
+                                <i class="bi bi-x-lg text-danger me-2 flex-shrink-0"></i>
+                                <span class="text-muted">สินค้าขาดชิ้นส่วน หรืออุปกรณ์ไม่ครบ</span>
+                            </li>
+                            <li class="mb-2 d-flex">
+                                <i class="bi bi-x-lg text-danger me-2 flex-shrink-0"></i>
+                                <span class="text-muted">สินค้าที่ถูกดัดแปลงหรือแก้ไข</span>
+                            </li>
+                            <li class="mb-2 d-flex">
+                                <i class="bi bi-x-lg text-danger me-2 flex-shrink-0"></i>
+                                <span class="text-muted">สินค้าที่ผ่านการประกอบแล้ว (ยกเว้นชำรุด)</span>
+                            </li>
+                            <li class="mb-0 d-flex">
+                                <i class="bi bi-x-lg text-danger me-2 flex-shrink-0"></i>
+                                <span class="text-muted">สินค้าที่เกิน 7 วันนับจากวันได้รับ</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Return Process -->
+<section class="py-5">
+    <div class="container">
+        <h3 class="text-center mb-5">ขั้นตอนการคืนสินค้า</h3>
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        1
+                    </div>
+                    <h6 class="fw-bold">ติดต่อแจ้งคืน</h6>
+                    <p class="text-muted small mb-0">
+                        โทร 02-123-4567 หรืออีเมล contact@kidbike.com พร้อมเลขคำสั่งซื้อและเหตุผล
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        2
+                    </div>
+                    <h6 class="fw-bold">รับการอนุมัติ</h6>
+                    <p class="text-muted small mb-0">
+                        ทีมงานตรวจสอบและส่งอีเมลยืนยัน พร้อมรายละเอียดการส่งคืน
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        3
+                    </div>
+                    <h6 class="fw-bold">จัดส่งคืน</h6>
+                    <p class="text-muted small mb-0">
+                        บรรจุสินค้าในสภาพเดิม ติดสติกเกอร์ที่เราส่งให้ แล้วส่งคืน
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 border-0 shadow-sm text-center p-4">
+                    <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.5rem;">
+                        4
+                    </div>
+                    <h6 class="fw-bold">รับเงินคืน</h6>
+                    <p class="text-muted small mb-0">
+                        ตรวจสอบสินค้าและคืนเงินภายใน 7-14 วัน ตามช่องทางที่ชำระ
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Important Notes -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <h3 class="text-center mb-4">ข้อควรระวัง</h3>
+                <div class="card border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="alert alert-warning d-flex align-items-start mb-4">
+                            <i class="bi bi-exclamation-triangle-fill me-3 fs-4 flex-shrink-0"></i>
+                            <div>
+                                <h6 class="fw-bold mb-2">ก่อนประกอบจักรยาน</h6>
+                                <p class="mb-0 text-muted">
+                                    กรุณาตรวจสอบความถูกต้องของสินค้าก่อนประกอบ หากพบปัญหาให้ติดต่อทันที 
+                                    <strong>สินค้าที่ประกอบแล้วจะไม่สามารถคืนได้</strong> ยกเว้นกรณีมีตำหนิจากโรงงาน
+                                </p>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-3 d-flex">
+                                <i class="bi bi-box-seam text-primary me-3 flex-shrink-0 mt-1"></i>
+                                <span class="text-muted">กรุณาคืนสินค้าในบรรจุภัณฑ์และอุปกรณ์ครบถ้วน</span>
+                            </li>
+                            <li class="mb-3 d-flex">
+                                <i class="bi bi-receipt text-primary me-3 flex-shrink-0 mt-1"></i>
+                                <span class="text-muted">แนบใบเสร็จหรือหลักฐานการสั่งซื้อ</span>
+                            </li>
+                            <li class="mb-3 d-flex">
+                                <i class="bi bi-clock text-primary me-3 flex-shrink-0 mt-1"></i>
+                                <span class="text-muted">ส่งคืนภายใน 7 วันหลังได้รับอนุมัติ</span>
+                            </li>
+                            <li class="mb-0 d-flex">
+                                <i class="bi bi-shield-check text-primary me-3 flex-shrink-0 mt-1"></i>
+                                <span class="text-muted">สินค้าต้องอยู่ในสภาพสะอาด ไม่มีรอยสกปรก</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Exchange Option -->
+<section class="py-4">
+    <div class="container">
+        <div class="card border-0 shadow-sm" style="background: linear-gradient(135deg, #E8F8F5 0%, #D5F5E3 100%);">
+            <div class="card-body p-4 p-md-5">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="fw-bold mb-2">ต้องการเปลี่ยนสินค้าเป็นรุ่น/ไซส์อื่น?</h5>
+                        <p class="text-muted mb-md-0">
+                            คุณสามารถเปลี่ยนสินค้าได้โดยไม่ต้องคืนเงินก่อน 
+                            แค่แจ้งความต้องการและชำระส่วนต่าง (ถ้ามี)
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <a asp-controller="Home" asp-action="Contact" class="btn btn-primary">
+                            <i class="bi bi-arrow-left-right me-2"></i>ขอเปลี่ยนสินค้า
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-4">
+    <div class="container text-center">
+        <p class="text-muted mb-3">ต้องการความช่วยเหลือ?</p>
+        <a asp-controller="Home" asp-action="Contact" class="btn btn-outline-primary">
+            <i class="bi bi-headset me-2"></i>ติดต่อฝ่ายบริการ
+        </a>
+    </div>
+</section>

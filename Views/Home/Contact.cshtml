@@ -1,0 +1,180 @@
+@{
+    ViewData["Title"] = "ติดต่อเรา - KidBike Shop";
+}
+
+<!-- Breadcrumb -->
+<div class="container py-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-0">
+            <li class="breadcrumb-item"><a asp-controller="Home" asp-action="Index">หน้าแรก</a></li>
+            <li class="breadcrumb-item active" aria-current="page">ติดต่อเรา</li>
+        </ol>
+    </nav>
+</div>
+
+<!-- Page Header -->
+<section class="py-4">
+    <div class="container">
+        <div class="section-header text-center">
+            <h1 class="section-title">
+                <i class="bi bi-chat-square-text text-primary me-2"></i>ติดต่อเรา
+            </h1>
+            <p class="section-subtitle">เรายินดีช่วยเหลือและตอบคำถามของคุณ</p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section class="py-4">
+    <div class="container">
+        <div class="row g-4">
+            <!-- Contact Info Cards -->
+            <div class="col-lg-4">
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="bi bi-geo-alt fs-4"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h6 class="fw-bold mb-0">ที่อยู่</h6>
+                                    </div>
+                                </div>
+                                <p class="text-muted mb-0">
+                                    123 ถนนสุขุมวิท<br>
+                                    แขวงคลองเตย เขตคลองเตย<br>
+                                    กรุงเทพมหานคร 10110
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="bi bi-telephone fs-4"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h6 class="fw-bold mb-0">โทรศัพท์</h6>
+                                    </div>
+                                </div>
+                                <p class="text-muted mb-1">02-123-4567</p>
+                                <small class="text-muted">จันทร์-เสาร์ 9:00-18:00 น.</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="flex-shrink-0">
+                                        <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="bi bi-envelope fs-4"></i>
+                                        </div>
+                                    </div>
+                                    <div class="ms-3">
+                                        <h6 class="fw-bold mb-0">อีเมล</h6>
+                                    </div>
+                                </div>
+                                <p class="text-muted mb-0">contact@kidbike.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm">
+                    <div class="card-header bg-white py-3">
+                        <h5 class="mb-0">
+                            <i class="bi bi-pencil-square me-2 text-primary"></i>ส่งข้อความถึงเรา
+                        </h5>
+                    </div>
+                    <div class="card-body p-4 p-md-5">
+                        <form>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="name" class="form-label fw-semibold">ชื่อ-นามสกุล <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control form-control-lg" id="name" placeholder="กรอกชื่อ-นามสกุลของคุณ" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label fw-semibold">อีเมล <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control form-control-lg" id="email" placeholder="example@email.com" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="form-label fw-semibold">เบอร์โทรศัพท์</label>
+                                    <input type="tel" class="form-control form-control-lg" id="phone" placeholder="08x-xxx-xxxx">
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="subject" class="form-label fw-semibold">หัวข้อ <span class="text-danger">*</span></label>
+                                    <select class="form-select form-select-lg" id="subject" required>
+                                        <option value="" selected disabled>เลือกหัวข้อ</option>
+                                        <option value="general">สอบถามทั่วไป</option>
+                                        <option value="product">สอบถามสินค้า</option>
+                                        <option value="order">สอบถามคำสั่งซื้อ</option>
+                                        <option value="warranty">การรับประกัน</option>
+                                        <option value="suggestion">ข้อเสนอแนะ</option>
+                                        <option value="other">อื่นๆ</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="message" class="form-label fw-semibold">ข้อความ <span class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="message" rows="5" placeholder="เขียนข้อความของคุณที่นี่..." required></textarea>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-send me-2"></i>ส่งข้อความ
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="py-5 bg-white">
+    <div class="container">
+        <div class="card border-0 shadow-sm overflow-hidden">
+            <div class="card-body p-0">
+                <div style="height: 400px; background: linear-gradient(135deg, #E8F8F5 0%, #D5F5E3 100%); display: flex; align-items: center; justify-content: center;">
+                    <div class="text-center">
+                        <div style="font-size: 4rem; margin-bottom: 1rem;">🗺️</div>
+                        <h5>KidBike Shop</h5>
+                        <p class="text-muted mb-0">123 ถนนสุขุมวิท กรุงเทพฯ 10110</p>
+                        <small class="text-muted">(แผนที่จริงสามารถเพิ่มได้ด้วย Google Maps Embed)</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social Media -->
+<section class="py-4">
+    <div class="container text-center">
+        <h5 class="mb-4">ติดตามเราได้ที่</h5>
+        <div class="d-flex justify-content-center gap-3">
+            <a href="#" class="btn btn-outline-primary btn-lg rounded-circle" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-facebook fs-4"></i>
+            </a>
+            <a href="#" class="btn btn-outline-success btn-lg rounded-circle" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-line fs-4"></i>
+            </a>
+            <a href="#" class="btn btn-outline-danger btn-lg rounded-circle" style="width: 60px; height: 60px; display: flex; align-items: center; justify-content: center;">
+                <i class="bi bi-instagram fs-4"></i>
+            </a>
+        </div>
+    </div>
+</section>

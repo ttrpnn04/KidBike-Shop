@@ -74,7 +74,7 @@
                                         @Html.DisplayNameFor(m => m.RememberMe)
                                     </label>
                                 </div>
-                                <a href="#" class="text-primary text-decoration-none small">ลืมรหัสผ่าน?</a>
+                                <a asp-controller="Account" asp-action="ForgotPassword" class="text-primary text-decoration-none small">ลืมรหัสผ่าน?</a>
                             </div>
 
                             <!-- Submit Button -->
@@ -98,14 +98,6 @@
                             <hr class="flex-grow-1">
                             <span class="mx-3 text-muted small">หรือ</span>
                             <hr class="flex-grow-1">
-                        </div>
-
-                        <!-- Quick Login for Demo -->
-                        <div class="text-center">
-                            <p class="text-muted small mb-2">ทดลองเข้าสู่ระบบด้วยบัญชีทดสอบ:</p>
-                            <button type="button" class="btn btn-outline-secondary w-100" onclick="fillDemoAccount()">
-                                <i class="bi bi-person-workspace me-2"></i>บัญชีทดสอบ
-                            </button>
                         </div>
                     </div>
                 </div>

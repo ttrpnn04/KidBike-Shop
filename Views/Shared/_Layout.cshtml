@@ -142,19 +142,19 @@
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="footer-subtitle">สินค้า</h6>
                     <ul class="footer-links">
-                        <li><a href="#">จักรยานสามล้อ</a></li>
-                        <li><a href="#">จักรยานสองล้อ</a></li>
-                        <li><a href="#">จักรยานบาลานซ์</a></li>
-                        <li><a href="#">อุปกรณ์เสริม</a></li>
+                        <li><a asp-controller="Product" asp-action="Index">จักรยานทั้งหมด</a></li>
+                        <li><a asp-controller="Category" asp-action="Index">หมวดหมู่สินค้า</a></li>
+                        <li><a asp-controller="Home" asp-action="SizeGuide">คำแนะนำเลือกไซส์</a></li>
+                        <li><a asp-controller="Promotion" asp-action="Index">โปรโมชั่น</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-2 col-md-6 mb-4">
                     <h6 class="footer-subtitle">บริการ</h6>
                     <ul class="footer-links">
-                        <li><a asp-controller="Promotion" asp-action="Index">โปรโมชั่น</a></li>
-                        <li><a href="#">ติดตามคำสั่งซื้อ</a></li>
-                        <li><a href="#">การจัดส่ง</a></li>
-                        <li><a href="#">คืนสินค้า</a></li>
+                        <li><a asp-controller="Home" asp-action="Shipping">การจัดส่ง</a></li>
+                        <li><a asp-controller="Home" asp-action="Returns">นโยบายการคืน</a></li>
+                        <li><a asp-controller="Home" asp-action="FAQ">คำถามที่พบบ่อย</a></li>
+                        <li><a asp-controller="Home" asp-action="SizeGuide">คำแนะนำไซส์</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-4 mb-4">
@@ -165,10 +165,20 @@
                         <li><i class="bi bi-envelope"></i> contact@kidbike.com</li>
                         <li><i class="bi bi-clock"></i> จันทร์-เสาร์ 9:00-18:00 น.</li>
                     </ul>
+                    <div class="mt-3">
+                        <a asp-controller="Home" asp-action="Contact" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-chat-dots me-1"></i>ติดต่อเรา
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="footer-bottom text-center">
-                <p>&copy; 2026 KidBike Shop - ร้านจักรยานเด็ก. All rights reserved.</p>
+                <p class="mb-2">&copy; 2026 KidBike Shop - ร้านจักรยานเด็ก. All rights reserved.</p>
+                <p class="mb-0 small">
+                    <a asp-controller="Home" asp-action="About" class="text-decoration-none me-3">เกี่ยวกับเรา</a>
+                    <a asp-controller="Home" asp-action="Privacy" class="text-decoration-none me-3">นโยบายความเป็นส่วนตัว</a>
+                    <a asp-controller="Home" asp-action="Terms" class="text-decoration-none">เงื่อนไขการใช้บริการ</a>
+                </p>
             </div>
         </div>
     </footer>

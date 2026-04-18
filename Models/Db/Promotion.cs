@@ -13,6 +13,8 @@ public partial class Promotion
 
     public decimal? DiscountValue { get; set; }
 
+    public string? ConditionType { get; set; }
+
     public decimal? ConditionAmount { get; set; }
 
     public DateTime? StartDate { get; set; }
