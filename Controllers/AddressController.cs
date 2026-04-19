@@ -14,7 +14,7 @@ public class AddressController : Controller
     }
 
     // GET: /Address - แสดงหน้าที่อยู่จัดส่ง
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -24,7 +24,7 @@ public class AddressController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var user = await _context.Users.FindAsync(userId);
+        var user = _context.Users.Find(userId);
         
         if (user == null)
         {
@@ -36,7 +36,7 @@ public class AddressController : Controller
 
     // POST: /Address/Update - อัปเดตที่อยู่จัดส่ง
     [HttpPost]
-    public async Task<IActionResult> Update(string address, string phone, string email)
+    public IActionResult Update(string address, string phone, string email)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -45,7 +45,7 @@ public class AddressController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var user = await _context.Users.FindAsync(userId);
+        var user = _context.Users.Find(userId);
         
         if (user == null)
         {
@@ -60,7 +60,7 @@ public class AddressController : Controller
         if (!string.IsNullOrEmpty(email))
             user.Email = email;
 
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         TempData["SuccessMessage"] = "อัปเดตข้อมูลที่อยู่จัดส่งเรียบร้อยแล้ว";
         return RedirectToAction("Index");

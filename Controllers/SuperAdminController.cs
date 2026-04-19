@@ -29,9 +29,9 @@ namespace CSI402_Project.Controllers
         // POST: /SuperAdmin/AssignRole
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AssignRole(int userId, string role)
+        public IActionResult AssignRole(int userId, string role)
         {
-            var user = await _context.Users.FindAsync(userId);
+            var user = _context.Users.Find(userId);
             if (user == null)
             {
                 return NotFound();
@@ -54,7 +54,7 @@ namespace CSI402_Project.Controllers
             }
 
             user.Role = role;
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             TempData["SuccessMessage"] = $"เปลี่ยนบทบาทผู้ใช้ {user.Username} เป็น {role} สำเร็จ";
             return RedirectToAction(nameof(Users));
@@ -63,9 +63,9 @@ namespace CSI402_Project.Controllers
         // POST: /SuperAdmin/DeleteUser/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteUser(int id)
+        public IActionResult DeleteUser(int id)
         {
-            var user = await _context.Users.FindAsync(id);
+            var user = _context.Users.Find(id);
             if (user == null)
             {
                 return NotFound();
@@ -88,7 +88,7 @@ namespace CSI402_Project.Controllers
             }
 
             _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             TempData["SuccessMessage"] = "ลบผู้ใช้สำเร็จ";
             return RedirectToAction(nameof(Users));
@@ -97,7 +97,7 @@ namespace CSI402_Project.Controllers
         // POST: /SuperAdmin/CreateAdmin
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateAdmin(string username, string email, string password, string phone)
+        public IActionResult CreateAdmin(string username, string email, string password, string phone)
         {
             if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
             {
@@ -133,7 +133,7 @@ namespace CSI402_Project.Controllers
             };
 
             _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             TempData["SuccessMessage"] = "สร้างบัญชี Admin สำเร็จ";
             return RedirectToAction(nameof(Users));

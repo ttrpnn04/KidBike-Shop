@@ -14,7 +14,7 @@ public class CartController : Controller
     }
 
     // GET: /Cart - แสดงตะกร้าสินค้า
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         // TODO: รับ UserId จาก Session หรือ Claims จริงๆ
         var userId = HttpContext.Session.GetInt32("UserId");
@@ -25,17 +25,17 @@ public class CartController : Controller
             return View(new List<Cart>());
         }
 
-        var cartItems = await _context.Carts
+        var cartItems = _context.Carts
             .Include(c => c.Product)
             .Where(c => c.UserId == userId)
-            .ToListAsync();
+            .ToList();
 
         return View(cartItems);
     }
 
     // POST: /Cart/Add - เพิ่มสินค้าลงตะกร้า
     [HttpPost]
-    public async Task<IActionResult> Add(int productId, int quantity = 1)
+    public IActionResult Add(int productId, int quantity = 1)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -46,8 +46,8 @@ public class CartController : Controller
         }
 
         // ตรวจสอบว่ามีสินค้านี้ในตะกร้าอยู่แล้วหรือไม่
-        var existingItem = await _context.Carts
-            .FirstOrDefaultAsync(c => c.UserId == userId && c.ProductId == productId);
+        var existingItem = _context.Carts
+            .FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
 
         if (existingItem != null)
         {
@@ -66,7 +66,7 @@ public class CartController : Controller
             _context.Carts.Add(cartItem);
         }
 
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
         TempData["SuccessMessage"] = "เพิ่มสินค้าลงตะกร้าเรียบร้อยแล้ว";
         
         return RedirectToAction("Index");
@@ -74,7 +74,7 @@ public class CartController : Controller
 
     // POST: /Cart/Update - อัพเดทจำนวนสินค้า
     [HttpPost]
-    public async Task<IActionResult> Update(int cartId, int quantity)
+    public IActionResult Update(int cartId, int quantity)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -83,8 +83,8 @@ public class CartController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var cartItem = await _context.Carts
-            .FirstOrDefaultAsync(c => c.CartId == cartId && c.UserId == userId);
+        var cartItem = _context.Carts
+            .FirstOrDefault(c => c.CartId == cartId && c.UserId == userId);
 
         if (cartItem == null)
         {
@@ -100,13 +100,13 @@ public class CartController : Controller
             cartItem.Quantity = quantity;
         }
 
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
         return RedirectToAction("Index");
     }
 
     // POST: /Cart/Remove - ลบสินค้าออกจากตะกร้า
     [HttpPost]
-    public async Task<IActionResult> Remove(int cartId)
+    public IActionResult Remove(int cartId)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -115,13 +115,13 @@ public class CartController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var cartItem = await _context.Carts
-            .FirstOrDefaultAsync(c => c.CartId == cartId && c.UserId == userId);
+        var cartItem = _context.Carts
+            .FirstOrDefault(c => c.CartId == cartId && c.UserId == userId);
 
         if (cartItem != null)
         {
             _context.Carts.Remove(cartItem);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             TempData["SuccessMessage"] = "ลบสินค้าออกจากตะกร้าเรียบร้อยแล้ว";
         }
 
@@ -130,7 +130,7 @@ public class CartController : Controller
 
     // POST: /Cart/Clear - ล้างตะกร้าทั้งหมด
     [HttpPost]
-    public async Task<IActionResult> Clear()
+    public IActionResult Clear()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -139,12 +139,12 @@ public class CartController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var cartItems = await _context.Carts
+        var cartItems = _context.Carts
             .Where(c => c.UserId == userId)
-            .ToListAsync();
+            .ToList();
 
         _context.Carts.RemoveRange(cartItems);
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
         
         TempData["SuccessMessage"] = "ล้างตะกร้าสินค้าเรียบร้อยแล้ว";
         return RedirectToAction("Index");

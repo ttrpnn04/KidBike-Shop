@@ -67,7 +67,7 @@ public class AdminController : Controller
         // POST: /Admin/CreateProduct
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateProduct(Product product, 
+        public IActionResult CreateProduct(Product product, 
             IFormFile MainImageFile, List<IFormFile> AdditionalImageFiles, List<string> AdditionalImageUrls)
         {
             if (ModelState.IsValid)
@@ -75,11 +75,11 @@ public class AdminController : Controller
                 // Handle main image file upload
                 if (MainImageFile != null && MainImageFile.Length > 0)
                 {
-                    product.ImageUrl = await SaveImageFile(MainImageFile);
+                    product.ImageUrl = SaveImageFile(MainImageFile);
                 }
 
                 _context.Products.Add(product);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
                 // Handle additional image files
                 int order = 1;
@@ -87,7 +87,7 @@ public class AdminController : Controller
                 {
                     foreach (var file in AdditionalImageFiles.Where(f => f != null && f.Length > 0))
                     {
-                        var imageUrl = await SaveImageFile(file);
+                        var imageUrl = SaveImageFile(file);
                         _context.ProductImages.Add(new ProductImage
                         {
                             ProductId = product.ProductId,
@@ -114,7 +114,7 @@ public class AdminController : Controller
                 if ((AdditionalImageFiles != null && AdditionalImageFiles.Any(f => f != null && f.Length > 0)) ||
                     (AdditionalImageUrls != null && AdditionalImageUrls.Any(url => !string.IsNullOrWhiteSpace(url))))
                 {
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                 }
 
                 TempData["SuccessMessage"] = "เพิ่มสินค้าสำเร็จ";
@@ -128,7 +128,7 @@ public class AdminController : Controller
             return View(viewModel);
         }
 
-        private async Task<string> SaveImageFile(IFormFile file)
+        private string SaveImageFile(IFormFile file)
         {
             var uploadsFolder = Path.Combine(_environment.WebRootPath, "images", "products");
             if (!Directory.Exists(uploadsFolder))
@@ -141,7 +141,7 @@ public class AdminController : Controller
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             {
-                await file.CopyToAsync(fileStream);
+                file.CopyTo(fileStream);
             }
 
             return $"/images/products/{uniqueFileName}";
@@ -168,7 +168,7 @@ public class AdminController : Controller
         // POST: /Admin/EditProduct/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditProduct(int id, Product product, 
+        public IActionResult EditProduct(int id, Product product, 
             List<int> ExistingImageIds, List<string> ExistingImageUrls, List<string> AdditionalImageUrls)
         {
             if (id != product.ProductId)
@@ -183,9 +183,9 @@ public class AdminController : Controller
                     _context.Update(product);
 
                     // Get current images from database
-                    var currentImages = await _context.ProductImages
+                    var currentImages = _context.ProductImages
                         .Where(pi => pi.ProductId == id)
-                        .ToListAsync();
+                        .ToList();
 
                     // Delete images that are not in the submitted list
                     var submittedExistingIds = ExistingImageIds ?? new List<int>();
@@ -228,7 +228,7 @@ public class AdminController : Controller
                         }
                     }
 
-                    await _context.SaveChangesAsync();
+                    _context.SaveChanges();
                     TempData["SuccessMessage"] = "แก้ไขสินค้าสำเร็จ";
                 }
                 catch (DbUpdateConcurrencyException)
@@ -252,16 +252,16 @@ public class AdminController : Controller
         // POST: /Admin/DeleteProduct/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteProduct(int id)
+        public IActionResult DeleteProduct(int id)
         {
-            var product = await _context.Products.FindAsync(id);
+            var product = _context.Products.Find(id);
             if (product == null)
             {
                 return NotFound();
             }
 
             _context.Products.Remove(product);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             TempData["SuccessMessage"] = "ลบสินค้าสำเร็จ";
             return RedirectToAction(nameof(Products));
         }
@@ -284,12 +284,12 @@ public class AdminController : Controller
         // POST: /Admin/CreateCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateCategory(Category category)
+        public IActionResult CreateCategory(Category category)
         {
             if (ModelState.IsValid)
             {
                 _context.Categories.Add(category);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 TempData["SuccessMessage"] = "เพิ่มหมวดหมู่สำเร็จ";
                 return RedirectToAction(nameof(Categories));
             }
@@ -299,12 +299,12 @@ public class AdminController : Controller
         // POST: /Admin/EditCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditCategory(Category category)
+        public IActionResult EditCategory(Category category)
         {
             if (ModelState.IsValid)
             {
                 _context.Update(category);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 TempData["SuccessMessage"] = "แก้ไขหมวดหมู่สำเร็จ";
             }
             return RedirectToAction(nameof(Categories));
@@ -313,9 +313,9 @@ public class AdminController : Controller
         // POST: /Admin/DeleteCategory/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteCategory(int id)
+        public IActionResult DeleteCategory(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
+            var category = _context.Categories.Find(id);
             if (category == null)
             {
                 return NotFound();
@@ -330,7 +330,7 @@ public class AdminController : Controller
             }
 
             _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             TempData["SuccessMessage"] = "ลบหมวดหมู่สำเร็จ";
             return RedirectToAction(nameof(Categories));
         }
@@ -353,12 +353,12 @@ public class AdminController : Controller
         // POST: /Admin/CreatePromotion
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePromotion(Promotion promotion)
+        public IActionResult CreatePromotion(Promotion promotion)
         {
             if (ModelState.IsValid)
             {
                 _context.Promotions.Add(promotion);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 TempData["SuccessMessage"] = "เพิ่มโปรโมชั่นสำเร็จ";
                 return RedirectToAction(nameof(Promotions));
             }
@@ -368,12 +368,12 @@ public class AdminController : Controller
         // POST: /Admin/EditPromotion
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditPromotion(Promotion promotion)
+        public IActionResult EditPromotion(Promotion promotion)
         {
             if (ModelState.IsValid)
             {
                 _context.Update(promotion);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
                 TempData["SuccessMessage"] = "แก้ไขโปรโมชั่นสำเร็จ";
             }
             return RedirectToAction(nameof(Promotions));
@@ -382,16 +382,16 @@ public class AdminController : Controller
         // POST: /Admin/DeletePromotion/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeletePromotion(int id)
+        public IActionResult DeletePromotion(int id)
         {
-            var promotion = await _context.Promotions.FindAsync(id);
+            var promotion = _context.Promotions.Find(id);
             if (promotion == null)
             {
                 return NotFound();
             }
 
             _context.Promotions.Remove(promotion);
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             TempData["SuccessMessage"] = "ลบโปรโมชั่นสำเร็จ";
             return RedirectToAction(nameof(Promotions));
         }
@@ -428,9 +428,9 @@ public class AdminController : Controller
         // POST: /Admin/UpdateOrderStatus
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateOrderStatus(int orderId, string status)
+        public IActionResult UpdateOrderStatus(int orderId, string status)
         {
-            var order = await _context.Orders.FindAsync(orderId);
+            var order = _context.Orders.Find(orderId);
             if (order == null)
             {
                 return NotFound();
@@ -444,7 +444,7 @@ public class AdminController : Controller
             }
 
             order.Status = status;
-            await _context.SaveChangesAsync();
+            _context.SaveChanges();
             TempData["SuccessMessage"] = "อัปเดตสถานะคำสั่งซื้อสำเร็จ";
             return RedirectToAction(nameof(OrderDetails), new { id = orderId });
         }

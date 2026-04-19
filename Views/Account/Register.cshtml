@@ -3,7 +3,6 @@
     ViewData["Title"] = "สมัครสมาชิก - KidBike Shop";
 }
 
-<!-- Breadcrumb -->
 <div class="container py-3">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
@@ -13,21 +12,18 @@
     </nav>
 </div>
 
-<!-- Register Section -->
 <section class="py-4">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8">
                 <div class="card shadow border-0">
                     <div class="card-body p-4 p-md-5">
-                        <!-- Header -->
                         <div class="text-center mb-4">
                             <div class="mb-3" style="font-size: 3rem;">🚲</div>
                             <h2 class="fw-bold">สมัครสมาชิก</h2>
                             <p class="text-muted">สร้างบัญชีเพื่อเริ่มต้นช้อปปิ้งกับเรา</p>
                         </div>
 
-                        <!-- Success Message -->
                         @if (TempData["SuccessMessage"] != null)
                         {
                             <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -37,13 +33,11 @@
                             </div>
                         }
 
-                        <!-- Register Form -->
                         <form asp-controller="Account" asp-action="Register" method="post">
                             @Html.AntiForgeryToken()
                             
                             <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
-                            <!-- Username -->
                             <div class="mb-3">
                                 <label asp-for="Username" class="form-label fw-semibold">
                                     <i class="bi bi-person me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Username)
@@ -52,7 +46,6 @@
                                 <span asp-validation-for="Username" class="text-danger small"></span>
                             </div>
 
-                            <!-- Email -->
                             <div class="mb-3">
                                 <label asp-for="Email" class="form-label fw-semibold">
                                     <i class="bi bi-envelope me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Email)
@@ -61,7 +54,6 @@
                                 <span asp-validation-for="Email" class="text-danger small"></span>
                             </div>
 
-                            <!-- Phone -->
                             <div class="mb-3">
                                 <label asp-for="Phone" class="form-label fw-semibold">
                                     <i class="bi bi-telephone me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Phone)
@@ -70,7 +62,6 @@
                                 <span asp-validation-for="Phone" class="text-danger small"></span>
                             </div>
 
-                            <!-- Address -->
                             <div class="mb-3">
                                 <label asp-for="Address" class="form-label fw-semibold">
                                     <i class="bi bi-geo-alt me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Address)
@@ -79,7 +70,6 @@
                                 <span asp-validation-for="Address" class="text-danger small"></span>
                             </div>
 
-                            <!-- Password -->
                             <div class="mb-3">
                                 <label asp-for="Password" class="form-label fw-semibold">
                                     <i class="bi bi-lock me-2 text-primary"></i>@Html.DisplayNameFor(m => m.Password)
@@ -94,7 +84,6 @@
                                 <div class="form-text">รหัสผ่านต้องมีความยาวอย่างน้อย 6 ตัวอักษร</div>
                             </div>
 
-                            <!-- Confirm Password -->
                             <div class="mb-4">
                                 <label asp-for="ConfirmPassword" class="form-label fw-semibold">
                                     <i class="bi bi-lock-fill me-2 text-primary"></i>@Html.DisplayNameFor(m => m.ConfirmPassword)
@@ -108,14 +97,12 @@
                                 <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
                             </div>
 
-                            <!-- Submit Button -->
                             <div class="d-grid mb-3">
                                 <button type="submit" class="btn btn-primary btn-lg">
                                     <i class="bi bi-person-plus me-2"></i>สมัครสมาชิก
                                 </button>
                             </div>
 
-                            <!-- Login Link -->
                             <div class="text-center">
                                 <p class="text-muted mb-0">
                                     มีบัญชีอยู่แล้ว? 
@@ -124,7 +111,6 @@
                             </div>
                         </form>
 
-                        <!-- Benefits -->
                         <hr class="my-4">
                         <div class="row g-2 text-center">
                             <div class="col-4">

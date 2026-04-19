@@ -14,11 +14,11 @@ public class CategoryController : Controller
     }
 
     // GET: /Category - แสดงรายการหมวดหมู่ทั้งหมด
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
-        var categories = await _context.Categories
+        var categories = _context.Categories
             .Include(c => c.Products)
-            .ToListAsync();
+            .ToList();
         return View(categories);
     }
 
@@ -34,16 +34,16 @@ public class CategoryController : Controller
     }
 
     // GET: /Category/Details/5 - แสดงรายละเอียดหมวดหมู่
-    public async Task<IActionResult> Details(int? id)
+    public IActionResult Details(int? id)
     {
         if (id == null)
         {
             return NotFound();
         }
 
-        var category = await _context.Categories
+        var category = _context.Categories
             .Include(c => c.Products)
-            .FirstOrDefaultAsync(c => c.CategoryId == id);
+            .FirstOrDefault(c => c.CategoryId == id);
 
         if (category == null)
         {

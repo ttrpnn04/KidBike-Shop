@@ -25,11 +25,10 @@ namespace CSI402_Project.Controllers
         // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public IActionResult Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                // Check if username already exists
                 var existingUser = _context.Users.FirstOrDefault(u => u.Username == model.Username);
                 if (existingUser != null)
                 {
@@ -37,7 +36,6 @@ namespace CSI402_Project.Controllers
                     return View(model);
                 }
 
-                // Check if email already exists
                 var existingEmail = _context.Users.FirstOrDefault(u => u.Email == model.Email);
                 if (existingEmail != null)
                 {
@@ -45,7 +43,6 @@ namespace CSI402_Project.Controllers
                     return View(model);
                 }
 
-                // Create new user
                 var user = new User
                 {
                     Username = model.Username,
@@ -57,12 +54,10 @@ namespace CSI402_Project.Controllers
                 };
 
                 _context.Users.Add(user);
-                await _context.SaveChangesAsync();
+                _context.SaveChanges();
 
-                // Set success message
                 TempData["SuccessMessage"] = "สมัครสมาชิกสำเร็จ! กรุณาเข้าสู่ระบบ";
 
-                // Redirect to login page (we'll create this later or redirect to home)
                 return RedirectToAction("Login", "Account");
             }
 
@@ -79,7 +74,7 @@ namespace CSI402_Project.Controllers
         // POST: /Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model)
+        public IActionResult Login(LoginViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -92,7 +87,6 @@ namespace CSI402_Project.Controllers
                     return View(model);
                 }
 
-                // Store user info in session
                 HttpContext.Session.SetInt32("UserId", user.UserId);
                 HttpContext.Session.SetString("Username", user.Username);
                 HttpContext.Session.SetString("UserRole", user.Role ?? "User");
@@ -122,7 +116,7 @@ namespace CSI402_Project.Controllers
         // POST: /Account/ForgotPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ForgotPassword(ForgotPasswordViewModel model)
+        public IActionResult ForgotPassword(ForgotPasswordViewModel model)
         {
             if (ModelState.IsValid)
             {

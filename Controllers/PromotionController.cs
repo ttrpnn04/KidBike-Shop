@@ -14,28 +14,28 @@ public class PromotionController : Controller
     }
 
     // GET: /Promotion - แสดงโปรโมชั่นทั้งหมดที่กำลังใช้งานได้
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         var today = DateTime.Now;
         
-        var promotions = await _context.Promotions
+        var promotions = _context.Promotions
             .Where(p => p.StartDate <= today && p.EndDate >= today)
             .OrderByDescending(p => p.EndDate)
-            .ToListAsync();
+            .ToList();
 
         return View(promotions);
     }
 
     // GET: /Promotion/Details/5 - แสดงรายละเอียดโปรโมชั่น
-    public async Task<IActionResult> Details(int? id)
+    public IActionResult Details(int? id)
     {
         if (id == null)
         {
             return NotFound();
         }
 
-        var promotion = await _context.Promotions
-            .FirstOrDefaultAsync(p => p.PromotionId == id);
+        var promotion = _context.Promotions
+            .FirstOrDefault(p => p.PromotionId == id);
 
         if (promotion == null)
         {

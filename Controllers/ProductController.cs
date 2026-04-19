@@ -15,7 +15,7 @@ public class ProductController : Controller
         _context = context;
     }
 
-    public async Task<IActionResult> Index(string search, int? categoryId, string priceRange, string sortBy, int page = 1)
+    public IActionResult Index(string search, int? categoryId, string priceRange, string sortBy, int page = 1)
     {
         int pageSize = 9;
         
@@ -36,7 +36,7 @@ public class ProductController : Controller
         if (categoryId.HasValue)
         {
             query = query.Where(p => p.CategoryId == categoryId.Value);
-            var category = await _context.Categories.FindAsync(categoryId.Value);
+            var category = _context.Categories.Find(categoryId.Value);
             categoryName = category?.Name;
         }
 
@@ -72,13 +72,13 @@ public class ProductController : Controller
         };
 
         // นับจำนวนทั้งหมด
-        var totalItems = await query.CountAsync();
+        var totalItems = query.Count();
 
         // Pagination
-        var items = await query
+        var items = query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
-            .ToListAsync();
+            .ToList();
 
         // สร้าง ViewModel
         var viewModel = new ProductIndexViewModel
@@ -91,24 +91,24 @@ public class ProductController : Controller
             CurrentPage = page,
             TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize),
             TotalItems = totalItems,
-            Categories = await _context.Categories.ToListAsync(),
+            Categories = _context.Categories.ToList(),
             CategoryName = categoryName
         };
 
         return View(viewModel);
     }
 
-    public async Task<IActionResult> Details(int? id)
+    public IActionResult Details(int? id)
     {
         if (id == null)
         {
             return NotFound();
         }
 
-        var product = await _context.Products
+        var product = _context.Products
             .Include(p => p.Category)
             .Include(p => p.ProductImages.OrderBy(pi => pi.DisplayOrder))
-            .FirstOrDefaultAsync(p => p.ProductId == id);
+            .FirstOrDefault(p => p.ProductId == id);
 
         if (product == null)
         {

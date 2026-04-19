@@ -15,7 +15,7 @@ public class OrderController : Controller
     }
 
     // GET: /Order - แสดงคำสั่งซื้อทั้งหมดของผู้ใช้
-    public async Task<IActionResult> Index()
+    public IActionResult Index()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -25,18 +25,18 @@ public class OrderController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var orders = await _context.Orders
+        var orders = _context.Orders
             .Include(o => o.OrderDetails)
             .ThenInclude(od => od.Product)
             .Where(o => o.UserId == userId)
             .OrderByDescending(o => o.OrderDate)
-            .ToListAsync();
+            .ToList();
 
         return View(orders);
     }
 
     // GET: /Order/Details/5 - แสดงรายละเอียดคำสั่งซื้อ
-    public async Task<IActionResult> Details(int id)
+    public IActionResult Details(int id)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -45,10 +45,10 @@ public class OrderController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var order = await _context.Orders
+        var order = _context.Orders
             .Include(o => o.OrderDetails)
             .ThenInclude(od => od.Product)
-            .FirstOrDefaultAsync(o => o.OrderId == id && o.UserId == userId);
+            .FirstOrDefault(o => o.OrderId == id && o.UserId == userId);
 
         if (order == null)
         {
@@ -59,7 +59,7 @@ public class OrderController : Controller
     }
 
     // GET: /Order/Checkout - หน้าดำเนินการสั่งซื้อ
-    public async Task<IActionResult> Checkout()
+    public IActionResult Checkout()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -69,10 +69,10 @@ public class OrderController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var cartItems = await _context.Carts
+        var cartItems = _context.Carts
             .Include(c => c.Product)
             .Where(c => c.UserId == userId)
-            .ToListAsync();
+            .ToList();
 
         if (!cartItems.Any())
         {
@@ -80,7 +80,7 @@ public class OrderController : Controller
             return RedirectToAction("Index", "Cart");
         }
 
-        var user = await _context.Users.FindAsync(userId);
+        var user = _context.Users.Find(userId);
 
         var viewModel = new CheckoutViewModel
         {
@@ -94,7 +94,7 @@ public class OrderController : Controller
             var promoId = TempData["AppliedPromotionId"] as int? ?? 0;
             if (promoId > 0)
             {
-                var promotion = await _context.Promotions.FindAsync(promoId);
+                var promotion = _context.Promotions.Find(promoId);
                 if (promotion != null)
                 {
                     viewModel.AppliedPromotion = promotion;
@@ -113,7 +113,7 @@ public class OrderController : Controller
 
     // POST: /Order/ApplyPromo - ใช้โค้ดส่วนลด
     [HttpPost]
-    public async Task<IActionResult> ApplyPromo(string promoCode)
+    public IActionResult ApplyPromo(string promoCode)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         if (userId == null)
@@ -121,10 +121,10 @@ public class OrderController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var cartItems = await _context.Carts
+        var cartItems = _context.Carts
             .Include(c => c.Product)
             .Where(c => c.UserId == userId)
-            .ToListAsync();
+            .ToList();
 
         if (!cartItems.Any())
         {
@@ -136,8 +136,8 @@ public class OrderController : Controller
         var today = DateTime.Now;
 
         // Find valid promotion by name/code
-        var promotion = await _context.Promotions
-            .FirstOrDefaultAsync(p => p.Name == promoCode && 
+        var promotion = _context.Promotions
+            .FirstOrDefault(p => p.Name == promoCode && 
                                      p.StartDate <= today && 
                                      p.EndDate >= today);
 
@@ -153,7 +153,7 @@ public class OrderController : Controller
         // Check first purchase requirement
         if (conditionType == "firstpurchase")
         {
-            var hasOrders = await _context.Orders.AnyAsync(o => o.UserId == userId);
+            var hasOrders = _context.Orders.Any(o => o.UserId == userId);
             if (hasOrders)
             {
                 TempData["ErrorMessage"] = "โค้ดนี้ใช้ได้เฉพาะสมาชิกใหม่ (ยังไม่เคยสั่งซื้อ) เท่านั้น";
@@ -217,7 +217,7 @@ public class OrderController : Controller
 
     // POST: /Order/Checkout - ยืนยันการสั่งซื้อ
     [HttpPost]
-    public async Task<IActionResult> Checkout(string shippingAddress, string phone, int? promotionId)
+    public IActionResult Checkout(string shippingAddress, string phone, int? promotionId)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
         
@@ -226,10 +226,10 @@ public class OrderController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var cartItems = await _context.Carts
+        var cartItems = _context.Carts
             .Include(c => c.Product)
             .Where(c => c.UserId == userId)
-            .ToListAsync();
+            .ToList();
 
         if (!cartItems.Any())
         {
@@ -243,7 +243,7 @@ public class OrderController : Controller
         
         if (promotionId.HasValue)
         {
-            var promotion = await _context.Promotions.FindAsync(promotionId.Value);
+            var promotion = _context.Promotions.Find(promotionId.Value);
             if (promotion != null && promotion.StartDate <= DateTime.Now && promotion.EndDate >= DateTime.Now)
             {
                 discount = CalculateDiscount(subtotal, promotion);
@@ -261,7 +261,7 @@ public class OrderController : Controller
         };
 
         _context.Orders.Add(order);
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         // สร้างรายละเอียดคำสั่งซื้อ
         foreach (var item in cartItems)
@@ -280,7 +280,7 @@ public class OrderController : Controller
         _context.Carts.RemoveRange(cartItems);
         
         // อัปเดตที่อยู่และเบอร์โทรของผู้ใช้
-        var user = await _context.Users.FindAsync(userId);
+        var user = _context.Users.Find(userId);
         if (user != null)
         {
             if (!string.IsNullOrEmpty(shippingAddress))
@@ -289,7 +289,7 @@ public class OrderController : Controller
                 user.Phone = phone;
         }
 
-        await _context.SaveChangesAsync();
+        _context.SaveChanges();
 
         TempData["SuccessMessage"] = discount > 0 
             ? $"สั่งซื้อสำเร็จ! หมายเลขคำสั่งซื้อ #{order.OrderId} (ประหยัด ฿{discount:N0})"

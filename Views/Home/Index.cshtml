@@ -174,36 +174,54 @@
         </div>
         
         <div class="row g-4">
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F0 100%);">
-                    <div class="card-body text-center p-4">
-                        <div class="mb-3" style="font-size: 3rem;">🎁</div>
-                        <h5 class="card-title">สมาชิกใหม่รับส่วนลด</h5>
-                        <p class="text-muted">ลดทันที 100 บาท เมื่อสมัครสมาชิกและซื้อสินค้าครั้งแรก</p>
-                        <span class="badge bg-primary">ใช้โค้ด: WELCOME100</span>
+            @if (Model.Promotions != null && Model.Promotions.Any())
+            {
+                @foreach (var promotion in Model.Promotions)
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F0 100%);">
+                            <div class="card-body text-center p-4">
+                                <div class="mb-3" style="font-size: 3rem;">🏷️</div>
+                                <h5 class="card-title">@promotion.Name</h5>
+                                <p class="text-muted">
+                                    @if (promotion.Type == "Percent")
+                                    {
+                                        <span>ลด @promotion.DiscountValue%</span>
+                                    }
+                                    else if (promotion.Type == "Amount")
+                                    {
+                                        <span>ลด ฿@(promotion.DiscountValue?.ToString("N0") ?? "0")</span>
+                                    }
+                                    @if (promotion.ConditionAmount.HasValue && promotion.ConditionAmount.Value > 0)
+                                    {
+                                        <span> (เมื่อซื้อครบ ฿@(promotion.ConditionAmount.Value.ToString("N0")))</span>
+                                    }
+                                </p>
+                                <div class="d-flex justify-content-center gap-2 flex-wrap">
+                                    <span class="badge bg-primary">ใช้โค้ด: @promotion.Name</span>
+                                    @if (promotion.Type == "Percent")
+                                    {
+                                        <span class="badge bg-success">ลด @promotion.DiscountValue%</span>
+                                    }
+                                    else if (promotion.Type == "Amount")
+                                    {
+                                        <span class="badge bg-info">ลด ฿@(promotion.DiscountValue?.ToString("N0") ?? "0")</span>
+                                    }
+                                </div>
+                                <small class="text-muted d-block mt-2">
+                                    ใช้ได้ถึง: @(promotion.EndDate?.ToString("dd/MM/yyyy") ?? "ไม่ระบุ")
+                                </small>
+                            </div>
+                        </div>
                     </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-center">
+                    <p class="text-muted">ไม่มีโปรโมชั่นที่ใช้งานได้ในขณะนี้</p>
                 </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #E5F9F7 0%, #F0FFFD 100%);">
-                    <div class="card-body text-center p-4">
-                        <div class="mb-3" style="font-size: 3rem;">🚚</div>
-                        <h5 class="card-title">ส่งฟรีทั่วไทย</h5>
-                        <p class="text-muted">จัดส่งฟรีทั่วประเทศ</p>
-                        <span class="badge bg-secondary">ไม่ต้องใช้โค้ด</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 border-0 shadow-sm" style="background: linear-gradient(135deg, #FFF9E5 0%, #FFFDF0 100%);">
-                    <div class="card-body text-center p-4">
-                        <div class="mb-3" style="font-size: 3rem;">🏷️</div>
-                        <h5 class="card-title">ส่วนลดเทศกาล</h5>
-                        <p class="text-muted">ลดสูงสุด 20% สำหรับสินค้าที่ร่วมรายการ</p>
-                        <span class="badge bg-warning text-dark">จำกัดเวลา</span>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </section>
