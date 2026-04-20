@@ -6,7 +6,6 @@
     var isLoggedIn = !string.IsNullOrEmpty(username);
     var isAdmin = userRole == "Admin" || userRole == "SuperAdmin";
     
-    // ดึงจำนวนสินค้าในตะกร้า
     var userId = HttpContextAccessor.HttpContext?.Session.GetInt32("UserId");
     var cartCount = 0;
     if (userId.HasValue)
@@ -79,7 +78,6 @@
                         </li>
                         @if (isLoggedIn)
                         {
-                            <!-- Logged In User Menu -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle btn btn-outline-success px-3" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-check me-1"></i>@username
@@ -106,7 +104,6 @@
                         }
                         else
                         {
-                            <!-- Guest Menu -->
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle btn btn-outline-primary px-3" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     <i class="bi bi-person-circle me-1"></i>เข้าสู่ระบบ

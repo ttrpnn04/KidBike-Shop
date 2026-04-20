@@ -121,7 +121,6 @@
 </style>
 
 <div class="container-fluid py-4">
-    <!-- Page Header -->
     <div class="page-header d-flex align-items-center">
         <a asp-action="Products" class="btn btn-outline-secondary rounded-circle me-4" style="width: 44px; height: 44px; padding: 0; display: flex; align-items: center; justify-content: center;">
             <i class="bi bi-arrow-left fs-5"></i>
@@ -139,9 +138,7 @@
         <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3"></div>
 
         <div class="row g-4">
-            <!-- Left Column - Basic Info -->
             <div class="col-lg-8">
-                <!-- Basic Information Section -->
                 <div class="form-section">
                     <div class="form-section-title">
                         <i class="bi bi-info-circle-fill"></i>
@@ -195,7 +192,6 @@
                     </div>
                 </div>
 
-                <!-- Description Section -->
                 <div class="form-section">
                     <div class="form-section-title">
                         <i class="bi bi-file-text-fill"></i>
@@ -214,9 +210,7 @@
                 </div>
             </div>
 
-            <!-- Right Column - Images -->
             <div class="col-lg-4">
-                <!-- Main Image -->
                 <div class="form-section">
                     <div class="form-section-title">
                         <i class="bi bi-image-fill"></i>
@@ -243,7 +237,6 @@
                     </div>
                 </div>
 
-                <!-- Additional Images -->
                 <div class="form-section">
                     <div class="form-section-title">
                         <i class="bi bi-images"></i>
@@ -251,14 +244,12 @@
                         <span class="badge bg-light text-dark border ms-auto" style="font-size: 0.7rem;">แสดงในหน้ารายละเอียด</span>
                     </div>
                     <div id="additionalImages">
-                        <!-- Dynamic image inputs will be added here -->
                     </div>
                     <button type="button" class="btn btn-add-image" onclick="addImageInput()">
                         <i class="bi bi-plus-lg me-2"></i>เพิ่มรูปภาพ
                     </button>
                 </div>
 
-                <!-- Action Buttons -->
                 <div class="d-grid gap-3">
                     <button type="submit" class="btn btn-primary btn-action">
                         <i class="bi bi-check-circle me-2"></i>บันทึกสินค้า
@@ -321,7 +312,6 @@
             }
         }
 
-        // Drag and drop support
         const mainImagePreview = document.getElementById('mainImagePreview');
         if (mainImagePreview) {
             mainImagePreview.addEventListener('dragover', (e) => {
