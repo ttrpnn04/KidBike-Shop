@@ -25,14 +25,12 @@ public class ProductController : Controller
 
         string? categoryName = null;
 
-        // ค้นหาตามชื่อและรายละเอียด
         if (!string.IsNullOrWhiteSpace(search))
         {
             query = query.Where(p => p.Name.Contains(search) || 
                                     (p.Description != null && p.Description.Contains(search)));
         }
 
-        // กรองตามหมวดหมู่
         if (categoryId.HasValue)
         {
             query = query.Where(p => p.CategoryId == categoryId.Value);
@@ -40,7 +38,6 @@ public class ProductController : Controller
             categoryName = category?.Name;
         }
 
-        // กรองตามช่วงราคา
         if (!string.IsNullOrEmpty(priceRange))
         {
             switch (priceRange)
@@ -60,7 +57,6 @@ public class ProductController : Controller
             }
         }
 
-        // เรียงลำดับ
         sortBy = sortBy ?? "default";
         query = sortBy switch
         {
@@ -71,16 +67,13 @@ public class ProductController : Controller
             _ => query.OrderBy(p => p.ProductId)
         };
 
-        // นับจำนวนทั้งหมด
         var totalItems = query.Count();
 
-        // Pagination
         var items = query
             .Skip((page - 1) * pageSize)
             .Take(pageSize)
             .ToList();
 
-        // สร้าง ViewModel
         var viewModel = new ProductIndexViewModel
         {
             Products = items,

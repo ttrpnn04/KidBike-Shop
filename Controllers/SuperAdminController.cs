@@ -15,7 +15,6 @@ namespace CSI402_Project.Controllers
             _context = context;
         }
 
-        // GET: /SuperAdmin/Users
         public IActionResult Users()
         {
             var users = _context.Users
@@ -26,7 +25,6 @@ namespace CSI402_Project.Controllers
             return View(users);
         }
 
-        // POST: /SuperAdmin/AssignRole
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult AssignRole(int userId, string role)
@@ -37,7 +35,6 @@ namespace CSI402_Project.Controllers
                 return NotFound();
             }
 
-            // Prevent changing own role (SuperAdmin cannot demote themselves)
             var currentUserId = HttpContext.Session.GetInt32("UserId");
             if (currentUserId == userId && role != "SuperAdmin")
             {
@@ -45,7 +42,6 @@ namespace CSI402_Project.Controllers
                 return RedirectToAction(nameof(Users));
             }
 
-            // Validate role
             var validRoles = new[] { "User", "Admin", "SuperAdmin" };
             if (!validRoles.Contains(role))
             {
@@ -60,7 +56,6 @@ namespace CSI402_Project.Controllers
             return RedirectToAction(nameof(Users));
         }
 
-        // POST: /SuperAdmin/DeleteUser/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteUser(int id)
@@ -71,7 +66,6 @@ namespace CSI402_Project.Controllers
                 return NotFound();
             }
 
-            // Prevent deleting own account
             var currentUserId = HttpContext.Session.GetInt32("UserId");
             if (currentUserId == id)
             {
@@ -79,7 +73,6 @@ namespace CSI402_Project.Controllers
                 return RedirectToAction(nameof(Users));
             }
 
-            // Check if user has orders
             var hasOrders = _context.Orders.Any(o => o.UserId == id);
             if (hasOrders)
             {
@@ -94,7 +87,6 @@ namespace CSI402_Project.Controllers
             return RedirectToAction(nameof(Users));
         }
 
-        // POST: /SuperAdmin/CreateAdmin
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateAdmin(string username, string email, string password, string phone)
@@ -105,21 +97,18 @@ namespace CSI402_Project.Controllers
                 return RedirectToAction(nameof(Users));
             }
 
-            // Check if username exists
             if (_context.Users.Any(u => u.Username == username))
             {
                 TempData["ErrorMessage"] = "ชื่อผู้ใช้นี้ถูกใช้งานแล้ว";
                 return RedirectToAction(nameof(Users));
             }
 
-            // Check if email exists
             if (_context.Users.Any(u => u.Email == email))
             {
                 TempData["ErrorMessage"] = "อีเมลนี้ถูกใช้งานแล้ว";
                 return RedirectToAction(nameof(Users));
             }
 
-            // Hash password
             var hashedPassword = HashPassword(password);
 
             var user = new User

@@ -18,7 +18,6 @@ public class AdminController : Controller
             _environment = environment;
         }
 
-        // GET: /Admin/Dashboard
         public IActionResult Dashboard()
         {
             var dashboardData = new DashboardViewModel
@@ -43,9 +42,6 @@ public class AdminController : Controller
             return View(dashboardData);
         }
 
-        // ==================== PRODUCT MANAGEMENT ====================
-
-        // GET: /Admin/Products
         public IActionResult Products()
         {
             var products = _context.Products
@@ -54,7 +50,6 @@ public class AdminController : Controller
             return View(products);
         }
 
-        // GET: /Admin/CreateProduct
         public IActionResult CreateProduct()
         {
             var viewModel = new ProductFormViewModel
@@ -64,7 +59,6 @@ public class AdminController : Controller
             return View(viewModel);
         }
 
-        // POST: /Admin/CreateProduct
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateProduct(Product product, 
@@ -72,7 +66,6 @@ public class AdminController : Controller
         {
             if (ModelState.IsValid)
             {
-                // Handle main image file upload
                 if (MainImageFile != null && MainImageFile.Length > 0)
                 {
                     product.ImageUrl = SaveImageFile(MainImageFile);
@@ -81,7 +74,6 @@ public class AdminController : Controller
                 _context.Products.Add(product);
                 _context.SaveChanges();
 
-                // Handle additional image files
                 int order = 1;
                 if (AdditionalImageFiles != null)
                 {
@@ -97,7 +89,6 @@ public class AdminController : Controller
                     }
                 }
 
-                // Handle additional image URLs
                 if (AdditionalImageUrls != null)
                 {
                     foreach (var imageUrl in AdditionalImageUrls.Where(url => !string.IsNullOrWhiteSpace(url)))
@@ -147,7 +138,6 @@ public class AdminController : Controller
             return $"/images/products/{uniqueFileName}";
         }
 
-        // GET: /Admin/EditProduct/5
         public IActionResult EditProduct(int id)
         {
             var product = _context.Products
@@ -165,7 +155,6 @@ public class AdminController : Controller
             return View(viewModel);
         }
 
-        // POST: /Admin/EditProduct/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditProduct(int id, Product product, 
@@ -182,17 +171,14 @@ public class AdminController : Controller
                 {
                     _context.Update(product);
 
-                    // Get current images from database
                     var currentImages = _context.ProductImages
                         .Where(pi => pi.ProductId == id)
                         .ToList();
 
-                    // Delete images that are not in the submitted list
                     var submittedExistingIds = ExistingImageIds ?? new List<int>();
                     var imagesToDelete = currentImages.Where(ci => !submittedExistingIds.Contains(ci.ProductImageId)).ToList();
                     _context.ProductImages.RemoveRange(imagesToDelete);
 
-                    // Update existing images
                     if (ExistingImageIds != null && ExistingImageUrls != null)
                     {
                         for (int i = 0; i < ExistingImageIds.Count; i++)
@@ -212,7 +198,6 @@ public class AdminController : Controller
                         }
                     }
 
-                    // Add new images
                     if (AdditionalImageUrls != null && AdditionalImageUrls.Any())
                     {
                         int startOrder = (ExistingImageUrls?.Count ?? 0) + 1;
@@ -249,7 +234,6 @@ public class AdminController : Controller
             return View(viewModel);
         }
 
-        // POST: /Admin/DeleteProduct/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteProduct(int id)
@@ -266,22 +250,17 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Products));
         }
 
-        // ==================== CATEGORY MANAGEMENT ====================
-
-        // GET: /Admin/Categories
         public IActionResult Categories()
         {
             var categories = _context.Categories.ToList();
             return View(categories);
         }
 
-        // GET: /Admin/CreateCategory
         public IActionResult CreateCategory()
         {
             return View();
         }
 
-        // POST: /Admin/CreateCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateCategory(Category category)
@@ -296,7 +275,6 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Categories));
         }
 
-        // POST: /Admin/EditCategory
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditCategory(Category category)
@@ -310,7 +288,6 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Categories));
         }
 
-        // POST: /Admin/DeleteCategory/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteCategory(int id)
@@ -321,7 +298,6 @@ public class AdminController : Controller
                 return NotFound();
             }
 
-            // Check if category has products
             var hasProducts = _context.Products.Any(p => p.CategoryId == id);
             if (hasProducts)
             {
@@ -335,22 +311,17 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Categories));
         }
 
-        // ==================== PROMOTION MANAGEMENT ====================
-
-        // GET: /Admin/Promotions
         public IActionResult Promotions()
         {
             var promotions = _context.Promotions.ToList();
             return View(promotions);
         }
 
-        // GET: /Admin/CreatePromotion
         public IActionResult CreatePromotion()
         {
             return View();
         }
 
-        // POST: /Admin/CreatePromotion
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreatePromotion(Promotion promotion)
@@ -365,7 +336,6 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Promotions));
         }
 
-        // POST: /Admin/EditPromotion
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult EditPromotion(Promotion promotion)
@@ -379,7 +349,6 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Promotions));
         }
 
-        // POST: /Admin/DeletePromotion/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult DeletePromotion(int id)
@@ -396,9 +365,6 @@ public class AdminController : Controller
             return RedirectToAction(nameof(Promotions));
         }
 
-        // ==================== ORDER MANAGEMENT ====================
-
-        // GET: /Admin/Orders
         public IActionResult Orders()
         {
             var orders = _context.Orders
@@ -408,7 +374,6 @@ public class AdminController : Controller
             return View(orders);
         }
 
-        // GET: /Admin/OrderDetails/5
         public IActionResult OrderDetails(int id)
         {
             var order = _context.Orders
@@ -425,7 +390,6 @@ public class AdminController : Controller
             return View(order);
         }
 
-        // POST: /Admin/UpdateOrderStatus
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult UpdateOrderStatus(int orderId, string status)

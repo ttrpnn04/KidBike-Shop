@@ -13,7 +13,6 @@ public class PromotionController : Controller
         _context = context;
     }
 
-    // GET: /Promotion - แสดงโปรโมชั่นทั้งหมดที่กำลังใช้งานได้
     public IActionResult Index()
     {
         var today = DateTime.Now;
@@ -26,7 +25,6 @@ public class PromotionController : Controller
         return View(promotions);
     }
 
-    // GET: /Promotion/Details/5 - แสดงรายละเอียดโปรโมชั่น
     public IActionResult Details(int? id)
     {
         if (id == null)

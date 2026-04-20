@@ -7,7 +7,6 @@ public class CheckoutViewModel
     public List<Cart> CartItems { get; set; } = new List<Cart>();
     public User User { get; set; } = new User();
 
-    // Promotion fields
     public string? PromoCode { get; set; }
     public int? AppliedPromotionId { get; set; }
     public Promotion? AppliedPromotion { get; set; }

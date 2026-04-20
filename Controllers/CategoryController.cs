@@ -13,7 +13,6 @@ public class CategoryController : Controller
         _context = context;
     }
 
-    // GET: /Category - แสดงรายการหมวดหมู่ทั้งหมด
     public IActionResult Index()
     {
         var categories = _context.Categories
@@ -22,7 +21,6 @@ public class CategoryController : Controller
         return View(categories);
     }
 
-    // GET: /Category/Products/5 - แสดงสินค้าตามหมวดหมู่ (Redirect ไปหน้า Product/Index)
     public IActionResult Products(int? id)
     {
         if (id == null)
@@ -33,7 +31,6 @@ public class CategoryController : Controller
         return RedirectToAction("Index", "Product", new { categoryId = id });
     }
 
-    // GET: /Category/Details/5 - แสดงรายละเอียดหมวดหมู่
     public IActionResult Details(int? id)
     {
         if (id == null)

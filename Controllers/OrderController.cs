@@ -14,7 +14,6 @@ public class OrderController : Controller
         _context = context;
     }
 
-    // GET: /Order - แสดงคำสั่งซื้อทั้งหมดของผู้ใช้
     public IActionResult Index()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
@@ -35,7 +34,6 @@ public class OrderController : Controller
         return View(orders);
     }
 
-    // GET: /Order/Details/5 - แสดงรายละเอียดคำสั่งซื้อ
     public IActionResult Details(int id)
     {
         var userId = HttpContext.Session.GetInt32("UserId");
@@ -58,7 +56,6 @@ public class OrderController : Controller
         return View(order);
     }
 
-    // GET: /Order/Checkout - หน้าดำเนินการสั่งซื้อ
     public IActionResult Checkout()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
@@ -88,7 +85,6 @@ public class OrderController : Controller
             User = user ?? new User()
         };
 
-        // Check for promo code in TempData
         if (TempData["AppliedPromotionId"] != null)
         {
             var promoId = TempData["AppliedPromotionId"] as int? ?? 0;
@@ -102,7 +98,6 @@ public class OrderController : Controller
                     viewModel.DiscountAmount = CalculateDiscount(cartItems.Sum(c => (c.Product?.Price ?? 0) * (c.Quantity ?? 0)), promotion);
                     viewModel.PromoCode = promotion.Name;
 
-                    // Keep TempData for next request (POST checkout)
                     TempData.Keep("AppliedPromotionId");
                 }
             }
@@ -111,7 +106,6 @@ public class OrderController : Controller
         return View(viewModel);
     }
 
-    // POST: /Order/ApplyPromo - ใช้โค้ดส่วนลด
     [HttpPost]
     public IActionResult ApplyPromo(string promoCode)
     {
@@ -135,7 +129,6 @@ public class OrderController : Controller
         var subtotal = cartItems.Sum(c => (c.Product?.Price ?? 0) * (c.Quantity ?? 0));
         var today = DateTime.Now;
 
-        // Find valid promotion by name/code
         var promotion = _context.Promotions
             .FirstOrDefault(p => p.Name == promoCode && 
                                      p.StartDate <= today && 
@@ -147,10 +140,8 @@ public class OrderController : Controller
             return RedirectToAction("Checkout");
         }
 
-        // Check condition type (FirstPurchase, MinAmount, etc.)
         var conditionType = promotion.ConditionType?.ToLowerInvariant() ?? "";
 
-        // Check first purchase requirement
         if (conditionType == "firstpurchase")
         {
             var hasOrders = _context.Orders.Any(o => o.UserId == userId);
@@ -161,7 +152,6 @@ public class OrderController : Controller
             }
         }
 
-        // Check minimum purchase requirement
         if (promotion.ConditionAmount.HasValue && subtotal < promotion.ConditionAmount.Value)
         {
             TempData["ErrorMessage"] = $"ต้องซื้อครบ ฿{promotion.ConditionAmount.Value:N0} จึงจะใช้โค้ดนี้ได้";
@@ -177,13 +167,11 @@ public class OrderController : Controller
         return RedirectToAction("Checkout");
     }
 
-    // Helper method to calculate discount
     private decimal CalculateDiscount(decimal subtotal, Promotion promotion)
     {
         var type = promotion.Type?.ToLowerInvariant() ?? "";
         var discountValue = promotion.DiscountValue ?? 0;
 
-        // Debug: ถ้าส่วนลดเป็น 0 ให้ดูว่า Type เป็นอะไร
         if (discountValue == 0)
         {
             TempData["ErrorMessage"] = $"โปรโมชั่นไม่มีค่าส่วนลด (Type: {promotion.Type}, Value: {promotion.DiscountValue})";
@@ -199,14 +187,12 @@ public class OrderController : Controller
         }
         else if (type == "freeshipping")
         {
-            return 0; // Free shipping handled separately
+            return 0;
         }
 
-        // Default: ถ้าไม่รู้จัก Type ให้ใช้ FixedAmount
         return Math.Min(discountValue, subtotal);
     }
 
-    // POST: /Order/RemovePromo - ยกเลิกโค้ดส่วนลด
     [HttpPost]
     public IActionResult RemovePromo()
     {
@@ -215,7 +201,6 @@ public class OrderController : Controller
         return RedirectToAction("Checkout");
     }
 
-    // POST: /Order/Checkout - ยืนยันการสั่งซื้อ
     [HttpPost]
     public IActionResult Checkout(string shippingAddress, string phone, int? promotionId)
     {
@@ -237,7 +222,6 @@ public class OrderController : Controller
             return RedirectToAction("Index", "Cart");
         }
 
-        // Calculate totals with promotion if applied
         var subtotal = cartItems.Sum(c => (c.Product?.Price ?? 0) * (c.Quantity ?? 0));
         var discount = 0m;
         
@@ -250,7 +234,6 @@ public class OrderController : Controller
             }
         }
 
-        // สร้างคำสั่งซื้อใหม่
         var order = new Order
         {
             UserId = userId,
@@ -263,7 +246,6 @@ public class OrderController : Controller
         _context.Orders.Add(order);
         _context.SaveChanges();
 
-        // สร้างรายละเอียดคำสั่งซื้อ
         foreach (var item in cartItems)
         {
             var orderDetail = new OrderDetail
@@ -276,10 +258,8 @@ public class OrderController : Controller
             _context.OrderDetails.Add(orderDetail);
         }
 
-        // ลบสินค้าออกจากตะกร้า
         _context.Carts.RemoveRange(cartItems);
         
-        // อัปเดตที่อยู่และเบอร์โทรของผู้ใช้
         var user = _context.Users.Find(userId);
         if (user != null)
         {

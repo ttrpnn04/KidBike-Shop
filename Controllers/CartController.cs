@@ -13,15 +13,12 @@ public class CartController : Controller
         _context = context;
     }
 
-    // GET: /Cart - แสดงตะกร้าสินค้า
     public IActionResult Index()
     {
-        // TODO: รับ UserId จาก Session หรือ Claims จริงๆ
         var userId = HttpContext.Session.GetInt32("UserId");
         
         if (userId == null)
         {
-            // ถ้ายังไม่ล็อกอิน แสดงตะกร้าว่าง
             return View(new List<Cart>());
         }
 
@@ -33,7 +30,6 @@ public class CartController : Controller
         return View(cartItems);
     }
 
-    // POST: /Cart/Add - เพิ่มสินค้าลงตะกร้า
     [HttpPost]
     public IActionResult Add(int productId, int quantity = 1)
     {
@@ -45,18 +41,15 @@ public class CartController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        // ตรวจสอบว่ามีสินค้านี้ในตะกร้าอยู่แล้วหรือไม่
         var existingItem = _context.Carts
             .FirstOrDefault(c => c.UserId == userId && c.ProductId == productId);
 
         if (existingItem != null)
         {
-            // ถ้ามีอยู่แล้ว เพิ่มจำนวน
             existingItem.Quantity += quantity;
         }
         else
         {
-            // ถ้ายังไม่มี เพิ่มรายการใหม่
             var cartItem = new Cart
             {
                 UserId = userId,
@@ -72,7 +65,6 @@ public class CartController : Controller
         return RedirectToAction("Index");
     }
 
-    // POST: /Cart/Update - อัพเดทจำนวนสินค้า
     [HttpPost]
     public IActionResult Update(int cartId, int quantity)
     {
@@ -104,7 +96,6 @@ public class CartController : Controller
         return RedirectToAction("Index");
     }
 
-    // POST: /Cart/Remove - ลบสินค้าออกจากตะกร้า
     [HttpPost]
     public IActionResult Remove(int cartId)
     {
@@ -128,7 +119,6 @@ public class CartController : Controller
         return RedirectToAction("Index");
     }
 
-    // POST: /Cart/Clear - ล้างตะกร้าทั้งหมด
     [HttpPost]
     public IActionResult Clear()
     {

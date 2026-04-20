@@ -20,12 +20,10 @@ public class HomeController : Controller
     {
         var viewModel = new HomeViewModel();
 
-        // ดึงหมวดหมู่สินค้าทั้งหมด
         viewModel.Categories = _context.Categories
             .Include(c => c.Products)
             .ToList();
 
-        // ดึงสินค้ายอดนิยม (สินค้าที่มีจำนวนสั่งซื้อมากที่สุด 4 รายการ)
         var popularProductIds = _context.OrderDetails
             .GroupBy(od => od.ProductId)
             .OrderByDescending(g => g.Sum(od => od.Quantity))
@@ -42,14 +40,12 @@ public class HomeController : Controller
         }
         else
         {
-            // ถ้ายังไม่มีข้อมูลการสั่งซื้อ ให้แสดงสินค้าล่าสุด 4 รายการแทน
             viewModel.PopularProducts = _context.Products
                 .Include(p => p.Category)
                 .Take(4)
                 .ToList();
         }
 
-        // ดึงโปรโมชั่นที่กำลังใช้งานได้
         viewModel.Promotions = _context.Promotions
             .Where(p => p.StartDate <= DateTime.Now && p.EndDate >= DateTime.Now)
             .Take(3)

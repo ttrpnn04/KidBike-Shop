@@ -15,14 +15,12 @@ namespace CSI402_Project.Controllers
             _context = context;
         }
 
-        // GET: /Account/Register
         [HttpGet]
         public IActionResult Register()
         {
             return View();
         }
 
-        // POST: /Account/Register
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterViewModel model)
@@ -64,14 +62,12 @@ namespace CSI402_Project.Controllers
             return View(model);
         }
 
-        // GET: /Account/Login
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
 
-        // POST: /Account/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel model)
@@ -97,7 +93,6 @@ namespace CSI402_Project.Controllers
             return View(model);
         }
 
-        // POST: /Account/Logout
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Logout()
@@ -106,14 +101,12 @@ namespace CSI402_Project.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: /Account/ForgotPassword
         [HttpGet]
         public IActionResult ForgotPassword()
         {
             return View();
         }
 
-        // POST: /Account/ForgotPassword
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ForgotPassword(ForgotPasswordViewModel model)
@@ -123,13 +116,9 @@ namespace CSI402_Project.Controllers
                 var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
                 if (user == null)
                 {
-                    // ไม่แสดงว่าไม่พบอีเมล เพื่อความปลอดภัย
                     TempData["SuccessMessage"] = "หากอีเมลนี้มีในระบบ เราจะส่งลิงก์รีเซ็ตรหัสผ่านไปให้";
                     return RedirectToAction("Login");
                 }
-
-                // TODO: ส่งอีเมลรีเซ็ตรหัสผ่านจริง
-                // ในระบบจริงควรส่งอีเมลพร้อม token สำหรับรีเซ็ตรหัสผ่าน
 
                 TempData["SuccessMessage"] = "หากอีเมลนี้มีในระบบ เราจะส่งลิงก์รีเซ็ตรหัสผ่านไปให้ กรุณาตรวจสอบอีเมลของคุณ (รวมถึงกล่องจดหมายขยะ)";
                 return RedirectToAction("Login");
@@ -138,7 +127,6 @@ namespace CSI402_Project.Controllers
             return View(model);
         }
 
-        // Helper method to hash password
         private string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())

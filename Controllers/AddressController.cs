@@ -13,7 +13,6 @@ public class AddressController : Controller
         _context = context;
     }
 
-    // GET: /Address - แสดงหน้าที่อยู่จัดส่ง
     public IActionResult Index()
     {
         var userId = HttpContext.Session.GetInt32("UserId");
@@ -34,7 +33,6 @@ public class AddressController : Controller
         return View(user);
     }
 
-    // POST: /Address/Update - อัปเดตที่อยู่จัดส่ง
     [HttpPost]
     public IActionResult Update(string address, string phone, string email)
     {
@@ -52,7 +50,6 @@ public class AddressController : Controller
             return NotFound();
         }
 
-        // อัปเดตข้อมูล
         if (!string.IsNullOrEmpty(address))
             user.Address = address;
         if (!string.IsNullOrEmpty(phone))
