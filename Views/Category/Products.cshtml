@@ -3,7 +3,6 @@
     ViewData["Title"] = $"สินค้าในหมวดหมู่ {ViewBag.CategoryName}";
 }
 
-<!-- Breadcrumb -->
 <div class="container py-3">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb mb-0">
@@ -14,7 +13,6 @@
     </nav>
 </div>
 
-<!-- Page Header -->
 <div class="container mb-4">
     <div class="section-header">
         <h1 class="section-title">@ViewBag.CategoryName</h1>
@@ -31,7 +29,6 @@
 
 <div class="container">
     <div class="row">
-        <!-- Sidebar Filters -->
         <div class="col-lg-3 mb-4">
             <div class="filter-section">
                 <div class="filter-title">
@@ -63,9 +60,7 @@
             </div>
         </div>
         
-        <!-- Product Grid -->
         <div class="col-lg-9">
-            <!-- Search & Sort Bar -->
             <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
                 <div class="search-box flex-grow-1" style="max-width: 400px;">
                     <input type="text" class="form-control" placeholder="ค้นหาสินค้า...">
@@ -85,7 +80,6 @@
                 </div>
             </div>
             
-            <!-- Results Count -->
             <p class="text-muted mb-3">แสดง @Model.Count สินค้าในหมวดหมู่ "@ViewBag.CategoryName"</p>
             
             @if (Model.Count == 0)
