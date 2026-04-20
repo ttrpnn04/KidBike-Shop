@@ -1,9 +1,3 @@
-/* ===============================
-   KidBike Shop - Kids Bicycle E-commerce Theme
-   Colorful, friendly design for children
-   =============================== */
-
-/* ========== CSS Variables ========== */
 :root {
     --primary: #FF6B6B;
     --primary-dark: #FF5252;
@@ -28,7 +22,6 @@
     --font-family: 'Prompt', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
-/* ========== Base Styles ========== */
 html {
     font-size: 14px;
     position: relative;
@@ -50,7 +43,6 @@ body {
     line-height: 1.6;
 }
 
-/* ========== Navbar Styles ========== */
 .navbar {
     background: linear-gradient(135deg, var(--white) 0%, #FFF8F0 100%);
     box-shadow: var(--shadow);
@@ -92,7 +84,6 @@ body {
     background-color: rgba(255, 107, 107, 0.15);
 }
 
-/* Dropdown Menu */
 .dropdown-menu {
     border: none;
     box-shadow: var(--shadow-lg);
@@ -116,13 +107,11 @@ body {
     font-size: 0.75rem;
 }
 
-/* Cart Badge */
 .cart-badge {
     font-size: 0.65rem;
     padding: 0.25em 0.5em;
 }
 
-/* ========== Button Styles ========== */
 .btn {
     font-weight: 600;
     padding: 0.625rem 1.5rem;
@@ -162,7 +151,6 @@ body {
     color: var(--white);
 }
 
-/* ========== Hero Section ========== */
 .hero-section {
     background: linear-gradient(135deg, #FFF5F5 0%, #E8F8F5 50%, #FFFBE8 100%);
     padding: 4rem 0;
@@ -200,7 +188,6 @@ body {
     margin-bottom: 2rem;
 }
 
-/* ========== Section Styles ========== */
 .section-header {
     text-align: center;
     margin-bottom: 3rem;
@@ -231,7 +218,6 @@ body {
     margin-top: 1rem;
 }
 
-/* ========== Card Styles ========== */
 .card {
     border: none;
     border-radius: var(--radius);
@@ -273,7 +259,6 @@ body {
     margin-left: 0.5rem;
 }
 
-/* Product Card Specific */
 .product-card {
     position: relative;
 }
@@ -317,7 +302,6 @@ body {
     opacity: 1;
 }
 
-/* ========== Category Cards ========== */
 .category-card {
     text-align: center;
     padding: 2rem;
@@ -367,7 +351,6 @@ body {
 .category-card:nth-child(3) .category-icon { background: linear-gradient(135deg, #FFF9E5 0%, #FFECB8 100%); }
 .category-card:nth-child(4) .category-icon { background: linear-gradient(135deg, #E5F0FF 0%, #B8D4FF 100%); }
 
-/* ========== Feature Box ========== */
 .feature-box {
     text-align: center;
     padding: 2rem 1.5rem;
@@ -398,7 +381,6 @@ body {
 .feature-box:nth-child(3) .feature-icon { background: linear-gradient(135deg, var(--accent-blue) 0%, #3D8BFD 100%); }
 .feature-box:nth-child(4) .feature-icon { background: linear-gradient(135deg, var(--accent-green) 0%, #10AC84 100%); }
 
-/* ========== Search Box ========== */
 .search-box {
     position: relative;
     max-width: 600px;
@@ -427,7 +409,6 @@ body {
     border-radius: 50px;
 }
 
-/* ========== Filter Section ========== */
 .filter-section {
     background: var(--white);
     padding: 1.5rem;
@@ -462,7 +443,6 @@ body {
     color: var(--white);
 }
 
-/* ========== Promotion Banner ========== */
 .promo-banner {
     background: linear-gradient(135deg, var(--accent-yellow) 0%, #FFD93D 100%);
     padding: 3rem;
@@ -499,7 +479,6 @@ body {
     border: 2px dashed var(--primary);
 }
 
-/* ========== Footer ========== */
 .footer {
     background: linear-gradient(135deg, var(--dark) 0%, #1E272E 100%);
     color: var(--light-gray);
@@ -602,7 +581,6 @@ body {
     margin: 0;
 }
 
-/* ========== Form Styles ========== */
 .form-control {
     border: 2px solid var(--light-gray);
     border-radius: var(--radius-sm);
@@ -621,7 +599,6 @@ body {
     margin-bottom: 0.5rem;
 }
 
-/* ========== Alert/Status Styles ========== */
 .alert {
     border: none;
     border-radius: var(--radius-sm);
@@ -638,7 +615,6 @@ body {
     color: #B7791F;
 }
 
-/* Order Status Badges */
 .status-badge {
     padding: 0.35rem 0.75rem;
     border-radius: 20px;
@@ -651,7 +627,6 @@ body {
 .status-shipping { background: rgba(255, 159, 67, 0.15); color: #C05621; }
 .status-completed { background: rgba(29, 209, 161, 0.15); color: #0E9F6E; }
 
-/* ========== Pagination ========== */
 .pagination {
     gap: 0.5rem;
 }
@@ -674,7 +649,6 @@ body {
     color: var(--white);
 }
 
-/* ========== Utility Classes ========== */
 .text-primary { color: var(--primary) !important; }
 .text-secondary { color: var(--secondary) !important; }
 .bg-primary { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important; }
@@ -684,7 +658,6 @@ body {
 .gap-3 { gap: 1rem; }
 .gap-4 { gap: 1.5rem; }
 
-/* ========== Responsive ========== */
 @media (max-width: 991.98px) {
     body {
         padding-top: 70px;
@@ -721,7 +694,6 @@ body {
     }
 }
 
-/* Original CSS */
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
