@@ -139,10 +139,14 @@
                         <div class="d-grid gap-2">
                             @if (Context.Session.GetInt32("UserId") != null)
                             {
-                                // Logged in user - normal add to cart
-                                <a asp-controller="Cart" asp-action="Add" asp-route-id="@Model.ProductId" class="btn btn-primary btn-lg">
-                                    <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
-                                </a>
+                                // Logged in user - normal add to cart (ใช้ Form POST)
+                                <form asp-controller="Cart" asp-action="Add" method="post" class="d-grid">
+                                    <input type="hidden" name="productId" value="@Model.ProductId" />
+                                    <input type="hidden" name="quantity" id="formQuantity" value="1" />
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="bi bi-cart-plus me-2"></i>เพิ่มลงตะกร้า
+                                    </button>
+                                </form>
                             }
                             else
                             {
@@ -188,23 +192,21 @@
 <script>
     function decreaseQty() {
         var input = document.getElementById('quantity');
+        var formQty = document.getElementById('formQuantity');
         var val = parseInt(input.value);
         if (val > 1) {
             input.value = val - 1;
+            formQty.value = val - 1;  // อัปเดตค่าในฟอร์มด้วย
         }
     }
 
     function increaseQty(max) {
         var input = document.getElementById('quantity');
+        var formQty = document.getElementById('formQuantity');
         var val = parseInt(input.value);
         if (val < max) {
             input.value = val + 1;
+            formQty.value = val + 1;  // อัปเดตค่าในฟอร์มด้วย
         }
-    }
-
-    function addToCart(productId) {
-        var qty = document.getElementById('quantity').value;
-        // TODO: Implement add to cart with quantity
-        alert('เพิ่มสินค้า ID ' + productId + ' จำนวน ' + qty + ' ชิ้น ลงตะกร้า');
     }
 </script>

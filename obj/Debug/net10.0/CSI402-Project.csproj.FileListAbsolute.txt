@@ -22,7 +22,6 @@ C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\scopedcs
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\scopedcss\bundle\CSI402-Project.styles.css
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\scopedcss\projectbundle\CSI402-Project.bundle.scp.css
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\abn9ibe7gh-{0}-61n19gt1b8-61n19gt1b8.gz
-C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\e2ibdoc3cc-{0}-xtxxf3hu2r-xtxxf3hu2r.gz
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\bvra1lqjyu-{0}-bqjiyaj88i-bqjiyaj88i.gz
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\cfc68mp2qb-{0}-c2jlpeoesf-c2jlpeoesf.gz
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\wqdo9psfa9-{0}-erw9l3u2r3-erw9l3u2r3.gz
@@ -222,4 +221,5 @@ C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\bin\Debug\net10.0\runtimes
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\CSI402-Project.csproj.AssemblyReference.cache
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\CSI402-P.011DC68B.Up2Date
 C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\CSI402-Project.sourcelink.json
-C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\ut6z3cdn7c-{0}-be4cclxs5j-be4cclxs5j.gz
+C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\ut6z3cdn7c-{0}-8dwpc1mibn-8dwpc1mibn.gz
+C:\Users\pigeo\OneDrive\Desktop\CSI402\CSI402-Project\obj\Debug\net10.0\compressed\e2ibdoc3cc-{0}-3r8b2a0bt1-3r8b2a0bt1.gz
